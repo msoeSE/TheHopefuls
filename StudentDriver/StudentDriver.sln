@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriver.iOS", "iOS\St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriver.Droid", "Droid\StudentDriver.Droid.csproj", "{F4FBAA2E-C847-406D-B787-1979BF5A8560}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriverUITesting", "StudentDriverUITesting\StudentDriverUITesting.csproj", "{CFA934CA-A954-46B3-9B51-767544BB29DB}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,5 +55,17 @@ Global
 		{F4FBAA2E-C847-406D-B787-1979BF5A8560}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{F4FBAA2E-C847-406D-B787-1979BF5A8560}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{F4FBAA2E-C847-406D-B787-1979BF5A8560}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|iPhone.Build.0 = Release|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|iPhone.Build.0 = Debug|Any CPU
 	EndGlobalSection
 EndGlobal
