@@ -2,7 +2,7 @@
 
 namespace StudentDriver
 {
-	public partial class StudentDriverPage : TabbedPage
+	public partial class StudentDriverPage : ContentPage
 	{
 		public StudentDriverPage ()
 		{
