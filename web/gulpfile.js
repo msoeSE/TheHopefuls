@@ -6,7 +6,7 @@ var cleanCSS = require('gulp-clean-css');
 var pump = require('pump');
 
 gulp.task("lint", function() {
-    return gulp.src(["src/**/*.js", "!src/**/sample/**/*.js", "!src/tests/**/*.js", "!src/**/*.min.*", "!src/public/**/*.js"])
+    return gulp.src(["app/**/*.js", "public/js/**/*.js"])
         // eslint() attaches the lint output to the "eslint" property
         // of the file object so it can be used by other modules.
         .pipe(eslint())
