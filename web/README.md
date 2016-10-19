@@ -10,7 +10,3 @@
 1. npm install -g gulp-cli
 2. npm install
 3. gulp lint
-
-# License
-
- [MIT](/LICENSE)
