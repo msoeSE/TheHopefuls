@@ -4,5 +4,6 @@ node_js:
 
 before_script:
     - cd web/
+    - npm install
     - npm install -g gulp
 script: gulp
