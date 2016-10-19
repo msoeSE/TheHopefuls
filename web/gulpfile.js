@@ -33,3 +33,11 @@ gulp.task('minify-css', function() {
     .pipe(cleanCSS({compatibility: 'ie8'}))
     .pipe(gulp.dest('dist/css/'));
 });
+
+gulp.task('default',
+    [
+    'lint'
+    // 'compress',
+    // 'minify-css'
+    ]
+);
