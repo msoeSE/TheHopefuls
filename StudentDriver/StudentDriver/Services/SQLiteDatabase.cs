@@ -1,5 +1,6 @@
 ﻿using System;
 using SQLite;
+using StudentDriver.Models;
 using Xamarin.Forms;
 
 namespace StudentDriver
@@ -10,7 +11,11 @@ namespace StudentDriver
 		public SQLiteDatabase ()
 		{
 			_database = DependencyService.Get<ISQLite> ().GetAsyncConnection ();
-			//TODO Create tables here
+		    _database.CreateTableAsync<StateReqs>();
+		    _database.CreateTableAsync<User>();
+		    _database.CreateTableAsync<UserStats>();
+		    _database.CreateTableAsync<UnsyncDrives>();
+		    //TODO Create tables here
 		}
 
 	}
