@@ -1,8 +1,23 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:StudentDriver"
 	x:Class="StudentDriver.StatsPage">
 	<ContentPage.Content>
+		<StackLayout Padding="10">
+			<StackLayout Padding="0,30,0,0">
+				<Picker x:Name="statePicker" Title="Select a State">
+					<Picker.Items>
+						<x:String>Alabama</x:String>
+						<x:String>Alaska</x:String>
+						<!--TODO Add More States. -->
+					</Picker.Items>
+				</Picker>
+			</StackLayout>
+			<StackLayout Orientation="Horizontal" Padding="0, 10, 0, 10">
+				<local:TitleLabel Text="Total Distance"></local:TitleLabel>
+			</StackLayout>
+		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>
