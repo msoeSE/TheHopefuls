@@ -8,14 +8,20 @@ namespace StudentDriver
 	public class SQLiteDatabase
 	{
 		static SQLiteAsyncConnection _database;
-		public SQLiteDatabase ()
+	    private SQLiteDatabase _sqLiteDatabaseInstance;
+
+	    public SQLiteDatabase GetInstance()
+	    {
+	        return _sqLiteDatabaseInstance ?? (_sqLiteDatabaseInstance = new SQLiteDatabase());
+	    }
+
+	    private SQLiteDatabase ()
 		{
 			_database = DependencyService.Get<ISQLite> ().GetAsyncConnection ();
 		    _database.CreateTableAsync<StateReqs>();
 		    _database.CreateTableAsync<User>();
 		    _database.CreateTableAsync<UserStats>();
 		    _database.CreateTableAsync<UnsyncDrives>();
-		    //TODO Create tables here
 		}
 
 	}
