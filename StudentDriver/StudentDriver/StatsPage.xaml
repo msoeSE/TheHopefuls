@@ -5,8 +5,9 @@
 	xmlns:local="clr-namespace:StudentDriver"
 	x:Class="StudentDriver.StatsPage">
 	<ContentPage.Content>
-		<StackLayout Padding="10">
-			<StackLayout Padding="0,30,0,0">
+	<ScrollView>
+		<StackLayout Padding="5">
+			<StackLayout Padding="0,30,0,20">
 				<Picker x:Name="statePicker" Title="Select a State">
 					<Picker.Items>
 						<x:String>Alabama</x:String>
@@ -15,9 +16,42 @@
 					</Picker.Items>
 				</Picker>
 			</StackLayout>
-			<StackLayout Orientation="Horizontal" Padding="0, 10, 0, 10">
-				<local:TitleLabel Text="Total Distance"></local:TitleLabel>
+			<Frame OutlineColor="Black" Margin="1" HasShadow="false">
+			<StackLayout Orientation="Vertical" Padding="0, 10, 0, 10" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" >
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+					<local:TitleLabel Text="Total Distance" HorizontalOptions="StartAndExpand"></local:TitleLabel>
+				<Label x:Name="totalDistanceLabel" VerticalOptions="End" HorizontalOptions="EndAndExpand" Text="30/50 mi"></Label>
+				</StackLayout>
+				<ProgressBar x:Name="totalDistanceProgress" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Progress="0.6" ></ProgressBar>
 			</StackLayout>
+			</Frame>
+			<Frame OutlineColor="Black" Margin="1" HasShadow="false">
+			<StackLayout Orientation="Vertical" Padding="0, 10, 0, 10" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" >
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+					<local:TitleLabel Text="Daytime Distance" HorizontalOptions="StartAndExpand"></local:TitleLabel>
+				<Label x:Name="daytimeDistanceLabel" VerticalOptions="End" HorizontalOptions="EndAndExpand" Text="10/30 mi"></Label>
+				</StackLayout>
+				<ProgressBar x:Name="daytimeDistanceProgress" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Progress="0.333" MinimumHeightRequest="6"></ProgressBar>
+			</StackLayout>
+			</Frame>
+			<Frame OutlineColor="Black" Margin="1" HasShadow="false">
+			<StackLayout Orientation="Vertical" Padding="0, 10, 0, 10" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" >
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+					<local:TitleLabel Text="Night time Distance" HorizontalOptions="StartAndExpand"></local:TitleLabel>
+				<Label x:Name="nighttimeDistanceLabel" VerticalOptions="End" HorizontalOptions="EndAndExpand" Text="20/20 mi"></Label>
+				</StackLayout>
+				<ProgressBar x:Name="nighttimeDistanceProgress" HorizontalOptions="FillAndExpand" VerticalOptions="FillAndExpand" Progress="1" ></ProgressBar>
+			</StackLayout>
+			</Frame>
+				<Frame OutlineColor="Black" Margin="1" HasShadow="false">
+			<StackLayout Orientation="Vertical" Padding="0, 10, 0, 10" HorizontalOptions="FillAndExpand" VerticalOptions="StartAndExpand" >
+				<StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="CenterAndExpand">
+					<local:TitleLabel Text="Total Time" HorizontalOptions="StartAndExpand"></local:TitleLabel>
+				<Label x:Name="totalTimeLabel" VerticalOptions="End" HorizontalOptions="EndAndExpand" Text="4h 15m"></Label>
+				</StackLayout>
+			</StackLayout>
+			</Frame>
 		</StackLayout>
+		</ScrollView>
 	</ContentPage.Content>
 </ContentPage>
