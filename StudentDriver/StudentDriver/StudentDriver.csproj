@@ -59,6 +59,10 @@
     </Compile>
     <Compile Include="Services\ISQLite.cs" />
     <Compile Include="Services\SQLiteDatabase.cs" />
+    <Compile Include="Models\StateReqs.cs" />
+    <Compile Include="Models\UnsyncDrives.cs" />
+    <Compile Include="Models\User.cs" />
+    <Compile Include="Models\UserStats.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
