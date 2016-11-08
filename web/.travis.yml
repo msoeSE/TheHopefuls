@@ -1,11 +1,9 @@
 language: node_js
 node_js:
-  - node
-  - "5"
-  - "4"
-branches:
-only:
-  - master
-script: npm test
-notifications:
-  slack: vulgardisplayofpower:9AUkQRr7xUiHU2mznPrE4u4Q
+    - "node"
+
+before_script:
+    - cd web/
+    - npm install
+    - npm install -g gulp
+script: gulp
