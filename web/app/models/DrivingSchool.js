@@ -1,10 +1,11 @@
 // grab the mongoose module
 var mongoose = require("mongoose");
-var User = require("../models/User");
+var User = require("User");
 
 // define our driving school model
 // module.exports allows us to pass this to other files when it is called
-module.exports = mongoose.model("User",{
+
+var DrivingSchoolSchema = new mongoose.Schema({
     schoolId: { type: Number, required: true },
     owners: [User],
     instructors: [User],
@@ -13,3 +14,5 @@ module.exports = mongoose.model("User",{
     state: { type: String, required: true },
     zip: { type: String, required: true }
 });
+
+module.exports = mongoose.model("DrivingSchool", DrivingSchoolSchema);
