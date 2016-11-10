@@ -57,6 +57,7 @@
     <Compile Include="StatsPage.xaml.cs">
       <DependentUpon>StatsPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="CustomControls\TitleLabel.cs" />
     <Compile Include="Services\ISQLite.cs" />
     <Compile Include="Services\SQLiteDatabase.cs" />
     <Compile Include="Models\StateReqs.cs" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
+    <Folder Include="CustomControls\" />
     <Folder Include="Models\" />
     <Folder Include="Services\" />
   </ItemGroup>

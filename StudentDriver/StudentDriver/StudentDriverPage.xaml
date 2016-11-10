@@ -4,19 +4,22 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:StudentDriver"
 	x:Class="StudentDriver.StudentDriverPage">
-	<NavigationPage Title="Drive">
+	<NavigationPage
+		Title="Drive" Icon="wheel.png">
 		<x:Arguments>
-			<local:DrivePage/>
+			<local:DrivePage />
 		</x:Arguments>
 	</NavigationPage>
-	<NavigationPage Title="Stats">
+	<NavigationPage
+		Title="Stats" Icon="graph.png">
 		<x:Arguments>
-			<local:StatsPage/>
+			<local:StatsPage />
 		</x:Arguments>
 	</NavigationPage>
-	<NavigationPage Title="Settings">
+	<NavigationPage
+		Title="Settings" Icon="settings.png">
 		<x:Arguments>
-			<local:SettingsPage/>
+			<local:SettingsPage />
 		</x:Arguments>
 	</NavigationPage>
 </TabbedPage>

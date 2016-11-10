@@ -142,6 +142,18 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\graph.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\graph.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\graph.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\graph.png" />
+    <AndroidResource Include="Resources\drawable\wheel.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\wheel.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\wheel.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\wheel.png" />
+    <AndroidResource Include="Resources\drawable\settings.png" />
+    <AndroidResource Include="Resources\drawable-hdpi\settings.png" />
+    <AndroidResource Include="Resources\drawable-xhdpi\settings.png" />
+    <AndroidResource Include="Resources\drawable-xxhdpi\settings.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.3.0\build\Xamarin.Android.Support.Vector.Drawable.targets')" />
