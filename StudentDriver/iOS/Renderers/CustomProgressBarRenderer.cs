@@ -13,7 +13,7 @@ namespace StudentDriver.iOS
 		{
 			base.OnElementChanged (e);
 			if (Control != null) {
-				Control.ProgressTintColor = UIColor.Orange;
+				Control.ProgressTintColor = new UIColor (red: 1.00f, green: 0.60f, blue: 0.07f, alpha: 1.0f);
 			}
 		}
 	}
