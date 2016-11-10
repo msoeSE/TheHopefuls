@@ -1,6 +1,6 @@
 // grab the mongoose module
 var mongoose = require("mongoose");
-var User = require("User");
+var User = require("./User.js");
 
 // define our driving school model
 // module.exports allows us to pass this to other files when it is called
