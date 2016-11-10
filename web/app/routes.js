@@ -1,4 +1,5 @@
 var mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/appdb");
 
 var User = require("./models/User.js");
 var DrivingSchool = require("./models/DrivingSchool.js");
@@ -25,7 +26,7 @@ module.exports = function(app) {
 	// allow a user to be added, return the id for the user
 	app.post("/api/students/", function(req, res) {
 		var student = {
-			userId: req.body.Id,
+			userId: req.body.userId,
 			email: req.body.email,
 			firstName: req.body.firstName,
 			lastName: req.body.lastName,
@@ -35,10 +36,14 @@ module.exports = function(app) {
 		};
 
 		var data = new User(student);
-		data.save();
-
-		res.statusCode = 201;
-		res.json(data);
+		data.save(function(err) {
+			if(!err) {
+				res.statusCode = 201;
+				res.json(data);
+			} else {
+				res.send(err);
+			}
+		});
 	});
 
 	app.get("/api/students/:userId/drivingsessions", function(req, res) {
