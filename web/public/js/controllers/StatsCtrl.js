@@ -1,8 +1,8 @@
-angular.module('StatsCtrl', []).controller('StatsController', function($scope) {
+angular.module("StatsCtrl", []).controller("StatsController", function($log) {
+	var vm = this;
+	vm.tagline = "User Stats!";
 
-	$scope.tagline = 'User Stats!';
-
-	$scope.mockUserData = [
+	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],
 		["10/10/2016", "4:00pm", "5:00pm", "1 Hr", "45 Miles", "Rainy"],
 		["11/16/2016", "3:00pm", "4:00pm", "1 Hr", "37 Miles", "Rainy"],
@@ -22,11 +22,11 @@ angular.module('StatsCtrl', []).controller('StatsController', function($scope) {
 		["07/04/2016", "6:00am", "7:00am", "1 Hr", "11 Miles", "Hurricane"]
 	];
 
-	console.log($scope);
+	$log.log(vm);
 
 
 	$(".student-stats-table").DataTable({
-		data: $scope.mockUserData,
+		data: vm.mockUserData,
 		columns: [
 			{ title: "Date" },
 			{ title: "Start Time" },

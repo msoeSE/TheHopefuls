@@ -1,4 +1,3 @@
-angular.module('StatsService', []).factory('Stats', ['$http', function($http) {
+angular.module("StatsService", []).factory("Stats", function() {
 
-
-}]);
+});

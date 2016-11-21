@@ -19,7 +19,7 @@ gulp.task("lint", function() {
 gulp.task("minify-js", function (cb) {
   pump([
 		gulp.src("public/js/**/*.js"),
-        ngAnnotate(),
+		ngAnnotate(),
 		uglify(),
 		gulp.dest("dist/js/")
 	],
