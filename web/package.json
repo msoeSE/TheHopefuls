@@ -15,7 +15,11 @@
     "gulp": "^3.9.1",
     "gulp-clean-css": "^2.0.13",
     "gulp-eslint": "^3.0.1",
+    "gulp-htmlmin": "^3.0.0",
+    "gulp-imagemin": "^3.1.1",
+    "gulp-ng-annotate": "^2.0.0",
     "gulp-uglify": "^2.0.0",
+    "imagemin-zopfli": "^5.0.0",
     "jasmine": "^2.5.2",
     "jasmine-node": "^1.14.5",
     "pump": "^1.0.1"

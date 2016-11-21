@@ -21,7 +21,10 @@ angular.module('appRoutes', []).config(['$routeProvider', '$locationProvider', f
 		.when('/stats', {
 			templateUrl: 'views/stats.html',
 			controller: 'StatsController'
-		});
+		})
+
+        .otherwise({ redirectTo: '/' });
+
 
 	$locationProvider.html5Mode(true);
 
