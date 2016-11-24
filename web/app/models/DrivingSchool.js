@@ -8,7 +8,8 @@ var DrivingSchoolSchema = new mongoose.Schema({
     owners: [{ type: Schema.Types.ObjectId, ref: "User" }],
     instructors: [{ type: Schema.Types.ObjectId, ref: "User" }],
     students: [{ type: Schema.Types.ObjectId, ref: "User" }],
-    address: { type: String, required: true },
+    addressLine1: { type: String, required: true },
+    addressLine2: { type: String, required: true },
     state: { type: String, required: true },
     zip: { type: String, required: true }
 });
