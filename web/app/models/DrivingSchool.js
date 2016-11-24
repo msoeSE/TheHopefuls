@@ -11,7 +11,7 @@ var DrivingSchoolSchema = new mongoose.Schema({
     addressLine1: { type: String, required: true },
     addressLine2: { type: String, required: true },
     state: { type: String, required: true },
-    zip: { type: String, required: true }
+    zip: { type: Number, required: true }
 });
 
 module.exports = mongoose.model("DrivingSchool", DrivingSchoolSchema);
