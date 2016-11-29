@@ -21,7 +21,8 @@ namespace StudentDriver
 		    _database.CreateTableAsync<StateReqs>();
 		    _database.CreateTableAsync<User>();
 		    _database.CreateTableAsync<UserStats>();
-		    _database.CreateTableAsync<UnsyncDrives>();
+	        _database.CreateTableAsync<DrivePoints>();
+;		    _database.CreateTableAsync<UnsyncDrives>();
 		}
 
 	}
