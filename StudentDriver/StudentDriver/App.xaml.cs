@@ -10,7 +10,7 @@ namespace StudentDriver
 		{
 			InitializeComponent ();
 
-			MainPage = new StudentDriverPage ();
+			MainPage = new LoginPage ();
 		}
 
 		protected override void OnStart ()
