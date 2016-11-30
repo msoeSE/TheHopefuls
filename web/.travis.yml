@@ -7,3 +7,7 @@ before_script:
     - npm install
     - npm install -g gulp
 script: gulp
+
+notifications:
+  slack:
+    secure: "yI8AUSWA024gEDBlKqMXKCAVmqEbVHGvsE41i6oh+awxZPybBYiNS3IQi0xV1VoWngi5cyRedvKyzx20Y/g0I44wrlTKlpgTTvGIxhFrR9jozDDVg/BcwvP8gxpDUoxNNiL92bBiz+i8IkUuc9PZZ2ZVBsg7p5sxJI30IzupjvIkVL5/c+ZS4HdhRZ5BqOStDJxYZ0usCh1iC5+RAeekjGeZb1jAdSyFaWx/v4ym46uFOkWU3X+kGhgHNnwrUH28NdT80gfaKXqifqsWIYIjpDPHNgdIl7ueeKuHVKBRsBeHAkFfC3023rT4VsSbOlEZ6H6u1BEplxv/O1wmeW7ybabbqGIIDb0oV5IV5YqAqZc7DwZHrS6KdzrUaRYbjc9YnW4RMQW7NNxLS9RQRLoBICPw/aLsfXP8rgJ9YFBjE8Y4U6pTQ9Y7/eSgFX7qtSTIxYja15zfplz3OU8HrPUx+i5fND0uY/plbw190k1CCNsyY0bwGiaiGRBxtUq+4FCye5oQoAS2Wq/h9k0JqIIDdkbowAInnKul7///0RG1LA63L27F7DHnNY1ELvlUjooUH6Ps4W1wxqKhlyvo6y1p45A0BK8sO3Ytt5LPFuF0U5//M00xkJC9/YFe2/4vPiUkPCCOotkkQWxIQUkxYmN58LD4BTomz9pu/3FlRBbhuHY="
