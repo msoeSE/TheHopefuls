@@ -4,7 +4,7 @@ using SQLite;
 namespace StudentDriver.Models
 {
     [Table("DrivePoints")]
-    public class DrivePoints
+    public class DrivePoint
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }

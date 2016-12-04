@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Http;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using StudentDriver.Models;
 using Xamarin.Forms;
@@ -16,35 +18,59 @@ namespace StudentDriver.Services
     {
         private static string BaseUrl = "";
 
-        public static async Task<User> GetStudent(int id)
+        public static async Task<UserStats> GetStudentStats(int id)
         {
-            var request = GenerateRequest("students",new Dictionary<string, string>(){ {"userId", id.ToString()}});
-            request.ContentType = "application/json";
-            request.Method = "GET";
 
-            using (var response = (HttpWebResponse)(await Task<WebResponse>.Factory.FromAsync(request.BeginGetResponse, request.EndGetResponse, null)))
-            {
-                using (var stream = response.GetResponseStream())
-                {
-                    var json = JObject.Parse(new StreamReader(stream).ReadToEnd());  
-                    var student = JsonConvert.DeserializeObject<User>(json.ToString());
-                    return student;
-                }
-            }
+            var client = new HttpClient();
+            var requestUri = GenerateRequestUri(BaseUrl,"students", new Dictionary<string, string>() {{"userId", id.ToString()}});
+
+            var response = await client.GetAsync(requestUri);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var userStats = JsonConvert.DeserializeObject<UserStats>(json);
+            return userStats;
+        }
+
+        public static async Task<bool> PostUnsyncDrivingSessions(List<UnsyncDrive> unsyncDrives)
+        {
+            var json = JsonConvert.SerializeObject(unsyncDrives);
+            var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+            var client = new HttpClient();
+            var requestUri = GenerateRequestUri(BaseUrl,"drivingsessions", null);
+
+            var response = await client.PostAsync(requestUri, content);
+            return response.IsSuccessStatusCode;
+        }
+
+        public static async Task<Object> GetWeatherData(double latitude, double longitude)
+        {
+            var client = new HttpClient();
+            var requestUri = GenerateDarkSkyWeatherRequestUri("",latitude,longitude);
+            var response = await client.GetAsync(requestUri);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var weatherData = JsonConvert.DeserializeObject(json);
+            return weatherData;
+        }
+
+
+
+        private static string GenerateRequestUri(string host, string endPoint, Dictionary<string, string> paramDictionary)
+        {
+            var queryString = string.Format(string.Join("&", paramDictionary.Select(kvp => $"{kvp.Key}={kvp.Value}")));
+
+            var builder = new UriBuilder
+                          {
+                              Host = host,
+                              Path = endPoint,
+                              Query = queryString
+                          };
+            return builder.ToString();
 
         }
 
-        private static HttpWebRequest GenerateRequest(string endPoint, Dictionary<string,string> paramDictionary )
+        private static string GenerateDarkSkyWeatherRequestUri(string apiKey, double latitude, double longitude)
         {
-            string requestUrl = BaseUrl + "/" + endPoint;
-
-            string s = string.Join("&", paramDictionary.Select(x => x.Key + "=" + x.Value).ToArray());
-
-            if (!string.IsNullOrEmpty(s))
-            {
-                requestUrl += "?"+s;
-            }
-            return (HttpWebRequest)WebRequest.Create(new Uri(requestUrl));
+            return string.Join(",",string.Join("/", "https://api.darksky.net", "forecast", apiKey),latitude,longitude);
         }
     }
 }
