@@ -1,16 +1,30 @@
-// ```
-// server.js
-// (c) 2015 David Newman
-// blackshuriken@hotmail.com
-// server.js may be freely distributed under the MIT license
-// ```
+// modules =================================================
+var express        = require('express');
+var app            = express();
+var mongoose       = require('mongoose');
+var bodyParser     = require('body-parser');
+var methodOverride = require('method-override');
 
-// *server.js*
+// configuration ===========================================
+	
+// config files
+var db = require('./config/db');
 
-// Require babel hook included to load all subsequent files required by node
-// with the extensions .es6, .es, .jsx, .js and transpile them with babel.
-// This will also automatically require the polyfill.
-require("babel-register");
+var port = process.env.PORT || 8080; // set our port
+// mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
 
-// Load server configuration
-var app = require('./server.conf.js');
+// get all data/stuff of the body (POST) parameters
+app.use(bodyParser.json()); // parse application/json 
+app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
+app.use(bodyParser.urlencoded({ extended: true })); // parse application/x-www-form-urlencoded
+
+app.use(methodOverride('X-HTTP-Method-Override')); // override with the X-HTTP-Method-Override header in the request. simulate DELETE/PUT
+app.use(express.static(__dirname + '/public')); // set the static files location /public/img will be /img for users
+
+// routes ==================================================
+require('./app/routes')(app); // pass our application into our routes
+
+// start app ===============================================
+app.listen(port);	
+console.log('Magic happens on port ' + port); 			// shoutout to the user
+exports = module.exports = app; 						// expose app
