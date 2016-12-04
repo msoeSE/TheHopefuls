@@ -1,0 +1,105 @@
+var express = require("express");
+var router = express.Router();
+var mongoose = require("mongoose");
+mongoose.connect("mongodb://localhost/routerdb");
+
+var User = require("../models/User");
+var DrivingSchool = require("../models/DrivingSchool");
+var userCtrl = require("../controllers/userCtrl");
+
+
+// server routes ===========================================================
+// handle things like api calls
+// authentication routes
+
+// TODO: add handling for bad api calls (i.e. invalid params, bad data formats)
+
+router.get("/students/:userId", function(req, res) {
+	User.find({ userId: req.params.userId }, function(err, doc) {
+		if(!err) {
+			res.statusCode = 200;
+			res.json(doc);
+		} else {
+			res.send(err);
+		}
+	});
+});
+
+// allow a user to be added, return the id for the user
+router.post("/students/", function(req, res) {
+	var student = {
+		userId: req.body.userId,
+		email: req.body.email,
+		firstName: req.body.firstName,
+		lastName: req.body.lastName,
+		password: req.body.password,
+		userType: req.body.userType
+		// state: req.body.state
+	};
+
+	var data = new User(student);
+	data.save(function(err) {
+		if(!err) {
+			res.statusCode = 201;
+			res.json(data);
+		} else {
+			res.send(err);
+		}
+	});
+});
+
+router.get("/students/:userId/drivingsessions", function(req, res) {
+	res.statusCode = 200;
+	res.json({});
+});
+
+// allow a new driving session to be added, return the data added
+router.post("/students/:userId/drivingsessions", function(req, res) {
+	res.statusCode = 201;
+	res.json({});
+});
+
+router.get("/drivingschools", function(req, res) {
+	res.statusCode = 200;
+	res.json({});
+});
+
+// allow a new driving school to be added, return the data added
+router.post("/drivingschools", function(req, res) {
+	res.statusCode = 201;
+	res.json({});
+});
+
+router.get("/drivingschools/:schoolId", function(req, res) {
+	res.statusCode = 200;
+	res.json({});
+});
+
+router.get("/drivingschools/:schoolId/students", function(req, res) {
+	res.statusCode = 200;
+	res.json({});
+});
+
+router.delete("/drivingschools/:schoolId/students/:userId", function(req, res) {
+	//res.statusCode = 200;
+	res.json({});
+});
+
+router.get("/drivingschools/:schoolId/instructors", function(req, res) {
+	res.statusCode = 200;
+	res.json({});
+});
+
+// allow a new instructor to be added, return the data added
+router.post("/drivingschools/:schoolId/instructors", function(req, res) {
+	res.statusCode = 201;
+	res.json({});
+});
+
+router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res) {
+	//res.statusCode = 201;
+	res.json({});
+});
+
+
+module.exports = router;
