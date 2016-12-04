@@ -29,7 +29,9 @@ if(process.env.NODE_ENV === "production") {
 app.use("/libs", express.static(__dirname + "/libs"));
 
 // routes ==================================================
-require("./app/routes")(app); // pass our application into our routes
+// require("./app/routes")(app); // pass our application into our routes
+var routes = require("./app/routes/mainRoutes");
+app.use("/api", routes);
 
 // start app ===============================================
 app.listen(port);
