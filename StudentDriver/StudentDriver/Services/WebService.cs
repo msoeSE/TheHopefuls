@@ -42,6 +42,18 @@ namespace StudentDriver.Services
             return response.IsSuccessStatusCode;
         }
 
+        public static async Task<StateReqs> GetStateReqs(string state)
+        {
+            var client = new HttpClient();
+            var requestUri = GenerateRequestUri(BaseUrl, "statereqs", new Dictionary<string, string>() { { "state", state } });
+
+            var response = await client.GetAsync(requestUri);
+            var json = response.Content.ReadAsStringAsync().Result;
+            var stateReqs = JsonConvert.DeserializeObject<StateReqs>(json);
+            return stateReqs;
+        }
+
+        // TODO still need to define the WeatherData Object
         public static async Task<Object> GetWeatherData(double latitude, double longitude)
         {
             var client = new HttpClient();
