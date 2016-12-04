@@ -1,7 +1,7 @@
 {
     "extends": "angular",
     "rules": {
-        "indent": [2, 4],
+        "indent": [1, "tab"],
         "camelcase": [2, {"properties": "always"}],
         "linebreak-style": [2, "unix"],
         "no-trailing-spaces": [2, { "skipBlankLines": false }],

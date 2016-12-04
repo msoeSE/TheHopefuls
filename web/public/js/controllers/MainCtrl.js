@@ -1,5 +1,4 @@
-angular.module('MainCtrl', []).controller('MainController', function($scope) {
-
-	$scope.tagline = 'To the moon and back!';
-
+angular.module("MainCtrl", []).controller("MainController", function() {
+	var vm = this;
+	vm.tagline = "To the moon and back!";
 });
