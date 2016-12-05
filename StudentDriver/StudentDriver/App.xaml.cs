@@ -1,5 +1,7 @@
 ﻿using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation (XamlCompilationOptions.Compile)]
 namespace StudentDriver
 {
 	public partial class App : Application
@@ -8,7 +10,7 @@ namespace StudentDriver
 		{
 			InitializeComponent ();
 
-			MainPage = new StudentDriverPage ();
+			MainPage = new LoginPage ();
 		}
 
 		protected override void OnStart ()
