@@ -12,40 +12,13 @@ var userCtrl = require("../controllers/userCtrl");
 // handle things like api calls
 // authentication routes
 
-// TODO: add handling for bad api calls (i.e. invalid params, bad data formats)
-
 router.get("/students/:userId", function(req, res) {
-	User.find({ userId: req.params.userId }, function(err, doc) {
-		if(!err) {
-			res.statusCode = 200;
-			res.json(doc);
-		} else {
-			res.send(err);
-		}
-	});
+  userCtrl.getStudent(req, res);
 });
 
 // allow a user to be added, return the id for the user
 router.post("/students/", function(req, res) {
-	var student = {
-		userId: req.body.userId,
-		email: req.body.email,
-		firstName: req.body.firstName,
-		lastName: req.body.lastName,
-		password: req.body.password,
-		userType: req.body.userType
-		// state: req.body.state
-	};
-
-	var data = new User(student);
-	data.save(function(err) {
-		if(!err) {
-			res.statusCode = 201;
-			res.json(data);
-		} else {
-			res.send(err);
-		}
-	});
+  userCtrl.createStudent(req, res);
 });
 
 router.get("/students/:userId/drivingsessions", function(req, res) {
