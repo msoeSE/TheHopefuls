@@ -205,3 +205,6 @@ public/libs/
 ### Build ###
 dist
 libs
+
+### Private ###
+config.json
