@@ -3,8 +3,10 @@ var User = require("../models/User");
 // TODO: add handling for bad api calls (i.e. invalid params, bad data formats)
 exports.createStudent = function(req, res) {
   var newStudent = new User({
-    userId: req.body.userId,
-    email: req.body.email,
+    loginDetails: {
+      userId: req.body.loginDetails.userId,
+      service: req.body.loginDetails.service,
+    },
     firstName: req.body.firstName,
     lastName: req.body.lastName,
     userType: "student"
@@ -29,7 +31,7 @@ exports.createStudent = function(req, res) {
 };
 
 exports.getStudent = function(req, res) {
-  User.find({ userId: req.params.userId }, function(err, doc) {
+  User.find({ _id: req.params._id }, function(err, doc) {
 		if(!err) {
 			res.statusCode = 200;
 			res.json(doc);

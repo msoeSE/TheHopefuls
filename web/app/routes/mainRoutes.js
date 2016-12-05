@@ -12,7 +12,7 @@ var userCtrl = require("../controllers/userCtrl");
 // handle things like api calls
 // authentication routes
 
-router.get("/students/:userId", function(req, res) {
+router.get("/students/:_id", function(req, res) {
   userCtrl.getStudent(req, res);
 });
 
