@@ -1,9 +1,10 @@
 // grab the mongoose module
 var mongoose = require("mongoose");
+var Schema = mongoose.Schema;
 
 // define our driving school model
 // module.exports allows us to pass this to other files when it is called
-var DrivingSchoolSchema = new mongoose.Schema({
+var DrivingSchoolSchema = new Schema({
     schoolId: { type: Number, required: true },
     owners: [{ type: Schema.Types.ObjectId, ref: "User" }],
     instructors: [{ type: Schema.Types.ObjectId, ref: "User" }],
