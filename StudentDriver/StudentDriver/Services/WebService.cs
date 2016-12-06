@@ -24,31 +24,31 @@ namespace StudentDriver.Services
             var client = new HttpClient();
             var requestUri = GenerateRequestUri(BaseUrl, "authenticate", new Dictionary<string, string>() { { "providerType", providerType.ToString() }, {"id",OAuthId} });
             var response = await client.GetAsync(requestUri);
-            if (!response.IsSuccessStatusCode)
+            if (response.StatusCode != HttpStatusCode.OK)
             {
                 return null;
             }
             var json = response.Content.ReadAsStringAsync().Result;
-            var userStats = JsonConvert.DeserializeObject<string>(json);
-            return userStats;
+            var token = JsonConvert.DeserializeObject<string>(json);
+            return token;
         }
 
 
-        public static async Task<UserStats> GetStudentStats(int id)
+        public static async Task<UserStats> GetStudentStats(int id, string token)
         {
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl,"students", new Dictionary<string, string>() {{"userId", id.ToString()}});
+            var requestUri = GenerateRequestUri(BaseUrl,"students", new Dictionary<string, string>() {{"userId", id.ToString()}, {"token", token} });
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
             var userStats = JsonConvert.DeserializeObject<UserStats>(json);
             return userStats;
         }
 
-        public static async Task<bool> PostUnsyncDrivingSessions(List<UnsyncDrive> unsyncDrives)
+        public static async Task<bool> PostUnsyncDrivingSessions(List<UnsyncDrive> unsyncDrives, string token)
         {
-            var json = JsonConvert.SerializeObject(unsyncDrives);
-            var content = new StringContent(json, Encoding.UTF8, "application/json");
+            var json = new JObject(new JProperty("token", token),"unsyncDrives",unsyncDrives);
 
+            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
             var client = new HttpClient();
             var requestUri = GenerateRequestUri(BaseUrl,"drivingsessions");
 
@@ -56,10 +56,10 @@ namespace StudentDriver.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<StateReqs> GetStateReqs()
+        public static async Task<StateReqs> GetStateReqs(string token)
         {
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl, "statereqs");
+            var requestUri = GenerateRequestUri(BaseUrl, "statereqs", new Dictionary<string, string>() { { "token", token } });
 
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
