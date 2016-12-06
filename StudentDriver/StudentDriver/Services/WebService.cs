@@ -11,6 +11,7 @@ using StudentDriver.Models;
 using Xamarin.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using StudentDriver.Helpers;
 
 namespace StudentDriver.Services
 {
@@ -18,12 +19,25 @@ namespace StudentDriver.Services
     {
         private static string BaseUrl = "";
 
+        public static async Task<string> GetAuthentiationToken(OAuthProvider.ProviderType providerType, string OAuthId)
+        {
+            var client = new HttpClient();
+            var requestUri = GenerateRequestUri(BaseUrl, "authenticate", new Dictionary<string, string>() { { "providerType", providerType.ToString() }, {"id",OAuthId} });
+            var response = await client.GetAsync(requestUri);
+            if (!response.IsSuccessStatusCode)
+            {
+                return null;
+            }
+            var json = response.Content.ReadAsStringAsync().Result;
+            var userStats = JsonConvert.DeserializeObject<string>(json);
+            return userStats;
+        }
+
+
         public static async Task<UserStats> GetStudentStats(int id)
         {
-
             var client = new HttpClient();
             var requestUri = GenerateRequestUri(BaseUrl,"students", new Dictionary<string, string>() {{"userId", id.ToString()}});
-
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
             var userStats = JsonConvert.DeserializeObject<UserStats>(json);
@@ -36,16 +50,16 @@ namespace StudentDriver.Services
             var content = new StringContent(json, Encoding.UTF8, "application/json");
 
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl,"drivingsessions", null);
+            var requestUri = GenerateRequestUri(BaseUrl,"drivingsessions");
 
             var response = await client.PostAsync(requestUri, content);
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<StateReqs> GetStateReqs(string state)
+        public static async Task<StateReqs> GetStateReqs()
         {
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl, "statereqs", new Dictionary<string, string>() { { "state", state } });
+            var requestUri = GenerateRequestUri(BaseUrl, "statereqs");
 
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
@@ -66,7 +80,7 @@ namespace StudentDriver.Services
 
 
 
-        private static string GenerateRequestUri(string host, string endPoint, Dictionary<string, string> paramDictionary)
+        private static string GenerateRequestUri(string host, string endPoint, Dictionary<string, string> paramDictionary = null)
         {
             var queryString = string.Format(string.Join("&", paramDictionary.Select(kvp => $"{kvp.Key}={kvp.Value}")));
 
