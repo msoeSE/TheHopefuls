@@ -6,17 +6,19 @@ mongoose.connect("mongodb://localhost/routerdb");
 var User = require("../models/User");
 var DrivingSchool = require("../models/DrivingSchool");
 var userCtrl = require("../controllers/userCtrl");
+var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 
 
 // server routes ===========================================================
 // handle things like api calls
 // authentication routes
 
+// Get the JSON for the student with the specified _id
 router.get("/students/:_id", function(req, res) {
   userCtrl.getStudent(req, res);
 });
 
-// allow a user to be added, return the id for the user
+// Create a new student, return the JSON represntation for the new student
 router.post("/students/", function(req, res) {
   userCtrl.createStudent(req, res);
 });
@@ -37,15 +39,13 @@ router.get("/drivingschools", function(req, res) {
 	res.json({});
 });
 
-// allow a new driving school to be added, return the data added
+// Create a new driving school to be added, return the school added
 router.post("/drivingschools", function(req, res) {
-	res.statusCode = 201;
-	res.json({});
+  drivingSchoolCtrl.createSchool(req, res);
 });
 
 router.get("/drivingschools/:schoolId", function(req, res) {
-	res.statusCode = 200;
-	res.json({});
+  drivingSchoolCtrl.getSchool(req, res);
 });
 
 router.get("/drivingschools/:schoolId/students", function(req, res) {
@@ -73,6 +73,5 @@ router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res
 	//res.statusCode = 201;
 	res.json({});
 });
-
 
 module.exports = router;

@@ -1,11 +1,10 @@
 var User = require("../models/User");
 
-// TODO: add handling for bad api calls (i.e. invalid params, bad data formats)
 exports.createStudent = function(req, res) {
   var newStudent = new User({
     loginDetails: {
       userId: req.body.loginDetails.userId,
-      service: req.body.loginDetails.service,
+      service: req.body.loginDetails.service
     },
     firstName: req.body.firstName,
     lastName: req.body.lastName,
@@ -36,7 +35,47 @@ exports.getStudent = function(req, res) {
 			res.statusCode = 200;
 			res.json(doc);
 		} else {
-			res.send("Error retreiving studnt's data, " + err);
+			res.send("Error retreiving student's data, " + err);
+		}
+  });
+};
+
+exports.createInstructor = function(req, res) {
+  var newInstructor = new User({
+    loginDetails: {
+      userId: req.body.loginDetails.userId,
+      service: req.body.loginDetails.service
+    },
+    firstName: req.body.firstName,
+    lastName: req.body.lastName,
+    userType: "instructor"
+  });
+
+  if(!req.body.firstName) {
+    res.status(400);
+    res.send("First name required!");
+  } else if(!req.body.lastName) {
+    res.status(400);
+    res.send("Last name required!");
+  } else {
+    newInstructor.save(function(err) {
+      if(!err) {
+        res.statusCode = 201;
+        res.json(newInstructor);
+      } else {
+        res.send("Error creating a new instructor, " + err);
+      }
+    });
+  }
+};
+
+exports.getInstructor = function(req, res) {
+  User.find({ _id: req.params._id }, function(err, doc) {
+		if(!err) {
+			res.statusCode = 200;
+			res.json(doc);
+		} else {
+			res.send("Error retreiving instructor's data, " + err);
 		}
   });
 };
