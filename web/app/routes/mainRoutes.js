@@ -23,6 +23,7 @@ router.post("/students/", function(req, res) {
   userCtrl.createStudent(req, res);
 });
 
+// Get all existing driving sessions for a student
 router.get("/students/:userId/drivingsessions", function(req, res) {
 	res.statusCode = 200;
 	res.json({});
@@ -34,6 +35,8 @@ router.post("/students/:userId/drivingsessions", function(req, res) {
 	res.json({});
 });
 
+//TODO: add later
+// Get all existing driving schools in the system
 router.get("/drivingschools", function(req, res) {
 	res.statusCode = 200;
 	res.json({});
@@ -48,27 +51,34 @@ router.get("/drivingschools/:schoolId", function(req, res) {
   drivingSchoolCtrl.getSchool(req, res);
 });
 
+//TODO: add later
 router.get("/drivingschools/:schoolId/students", function(req, res) {
 	res.statusCode = 200;
 	res.json({});
 });
 
+//TODO: add later
+// Remove a student from a driving school
 router.delete("/drivingschools/:schoolId/students/:userId", function(req, res) {
 	//res.statusCode = 200;
 	res.json({});
 });
 
+//TODO: add later
 router.get("/drivingschools/:schoolId/instructors", function(req, res) {
 	res.statusCode = 200;
 	res.json({});
 });
 
+//TODO: add later
 // allow a new instructor to be added, return the data added
 router.post("/drivingschools/:schoolId/instructors", function(req, res) {
 	res.statusCode = 201;
 	res.json({});
 });
 
+//TODO: add later
+// Remove an instructor from a driving school
 router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res) {
 	//res.statusCode = 201;
 	res.json({});
