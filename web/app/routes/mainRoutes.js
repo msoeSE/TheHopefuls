@@ -7,7 +7,7 @@ var User = require("../models/User");
 var DrivingSchool = require("../models/DrivingSchool");
 var userCtrl = require("../controllers/userCtrl");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
-
+var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 
 // server routes ===========================================================
 // handle things like api calls
@@ -25,14 +25,12 @@ router.post("/students/", function(req, res) {
 
 // Get all existing driving sessions for a student
 router.get("/students/:userId/drivingsessions", function(req, res) {
-	res.statusCode = 200;
-	res.json({});
+	drivingSessionCtrl.listDrivingSessions(req, res);
 });
 
-// allow a new driving session to be added, return the data added
+// Allow a new driving session to be added, return the JSON of the sessino
 router.post("/students/:userId/drivingsessions", function(req, res) {
-	res.statusCode = 201;
-	res.json({});
+	drivingSessionCtrl.createDrivingSession(req, res);
 });
 
 //TODO: add later
