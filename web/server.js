@@ -1,12 +1,12 @@
 // modules =================================================
-var express        = require("express");
-var app            = express();
-var mongoose       = require("mongoose");
-var bodyParser     = require("body-parser");
+var express		= require("express");
+var app			= express();
+var mongoose	   = require("mongoose");
+var bodyParser	 = require("body-parser");
 var methodOverride = require("method-override");
 var session = require("express-session");
 var passport = require("passport");
-var passportGoogle = require("passport-google");
+var passportGoogle = require("passport-google-oauth2");
 var GoogleStrategy = passportGoogle.Strategy;
 var passportFacebook = require("passport-facebook");
 var FacebookStrategy = passportFacebook.Strategy;
@@ -21,7 +21,7 @@ var devPort = 3000;
 var port = (process.env.NODE_ENV === "production" ? prodPort : devPort);
 
 // If you don't have this file, contact Dylan for it.
-var config = require("./config.json")
+var config = require("./config.json");
 
 // mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
 
@@ -50,13 +50,16 @@ if(process.env.NODE_ENV === "production") {
 	app.use(express.static(__dirname + "/public"));
 
 	passport.use(new GoogleStrategy({
-		returnURL: `http://localhost:${port}/auth/google/return`,
-		realm: `http://localhost:${port}/`
+		clientID:	 config.Auth.GoogleAuth.Local.ID,
+		clientSecret: config.Auth.GoogleAuth.Local.Secret,
+		callbackURL: `http://localhost:${port}/auth/google/callback`,
+		passReqToCallback: true
 	},
-	function(identifier, done) {
-		User.findByOpenID({ openId: identifier }, function (err, user) {
-			return done(err, user);
-		});
+	function(request, accessToken, refreshToken, profile, done) {
+		// User.findOrCreate({ googleId: profile.id }, function (err, user) {
+		// 	return done(err, user);
+		// });
+		return done(null, profile);
 	}));
 
 	passport.use(new FacebookStrategy({
@@ -81,8 +84,10 @@ app.get("/auth/facebook/callback",
 		res.redirect("/");
 	}
 );
-app.get("/auth/google", passport.authenticate("google"));
-app.get("/auth/google/return",
+app.get("/auth/google", passport.authenticate("google", { scope:
+	["https://www.googleapis.com/auth/userinfo.profile"]
+}));
+app.get("/auth/google/callback",
 	passport.authenticate("google", { failureRedirect: "/login" }),
 	function(req, res) {
 		res.redirect("/");
@@ -95,10 +100,6 @@ app.get("/profile",
 		res.end();
 	}
 );
-app.get("/test", function(req, res){
-	res.write("Test");
-	res.end();
-});
 app.get("/auth/logout",
 	function(req, res){
 		req.logout();
