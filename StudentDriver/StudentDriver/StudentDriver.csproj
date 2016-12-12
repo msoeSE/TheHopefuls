@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -47,6 +47,10 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\DriveSession.cs" />
+    <Compile Include="Models\DriveWeatherData.cs" />
+    <Compile Include="Models\DrivePoint.cs" />
+    <Compile Include="Models\UnsyncDrive.cs" />
     <Compile Include="StudentDriverPage.xaml.cs">
       <DependentUpon>StudentDriverPage.xaml</DependentUpon>
     </Compile>
@@ -64,10 +68,8 @@
     <Compile Include="Services\ISQLite.cs" />
     <Compile Include="Services\SQLiteDatabase.cs" />
     <Compile Include="Models\StateReqs.cs" />
-    <Compile Include="Models\UnsyncDrives.cs" />
     <Compile Include="Models\User.cs" />
     <Compile Include="Models\UserStats.cs" />
-    <Compile Include="Models\DrivePoints.cs" />
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
@@ -115,9 +117,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Views\" />
-    <Folder Include="CustomControls\" />
-    <Folder Include="Models\" />
-    <Folder Include="Services\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.2.127\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+MonoTouch10+Xamarin.iOS10\Xamarin.Forms.targets')" />
