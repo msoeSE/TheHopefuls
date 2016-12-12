@@ -8,6 +8,7 @@ var zopfli = require("imagemin-zopfli");
 var htmlmin = require("gulp-htmlmin");
 var ngAnnotate = require("gulp-ng-annotate");
 var pump = require("pump");
+var server = require('karma').Karma;
 
 gulp.task("lint", function() {
 	return gulp.src(["app/**/*.js", "public/js/**/*.js"])
