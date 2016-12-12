@@ -26,12 +26,8 @@ namespace StudentDriver
 		    _database.CreateTableAsync<UserStats>();
 	        _database.CreateTableAsync<DrivePoint>();
 ;		    _database.CreateTableAsync<UnsyncDrive>();
+	        _database.CreateTableAsync<WeatherData>();
 		}
-
-	    public List<UnsyncDrive> GetUnsyncDrives()
-	    {
-	        return _database.Table<UnsyncDrive>().ToListAsync().Result;
-	    }
 
 	    public List<DriveSession> GetUnsyncDriveSessions()
 	    {
@@ -39,9 +35,10 @@ namespace StudentDriver
 	        foreach (var unsyncDrive in _database.Table<UnsyncDrive>().ToListAsync().Result)
 	        {
 	            var drivePoints = _database.Table<DrivePoint>().Where(x => x.UnsyncDriveId == unsyncDrive.Id).ToListAsync().Result;
-	            driveSessions.Add(new DriveSession(unsyncDrive, drivePoints));
-	        }
-	        return driveSessions;
+	            var weatherData = _database.Table<WeatherData>().Where(x => x.UnsyncDriveId == unsyncDrive.Id).FirstOrDefaultAsync().Result;
+                driveSessions.Add(new DriveSession(unsyncDrive, drivePoints,weatherData));
+            }
+            return driveSessions;
 	    }
 
 	}
