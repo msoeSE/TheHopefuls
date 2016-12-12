@@ -48,7 +48,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="Helpers\DriveSession.cs" />
-    <Compile Include="Helpers\WeatherData.cs" />
+    <Compile Include="Models\DriveWeatherData.cs" />
     <Compile Include="Models\DrivePoint.cs" />
     <Compile Include="Models\UnsyncDrive.cs" />
     <Compile Include="StudentDriverPage.xaml.cs">
