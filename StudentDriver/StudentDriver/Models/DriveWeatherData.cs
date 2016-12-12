@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
-using StudentDriver.Helpers;
+﻿using SQLite;
 
 namespace StudentDriver.Models
 {
-    public class WeatherData
+    public class DriveWeatherData
     {
         [PrimaryKey, AutoIncrement]
         public int Id { get; set; }

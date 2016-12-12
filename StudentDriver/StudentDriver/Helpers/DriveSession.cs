@@ -13,13 +13,13 @@ namespace StudentDriver.Helpers
     {
         public UnsyncDrive UnsyncDrive { get; }
         public List<DrivePoint> DrivePoints { get; }
-        public WeatherData WeatherData {get;}
+        public DriveWeatherData DriveWeatherData { get;}
 
-        public DriveSession(UnsyncDrive unsyncDrive, List<DrivePoint> drivePoints, WeatherData weatherData)
+        public DriveSession(UnsyncDrive unsyncDrive, List<DrivePoint> drivePoints, DriveWeatherData driveWeatherData)
         {
             UnsyncDrive = unsyncDrive;
             DrivePoints = drivePoints;
-            WeatherData = weatherData;
+            DriveWeatherData = driveWeatherData;
         }
     }
 }

@@ -41,14 +41,14 @@ namespace StudentDriver.Services
             return response.IsSuccessStatusCode;
         }
 
-        public static async Task<StateReqs> GetStateReqs()
+        public static async Task<List<StateReqs>> GetStateReqs()
         {
             var client = new HttpClient();
             var requestUri = GenerateRequestUri(BaseUrl, "statereqs");
 
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
-            var stateReqs = JsonConvert.DeserializeObject<StateReqs>(json);
+            var stateReqs = JsonConvert.DeserializeObject<List<StateReqs>>(json);
             return stateReqs;
         }
 
