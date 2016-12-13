@@ -22,26 +22,5 @@
             }
             return null;
         }
-
-        public enum TempratureUnit
-        {
-            F,
-            C,
-            K
-        }
-
-        public static string ToString(this TempratureUnit tempratureUnit)
-        {
-            switch (tempratureUnit)
-            {
-                case TempratureUnit.F:
-                    return "F";
-                case TempratureUnit.C:
-                    return "C";
-                case TempratureUnit.K:
-                    return "K";
-            }
-            return null;
-        }
     }
 }

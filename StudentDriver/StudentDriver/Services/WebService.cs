@@ -1,14 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using StudentDriver.Models;
-using Xamarin.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Helpers;
@@ -17,12 +14,26 @@ namespace StudentDriver.Services
 {
     public static class WebService
     {
-        private static string BaseUrl = "";
+        private static string ServiceApiBaseUri = Config.ServiceApiBaseUri;
+
+        public static async Task<string> GetAuthentiationToken(OAuthProvider.ProviderType providerType, string OAuthToken)
+        {
+            var client = new HttpClient();
+            var requestUri = GenerateRequestUri(ServiceApiBaseUri, Config.OAuthProviderAuthenicateEndPoint_GET, new Dictionary<string, string>() { { Config.OAuthProviderTypeKey, providerType.ToString() }, { Config.OAuthProviderAuthTokenKey, OAuthToken } });
+            var response = await client.GetAsync(requestUri);
+            if (response.StatusCode != HttpStatusCode.OK || response.StatusCode == HttpStatusCode.Created)
+            {
+                return null;
+            }
+            var json = response.Content.ReadAsStringAsync().Result;
+            var token = JsonConvert.DeserializeObject<string>(json);
+            return token;
+        }
 
         public static async Task<UserStats> GetStudentStats(int id)
         {
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl,"students", new Dictionary<string, string>() {{"userId", id.ToString()}});
+            var requestUri = GenerateRequestUri(ServiceApiBaseUri,Config.StudentStatsEndPoint_GET, new Dictionary<string, string>() {{Config.StudentStatsUserIdKey, id.ToString()}});
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
             var userStats = JsonConvert.DeserializeObject<UserStats>(json);
@@ -31,11 +42,11 @@ namespace StudentDriver.Services
 
         public static async Task<bool> PostUnsyncDrivingSessions(List<UnsyncDrive> unsyncDrives)
         {
-            var json = new JObject(new JProperty("unsyncDrives",unsyncDrives));
+            var json = new JObject(new JProperty(Config.UnsynDrivingSessionsUnsyncDrivesKey,unsyncDrives));
 
             var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl,"drivingsessions");
+            var requestUri = GenerateRequestUri(ServiceApiBaseUri,Config.UnsycDrivingSessionsEndPoint_POST);
 
             var response = await client.PostAsync(requestUri, content);
             return response.IsSuccessStatusCode;
@@ -44,7 +55,7 @@ namespace StudentDriver.Services
         public static async Task<List<StateReqs>> GetStateReqs()
         {
             var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl, "statereqs");
+            var requestUri = GenerateRequestUri(ServiceApiBaseUri, Config.StateRegsEndpoint_GET);
 
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
@@ -52,14 +63,13 @@ namespace StudentDriver.Services
             return stateReqs;
         }
 
-        // TODO still need to define the WeatherData Object
-        public static async Task<Object> GetWeatherData(double latitude, double longitude)
+        public static async Task<DriveWeatherData> GetDriveWeatherData(double latitude, double longitude)
         {
             var client = new HttpClient();
-            var requestUri = GenerateDarkSkyWeatherRequestUri("",latitude,longitude);
+            var requestUri = GenerateDarkSkyWeatherRequestUri(Config.DarkSkyWeatherApiKey,latitude,longitude);
             var response = await client.GetAsync(requestUri);
             var json = response.Content.ReadAsStringAsync().Result;
-            var weatherData = JsonConvert.DeserializeObject(json);
+            var weatherData = JsonConvert.DeserializeObject<DriveWeatherData>(json);
             return weatherData;
         }
 
@@ -81,7 +91,7 @@ namespace StudentDriver.Services
 
         private static string GenerateDarkSkyWeatherRequestUri(string apiKey, double latitude, double longitude)
         {
-            return string.Join(",",string.Join("/", "https://api.darksky.net", "forecast", apiKey),latitude,longitude);
+            return string.Join(",",string.Join("/", Config.DarkSkyWeatherApiEndpoint, Config.DarkSkyWeatherApiForecastKey, apiKey),latitude,longitude);
         }
     }
 }

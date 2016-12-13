@@ -47,10 +47,14 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Helpers\Config.cs" />
     <Compile Include="Helpers\DriveSession.cs" />
+    <Compile Include="Helpers\OAuthProvider.cs" />
+    <Compile Include="Helpers\Weather.cs" />
     <Compile Include="Models\DriveWeatherData.cs" />
     <Compile Include="Models\DrivePoint.cs" />
     <Compile Include="Models\UnsyncDrive.cs" />
+    <Compile Include="Services\WebService.cs" />
     <Compile Include="StudentDriverPage.xaml.cs">
       <DependentUpon>StudentDriverPage.xaml</DependentUpon>
     </Compile>
