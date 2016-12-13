@@ -14,14 +14,15 @@ var FacebookStrategy = passportFacebook.Strategy;
 
 // configuration ===========================================
 
-// config files
-var db = require("./config/db");
-var prodPort = 80;
-var devPort = 3000;
-var port = (process.env.NODE_ENV === "production" ? prodPort : devPort);
-
 // If you don't have this file, contact Dylan for it.
 var config = require("./config.json");
+
+// config files
+var db = require("./config/db");
+
+var prodPort = config.ProdPort;
+var devPort = 3000;
+var port = (process.env.NODE_ENV === "production" ? prodPort : devPort);
 
 // mongoose.connect(db.url); // connect to our mongoDB database (commented out after you enter in your own credentials)
 
@@ -44,10 +45,46 @@ passport.deserializeUser(function(obj, done) {
 });
 
 if(process.env.NODE_ENV === "production") {
-	app.use(express.static(__dirname + "/dist"));
+	app.use("/css", express.static(__dirname + "/dist/css"));
+	app.use("/images", express.static(__dirname + "/dist/images"));
+	app.use("/js", express.static(__dirname + "/dist/js"));
+	app.use("/libs", express.static(__dirname + "/public/libs"));
+	app.use("/resources", express.static(__dirname + "/dist/resources"));
+	app.use("/views", express.static(__dirname + "/dist/views"));
+
+	passport.use(new GoogleStrategy({
+		clientID:	 config.Auth.GoogleAuth.Production.ID,
+		clientSecret: config.Auth.GoogleAuth.Production.Secret,
+		callbackURL: `${config.Hostname}:${port}/auth/google/callback`,
+		passReqToCallback: true
+	},
+	function(request, accessToken, refreshToken, profile, done) {
+		// User.findOrCreate({ googleId: profile.id }, function (err, user) {
+		// 	return done(err, user);
+		// });
+		return done(null, profile);
+	}));
+
+	passport.use(new FacebookStrategy({
+		clientID: config.Auth.FacebookAuth.Production.ID,
+		clientSecret: config.Auth.FacebookAuth.Production.Secret,
+		callbackURL: `${config.Hostname}:${port}/auth/facebook/callback`,
+		profileFields: ["id", "email", "gender", "name"]
+	},
+	function(accessToken, refreshToken, profile, cb) {
+		// User.findOrCreate({ facebookId: profile.id }, function (err, user) {
+		// 	return cb(err, user);
+		// });
+		return cb(null, profile);
+	}));
 
 } else {
-	app.use(express.static(__dirname + "/public"));
+	app.use("/css", express.static(__dirname + "/public/css"));
+	app.use("/images", express.static(__dirname + "/public/images"));
+	app.use("/js", express.static(__dirname + "/public/js"));
+	app.use("/libs", express.static(__dirname + "/public/libs"));
+	app.use("/resources", express.static(__dirname + "/public/resources"));
+	app.use("/views", express.static(__dirname + "/public/views"));
 
 	passport.use(new GoogleStrategy({
 		clientID:	 config.Auth.GoogleAuth.Local.ID,

@@ -18,10 +18,10 @@ gulp.task("lint", function() {
 
 gulp.task("minify-js", function (cb) {
   pump([
-		gulp.src("public/js/**/*.js"),
+		gulp.src(["public/**/*.js", "!public/libs/**/*.js"]),
 		ngAnnotate(),
 		uglify(),
-		gulp.dest("dist/js/")
+		gulp.dest("dist/")
 	],
 	cb
   );
@@ -34,9 +34,9 @@ gulp.task("minify-html", function() {
 });
 
 gulp.task("minify-css", function() {
-  return gulp.src("public/css/**/*.css")
+  return gulp.src(["public/**/*.css", "!public/libs/**/*.css"])
 	.pipe(cleanCSS({compatibility: "ie8"}))
-	.pipe(gulp.dest("dist/css/"));
+	.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("minify-img", function() {

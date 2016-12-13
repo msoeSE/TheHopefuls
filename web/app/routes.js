@@ -16,27 +16,23 @@ module.exports = function(app) {
 	app.get("/api/test", ensureAuthenticated, function(req, res){
 		res.send("Test");
 	});
-
+	var staticFilesLocation = process.env.NODE_ENV === "production" ? "dist" : "public";
+	console.log(staticFilesLocation);
+	console.log(`./${staticFilesLocation}/login.html`);
 	// frontend routes =========================================================
 	app.get("/login", function(req, res) {
-		console.log("Login");
 		if(req.isAuthenticated()) {
-			console.log("Authenticated");
 			res.redirect("/");
 		} else {
-			console.log("Not Authenticated");
-			res.sendfile("./public/login.html");
+			res.sendfile(`./${staticFilesLocation}/login.html`);
 		}
 	});
 
 	// route to handle all angular requests
 	app.get("*", function(req, res) {
-		console.log("Home");
 		if(req.isAuthenticated()) {
-			console.log("Authenticated");
-			res.sendfile("./public/index.html");
+			res.sendfile(`./${staticFilesLocation}/index.html`);
 		} else {
-			console.log("Not Authenticated");
 			res.redirect("/login");
 		}
 	});
