@@ -3,30 +3,39 @@ var User = require("../models/User");
 
 //TODO: find an accurate formula for distance from gps points
 function calculateDistance(drivePoints) {
-  var distance;
+  // 0 for now
+  var distance = 0;
+  // drivePoints obj has lat, lon, speed, time
   return distance;
 }
 
-exports.createDrivingSession = function(req, res) {
-  var finalDistance;
-  var newDrivingSession = new DrivingSession({
-    startTime: req.body.startTime,
-    endTime: req.body.endTime,
-    distance: finalDistance,
-    //TODO: figure out what units are
-    duration: req.body.duration,
-    weatherData: [String]
-  });
+function calculateDuration(startTime, endTime) {
+  // Calculate duration from times in date
+  var duration = 0;
+  return duration;
+}
 
-  if(!req.body.startTime) {
+function updateStudentDrive(userId, newDrivingSession, res) {
+  User.findOne({ _id: userId }, function(err, student) {
+    if(!err) {
+      student.drivingSessions.push(newDrivingSession);
+      student.save(function(saveErr) {
+        if(saveErr){
+          res.send("Error saving driving sessioin to student, " + saveErr);
+        }
+      });
+    } else {
+      res.send("Error retreiving driving session data, " + err);
+    }
+  });
+}
+
+function checkCreateRequest(newDrivingSession, res) {
+  if(!newDrivingSession.startTime) {
     res.status(400);
     res.send("Start time required!");
-  } else if(!req.body.endTime){
+  } else if(!newDrivingSession.endTime){
     res.status(400);
-    res.send("End time required!");
-  } else if(!req.body.duration){
-    res.status(400);
-    res.send("Duration required!");
   } else {
     newDrivingSession.save(function(err) {
       if(!err) {
@@ -37,29 +46,40 @@ exports.createDrivingSession = function(req, res) {
       }
     });
   }
+}
 
-  User.find({ _id: req.params._id }, function(err, student) {
-		if(!err) {
-      student.drivingSessions.push(newDrivingSession);
-      student.save(function(err) {
-        if(err){
-          res.send("Error saving driving sessioin to student, " + err);
-        }
-      });
-			res.json(student);
-		} else {
-			res.send("Error retreiving driving session data, " + err);
-		}
+exports.createDrivingSession = function(req, res) {
+  // console.log(req.body);
+  driveSessions = req.body;
+  driveSessions.forEach(function(driveSession) {
+    var finalDistance = calculateDistance(driveSession.drivePoints);
+    var finalDuration = calculateDuration(driveSession.unsyncDrive.startTime,
+                                            driveSession.unsyncDrive.endTime);
+   newDrivingSession = new DrivingSession({
+      startTime: new Date(driveSession.unsyncDrive.startTime),
+      endTime: new Date(driveSession.unsyncDrive.endTime),
+      distance: finalDistance,
+      //TODO: figure out what units are
+      duration: finalDuration,
+      weatherData: {
+        temperature: driveSession.weatherData.temperature,
+        summary: driveSession.weatherData.summary
+      }
+    });
+
+    checkCreateRequest(newDrivingSession, res);
+    updateStudentDrive(req.params.userId, newDrivingSession, res);
   });
 };
 
 exports.listDrivingSessions = function(req, res) {
-  User.find({ _id: req.params._id }, function(err, student) {
-		if(!err) {
-			res.statusCode = 200;
-			res.json(student.drivingSessions);
-		} else {
-			res.send("Error retreiving driving session data, " + err);
-		}
-  });
+  User.findOne({_id: req.params.userId}, "drivingSessions")
+    .populate("drivingSessions").exec(function(err, drivingSessions){
+      if(!err) {
+        res.statusCode = 200;
+        res.json(drivingSessions);
+      } else {
+        res.send("Error retreiving driving session data, " + err);
+      }
+    });
 };

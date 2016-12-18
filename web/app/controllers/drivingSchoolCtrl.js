@@ -31,7 +31,7 @@ exports.createSchool = function(req, res) {
 };
 
 exports.getSchool = function(req, res) {
-  DrivingSchool.find({ schoolId: req.params.schoolId }, function(err, doc) {
+  DrivingSchool.findOne({ schoolId: req.params.schoolId }, function(err, doc) {
 		if(!err) {
 			res.statusCode = 200;
 			res.json(doc);

@@ -9,7 +9,10 @@ var DrivingSessionSchema = new Schema({
     endTime: { type: Date, required: true },
     distance: { type: Number, required: true },
     duration: { type: Number, required: true },
-    weatherData: [String]
+    weatherData: {
+      temperature: Number,
+      summary: String
+    }
 });
 
 module.exports = mongoose.model("DrivingSession", DrivingSessionSchema);

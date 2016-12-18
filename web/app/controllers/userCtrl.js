@@ -30,7 +30,7 @@ exports.createStudent = function(req, res) {
 };
 
 exports.getStudent = function(req, res) {
-  User.find({ _id: req.params._id }, function(err, doc) {
+  User.findOne({ _id: req.params._id }, function(err, doc) {
 		if(!err) {
 			res.statusCode = 200;
 			res.json(doc);
@@ -70,7 +70,7 @@ exports.createInstructor = function(req, res) {
 };
 
 exports.getInstructor = function(req, res) {
-  User.find({ _id: req.params._id }, function(err, doc) {
+  User.findOne({ _id: req.params._id }, function(err, doc) {
 		if(!err) {
 			res.statusCode = 200;
 			res.json(doc);

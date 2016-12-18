@@ -3,8 +3,6 @@ var router = express.Router();
 var mongoose = require("mongoose");
 mongoose.connect("mongodb://localhost/routerdb");
 
-var User = require("../models/User");
-var DrivingSchool = require("../models/DrivingSchool");
 var userCtrl = require("../controllers/userCtrl");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
