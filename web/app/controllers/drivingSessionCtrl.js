@@ -49,7 +49,6 @@ function checkCreateRequest(newDrivingSession, res) {
 }
 
 exports.createDrivingSession = function(req, res) {
-  // console.log(req.body);
   driveSessions = req.body;
   driveSessions.forEach(function(driveSession) {
     var finalDistance = calculateDistance(driveSession.drivePoints);
