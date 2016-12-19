@@ -23,7 +23,8 @@ namespace StudentDriver
 		{
 			googleLogin.Opacity = 0.25;
 			googleLogin.FadeTo (1.0);
-			App.Current.MainPage = new StudentDriverPage ();
+			//var auth = new OAuth2Authenticator (clientId: OAuth.FACEBOOK_APP_ID)
+			Application.Current.MainPage = new StudentDriverPage ();
 		}
 
 		async Task FacebookFrameTapped (View view, object obj)

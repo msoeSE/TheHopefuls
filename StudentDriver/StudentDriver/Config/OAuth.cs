@@ -1,5 +1,8 @@
 ﻿using System;
 using System.Xml;
+using System.Diagnostics;
+using System.Xml.Linq;
+using System.Reflection;
 namespace StudentDriver
 {
 	public class OAuth
@@ -11,7 +14,14 @@ namespace StudentDriver
 
 		public OAuth ()
 		{
-			using (XmlReader reader = XmlReader.Create ("./Keys.xml")) {
+
+		}
+
+		public static void InitializeKeys ()
+		{
+			var assembly = typeof (OAuth).GetTypeInfo ().Assembly;
+			var fileStream = assembly.GetManifestResourceStream ("StudentDriver.Keys.xml");
+			using (XmlReader reader = XmlReader.Create (fileStream)) {
 				reader.MoveToContent ();
 				while (reader.Read ()) {
 					if (reader.IsStartElement ()) {

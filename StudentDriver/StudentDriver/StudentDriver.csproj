@@ -42,6 +42,7 @@
     <EmbeddedResource Include="LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
+    <EmbeddedResource Include="Keys.xml" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App.xaml.cs">
