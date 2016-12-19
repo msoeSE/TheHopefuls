@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Xamarin.Forms;
+using Xamarin.Auth;
+using Acr.UserDialogs;
 
 namespace StudentDriver
 {
@@ -10,25 +12,24 @@ namespace StudentDriver
 		public LoginPage ()
 		{
 			InitializeComponent ();
-			facebookLogin.GestureRecognizers.Add (new TapGestureRecognizer (async (View arg1, object arg2) => {
-				await FacebookFrameTapped (arg1, arg2);
+			facebookLogin.GestureRecognizers.Add (new TapGestureRecognizer (async (View view, object obj) => {
+				await FacebookFrameTapped (view, obj);
 			}));
-			googleLogin.GestureRecognizers.Add (new TapGestureRecognizer (async (View arg1, object arg2) => {
-				await GoogleLoginTapped (arg1, arg2);
+			googleLogin.GestureRecognizers.Add (new TapGestureRecognizer (async (View view, object obj) => {
+				await GoogleLoginTapped (view, obj);
 			}));
 		}
-
-		async Task GoogleLoginTapped (View arg1, object arg2)
+		async Task GoogleLoginTapped (View view, object obj)
 		{
 			googleLogin.Opacity = 0.25;
-			await googleLogin.FadeTo (1.0);
+			googleLogin.FadeTo (1.0);
 			App.Current.MainPage = new StudentDriverPage ();
 		}
 
-		async Task FacebookFrameTapped (View arg1, object arg2)
+		async Task FacebookFrameTapped (View view, object obj)
 		{
 			facebookLogin.Opacity = 0.25;
-			await facebookLogin.FadeTo (1.0);
+			facebookLogin.FadeTo (1.0);
 			App.Current.MainPage = new StudentDriverPage ();
 		}
 	}
