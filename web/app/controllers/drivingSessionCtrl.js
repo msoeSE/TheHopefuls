@@ -51,18 +51,18 @@ function checkCreateRequest(newDrivingSession, res) {
 exports.createDrivingSession = function(req, res) {
   driveSessions = req.body;
   driveSessions.forEach(function(driveSession) {
-    var finalDistance = calculateDistance(driveSession.drivePoints);
-    var finalDuration = calculateDuration(driveSession.unsyncDrive.startTime,
-                                            driveSession.unsyncDrive.endTime);
+    var finalDistance = calculateDistance(driveSession.DrivePoints);
+    var finalDuration = calculateDuration(driveSession.UnsyncDrive.startTime,
+                                            driveSession.UnsyncDrive.endTime);
    newDrivingSession = new DrivingSession({
-      startTime: new Date(driveSession.unsyncDrive.startTime),
-      endTime: new Date(driveSession.unsyncDrive.endTime),
+      startTime: new Date(driveSession.UnsyncDrive.startTime),
+      endTime: new Date(driveSession.UnsyncDrive.endTime),
       distance: finalDistance,
       //TODO: figure out what units are
       duration: finalDuration,
       weatherData: {
-        temperature: driveSession.weatherData.temperature,
-        summary: driveSession.weatherData.summary
+        temperature: driveSession.DriveWeatherData.temperature,
+        summary: driveSession.DriveWeatherData.summary
       }
     });
 
