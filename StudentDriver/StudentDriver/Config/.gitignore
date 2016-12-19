@@ -1,0 +1,2 @@
+###Custom config files that are gitignored, mostly API keys and OAuth info
+OAuth.cs
