@@ -10,7 +10,7 @@ var StateRegulationSchema = new Schema({
     noHoursWithDriversEdHours: { type: Boolean, required: true },
     dayHours: { type: Number, required: true },
     nightHours: { type: Number, required: true },
-    inclementWeather: { type: String, required: true },
+    inclementWeather: { type: Number, required: true },
     nightOrInclement: { type: Boolean, required: true }
 });
 
