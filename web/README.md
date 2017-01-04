@@ -1,7 +1,6 @@
 # Requirements
 * [Node version 6 or greater](https://nodejs.org/)
 * npm (Installs with Node)
-* [Bower](https://bower.io/)
 
 # Setup
 
