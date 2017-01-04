@@ -10,7 +10,10 @@ var passportGoogle = require("passport-google-oauth2");
 var GoogleStrategy = passportGoogle.Strategy;
 var passportFacebook = require("passport-facebook");
 var FacebookStrategy = passportFacebook.Strategy;
-
+var passportGoogleToken = require("passport-google-token");
+var GoogleTokenStrategy = passportGoogleToken.Strategy;
+var passportFacebookToken = require("passport-facebook-token");
+var FacebookTokenStrategy = passportFacebookToken;
 
 // configuration ===========================================
 
@@ -21,6 +24,7 @@ var config = require("./config.json");
 var db = require("./config/db");
 
 var prodPort = config.ProdPort;
+var defaultWebPort = 80;
 var devPort = 3000;
 var port = (process.env.NODE_ENV === "production" ? prodPort : devPort);
 
@@ -55,10 +59,10 @@ if(process.env.NODE_ENV === "production") {
 	passport.use(new GoogleStrategy({
 		clientID:	 config.Auth.GoogleAuth.Production.ID,
 		clientSecret: config.Auth.GoogleAuth.Production.Secret,
-		callbackURL: `${config.Hostname}:${port}/auth/google/callback`,
+		callbackURL: `${config.Hostname}${port === defaultWebPort ? "" : (":" + port)}/auth/google/callback`,
 		passReqToCallback: true
 	},
-	function(request, accessToken, refreshToken, profile, done) {
+	function(request, accessToken, refreshToken, profile, done) { // eslint-disable-line
 		// User.findOrCreate({ googleId: profile.id }, function (err, user) {
 		// 	return done(err, user);
 		// });
@@ -68,14 +72,35 @@ if(process.env.NODE_ENV === "production") {
 	passport.use(new FacebookStrategy({
 		clientID: config.Auth.FacebookAuth.Production.ID,
 		clientSecret: config.Auth.FacebookAuth.Production.Secret,
-		callbackURL: `${config.Hostname}:${port}/auth/facebook/callback`,
+		callbackURL: `${config.Hostname}${port === defaultWebPort ? "" : (":" + port)}/auth/facebook/callback`,
 		profileFields: ["id", "email", "gender", "name"]
 	},
-	function(accessToken, refreshToken, profile, cb) {
+	function(accessToken, refreshToken, profile, done) {
 		// User.findOrCreate({ facebookId: profile.id }, function (err, user) {
 		// 	return cb(err, user);
 		// });
-		return cb(null, profile);
+		return done(null, profile);
+	}));
+
+	passport.use(new GoogleTokenStrategy({
+		clientID: config.Auth.GoogleAuth.Production.ID,
+		clientSecret: config.Auth.GoogleAuth.Production.Secret
+	},
+	function(accessToken, refreshToken, profile, done) {
+		// User.findOrCreate({ googleId: profile.id }, function (err, user) {
+		// 	return done(err, user);
+		// });
+		return done(null, profile);
+	}));
+
+	passport.use(new FacebookTokenStrategy({
+		clientID: config.Auth.FacebookAuth.Production.ID,
+		clientSecret: config.Auth.FacebookAuth.Production.Secret
+	}, function(accessToken, refreshToken, profile, done) {
+		// User.findOrCreate({facebookId: profile.id}, function (error, user) {
+		// 	return done(error, user);
+		// });
+		return done(null, profile);
 	}));
 
 } else {
@@ -89,10 +114,10 @@ if(process.env.NODE_ENV === "production") {
 	passport.use(new GoogleStrategy({
 		clientID:	 config.Auth.GoogleAuth.Local.ID,
 		clientSecret: config.Auth.GoogleAuth.Local.Secret,
-		callbackURL: `http://localhost:${port}/auth/google/callback`,
+		callbackURL: `http://localhost${port === defaultWebPort ? "" : (":" + port)}/auth/google/callback`,
 		passReqToCallback: true
 	},
-	function(request, accessToken, refreshToken, profile, done) {
+	function(request, accessToken, refreshToken, profile, done) { // eslint-disable-line
 		// User.findOrCreate({ googleId: profile.id }, function (err, user) {
 		// 	return done(err, user);
 		// });
@@ -102,14 +127,35 @@ if(process.env.NODE_ENV === "production") {
 	passport.use(new FacebookStrategy({
 		clientID: config.Auth.FacebookAuth.Local.ID,
 		clientSecret: config.Auth.FacebookAuth.Local.Secret,
-		callbackURL: `http://localhost:${port}/auth/facebook/callback`,
+		callbackURL: `http://localhost${port === defaultWebPort ? "" : (":" + port)}/auth/facebook/callback`,
 		profileFields: ["id", "email", "gender", "name"]
 	},
-	function(accessToken, refreshToken, profile, cb) {
+	function(accessToken, refreshToken, profile, done) {
 		// User.findOrCreate({ facebookId: profile.id }, function (err, user) {
 		// 	return cb(err, user);
 		// });
-		return cb(null, profile);
+		return done(null, profile);
+	}));
+
+	passport.use(new GoogleTokenStrategy({
+		clientID: config.Auth.GoogleAuth.Local.ID,
+		clientSecret: config.Auth.GoogleAuth.Local.Secret
+	},
+	function(accessToken, refreshToken, profile, done) {
+		// User.findOrCreate({ googleId: profile.id }, function (err, user) {
+		// 	return done(err, user);
+		// });
+		return done(null, profile);
+	}));
+
+	passport.use(new FacebookTokenStrategy({
+		clientID: config.Auth.FacebookAuth.Local.ID,
+		clientSecret: config.Auth.FacebookAuth.Local.Secret
+	}, function(accessToken, refreshToken, profile, done) {
+		// User.findOrCreate({facebookId: profile.id}, function (error, user) {
+		// 	return done(error, user);
+		// });
+		return done(null, profile);
 	}));
 }
 app.use("/libs", express.static(__dirname + "/libs"));
@@ -130,10 +176,25 @@ app.get("/auth/google/callback",
 		res.redirect("/");
 	}
 );
+app.get("/auth/google/token",
+	passport.authenticate("google-token"),
+	function(req, res) {
+		res.send(req.user);
+	}
+);
+
+app.get("/auth/facebook/token",
+	passport.authenticate("facebook-token"),
+	function (req, res) {
+		// do something with req.user
+		res.send(req.user);
+	}
+);
+
 app.get("/profile",
 	function(req, res){
 		if(req.user)
-			res.write(JSON.stringify(req.user));
+			res.write(JSON.stringify(req.user)); // eslint-disable-line
 		res.end();
 	}
 );
