@@ -9,6 +9,7 @@ namespace StudentDriver
 {
 	public partial class LoginPage : ContentPage
 	{
+
 		public LoginPage ()
 		{
 			InitializeComponent ();
@@ -23,15 +24,15 @@ namespace StudentDriver
 		{
 			googleLogin.Opacity = 0.25;
 			googleLogin.FadeTo (1.0);
-			//var auth = new OAuth2Authenticator (clientId: OAuth.FACEBOOK_APP_ID)
-			Application.Current.MainPage = new StudentDriverPage ();
+			await Navigation.PushModalAsync (new GoogleLoginPage ());
 		}
 
 		async Task FacebookFrameTapped (View view, object obj)
 		{
 			facebookLogin.Opacity = 0.25;
-			facebookLogin.FadeTo (1.0);
-			App.Current.MainPage = new StudentDriverPage ();
+			await facebookLogin.FadeTo (1.0);
+			await Navigation.PushModalAsync (new FacebookLoginPage ());
+
 		}
 	}
 }

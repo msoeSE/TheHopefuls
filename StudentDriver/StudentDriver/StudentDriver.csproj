@@ -75,6 +75,8 @@
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
     <Compile Include="Config\OAuth.cs" />
+    <Compile Include="Views\FacebookLoginPage.cs" />
+    <Compile Include="Views\GoogleLoginPage.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
