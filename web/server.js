@@ -176,14 +176,14 @@ app.get("/auth/google/callback",
 		res.redirect("/");
 	}
 );
-app.get("/auth/google/token",
+app.post("/auth/google/token",
 	passport.authenticate("google-token"),
 	function(req, res) {
 		res.send(req.user);
 	}
 );
 
-app.get("/auth/facebook/token",
+app.post("/auth/facebook/token",
 	passport.authenticate("facebook-token"),
 	function (req, res) {
 		// do something with req.user
