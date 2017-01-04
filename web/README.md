@@ -7,9 +7,8 @@
 
 1. Download the repository
 2. Install npm modules: `npm install`
-3. Install bower dependencies `bower install`
-4. Start up the server: `node server.js` or `npm start`
-5. View in browser at http://localhost:3000
+3. Start up the server: `node server.js` or `npm start`
+4. View in browser at http://localhost:3000
 
 # Linting
 1. `npm install -g gulp-cli`
@@ -18,8 +17,7 @@
 
 # Production
 1. `npm install`
-2. `bower install`
-3. Build with `gulp build` (This minifies all code and compresses image files)
-4. Set environment variable (for respective OS) `NODE_ENV=production`
-5. Start up the server: `node server.js` or `npm start`
+2. Build with `gulp build` (This minifies all code and compresses image files)
+3. Set environment variable (for respective OS) `NODE_ENV=production`
+4. Start up the server: `node server.js` or `npm start`
 (Note: Don't develop in this unless you like having to do `gulp build` for every change)

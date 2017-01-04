@@ -52,7 +52,6 @@ if(process.env.NODE_ENV === "production") {
 	app.use("/css", express.static(__dirname + "/dist/css"));
 	app.use("/images", express.static(__dirname + "/dist/images"));
 	app.use("/js", express.static(__dirname + "/dist/js"));
-	app.use("/libs", express.static(__dirname + "/public/libs"));
 	app.use("/resources", express.static(__dirname + "/dist/resources"));
 	app.use("/views", express.static(__dirname + "/dist/views"));
 
@@ -107,7 +106,6 @@ if(process.env.NODE_ENV === "production") {
 	app.use("/css", express.static(__dirname + "/public/css"));
 	app.use("/images", express.static(__dirname + "/public/images"));
 	app.use("/js", express.static(__dirname + "/public/js"));
-	app.use("/libs", express.static(__dirname + "/public/libs"));
 	app.use("/resources", express.static(__dirname + "/public/resources"));
 	app.use("/views", express.static(__dirname + "/public/views"));
 
