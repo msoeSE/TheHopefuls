@@ -21,11 +21,11 @@ function updateStudentDrive(userId, newDrivingSession, res) {
       student.drivingSessions.push(newDrivingSession);
       student.save(function(saveErr) {
         if(saveErr){
-          res.send("Error saving driving sessioin to student, " + saveErr);
+          res.send("Error saving driving session to student, " + saveErr);
         }
       });
     } else {
-      res.send("Error retreiving driving session data, " + err);
+      res.send("Error retrieving driving session data, " + err);
     }
   });
 }
@@ -36,6 +36,7 @@ function checkCreateRequest(newDrivingSession, res) {
     res.send("Start time required!");
   } else if(!newDrivingSession.endTime){
     res.status(400);
+    res.send("End time required!");
   } else {
     newDrivingSession.save(function(err) {
       if(!err) {
@@ -78,7 +79,7 @@ exports.listDrivingSessions = function(req, res) {
         res.statusCode = 200;
         res.json(drivingSessions);
       } else {
-        res.send("Error retreiving driving session data, " + err);
+        res.send("Error retrieving driving session data, " + err);
       }
     });
 };

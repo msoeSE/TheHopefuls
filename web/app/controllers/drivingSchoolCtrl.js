@@ -10,7 +10,7 @@ exports.createSchool = function(req, res) {
 
   if(!req.body.addressLine1) {
     res.status(400);
-    res.send("Adress required!");
+    res.send("Address required!");
   } else if(!req.body.state) {
     res.status(400);
     res.send("State required!");
@@ -36,7 +36,7 @@ exports.getSchool = function(req, res) {
 			res.statusCode = 200;
 			res.json(doc);
 		} else {
-			res.send("Error retreiving student's data, " + err);
+			res.send("Error retrieving student's data, " + err);
 		}
   });
 };

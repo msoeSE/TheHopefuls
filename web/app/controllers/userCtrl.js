@@ -35,7 +35,7 @@ exports.getStudent = function(req, res) {
 			res.statusCode = 200;
 			res.json(doc);
 		} else {
-			res.send("Error retreiving student's data, " + err);
+			res.send("Error retrieving student's data, " + err);
 		}
   });
 };
