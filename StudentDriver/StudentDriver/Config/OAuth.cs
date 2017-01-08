@@ -3,6 +3,7 @@ using System.Xml;
 using System.Diagnostics;
 using System.Xml.Linq;
 using System.Reflection;
+using System.Linq;
 namespace StudentDriver
 {
 	public class OAuth
@@ -25,28 +26,34 @@ namespace StudentDriver
 		{
 			var assembly = typeof (OAuth).GetTypeInfo ().Assembly;
 			var fileStream = assembly.GetManifestResourceStream ("StudentDriver.Keys.xml");
-			using (XmlReader reader = XmlReader.Create (fileStream)) {
-				reader.MoveToContent ();
-				while (reader.Read ()) {
-					if (reader.IsStartElement ()) {
-						switch (reader.Name) {
-						case "Google":
-							GOOGLE_APP_ID = reader ["id"];
-							GOOGLE_SECRET_ID = reader ["secret"];
-							GOOGLE_OAUTH_URL = reader ["oauthURL"];
-							GOOGLE_SUCCESS = reader ["redirectURL"];
-							break;
 
-						case "Facebook":
-							FACEBOOK_APP_ID = reader ["id"];
-							FACEBOOK_SECRET_ID = reader ["secret"];
-							FACEBOOK_OAUTH_URL = reader ["oauthURL"];
-							FACEBOOK_SUCCESS = reader ["redirectURL"];
-							break;
-						}
-					}
-				}
-			}
+			XDocument doc = XDocument.Load (fileStream);
+			var fbElement = doc.Element ("OAuth").Descendants ("Facebook");
+			var googleElement = doc.Element ("OAuth").Descendants ("Google");
+			FACEBOOK_OAUTH_URL = fbElement.Attributes ("oauthURL").FirstOrDefault ().Value;
+			FACEBOOK_SUCCESS = fbElement.Attributes ("success").FirstOrDefault ().Value;
+			GOOGLE_OAUTH_URL = googleElement.Attributes ("oauthURL").FirstOrDefault ().Value;
+			GOOGLE_SUCCESS = googleElement.Attributes ("success").FirstOrDefault ().Value;
+			var facebookDescendants = fbElement.Descendants ();
+			var googleDescendants = googleElement.Descendants ();
+
+#if DEBUG
+			var fbDevNode = facebookDescendants.ToArray () [0];
+			FACEBOOK_APP_ID = fbDevNode.Attribute ("id").Value;
+			FACEBOOK_SECRET_ID = fbDevNode.Attribute ("secret").Value;
+			var googleDevNode = googleDescendants.ToArray () [0];
+			GOOGLE_APP_ID = googleDevNode.Attribute ("id").Value;
+			GOOGLE_SECRET_ID = googleDevNode.Attribute ("secret").Value;
+
+#else
+			var fbProdNode = facebookDescendants.ToArray()[1];
+			FACEBOOK_APP_ID = fbProdNode.Attribute ("id").Value;
+			FACEBOOK_SECRET_ID = fbProdNode.Attribute ("secret").Value;
+			var googleProdNode = googleDescendants.ToArray()[1];
+			GOOGLE_APP_ID = googleProdNode.Attribute ("id").Value;
+			GOOGLE_SECRET_ID = googleProdNode.Attribute ("secret").Value;
+
+#endif
 		}
 	}
 }
