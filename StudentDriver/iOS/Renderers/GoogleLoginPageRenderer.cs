@@ -27,6 +27,7 @@ namespace StudentDriver.iOS
 				authorizeUrl: new Uri (OAuth.GOOGLE_OAUTH_URL),
 				redirectUrl: new Uri (OAuth.GOOGLE_SUCCESS));
 			auth.AllowCancel = false;
+			auth.Title = "Connect to Google";
 			auth.Completed += async (sender, e) => {
 				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {

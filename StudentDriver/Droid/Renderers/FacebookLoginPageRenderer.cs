@@ -28,7 +28,8 @@ namespace StudentDriver.Droid
 				scope: "email",
 				authorizeUrl: new Uri (OAuth.FACEBOOK_OAUTH_URL),
 				redirectUrl: new Uri (OAuth.FACEBOOK_SUCCESS));
-			auth.AllowCancel = false;
+			auth.AllowCancel = true;
+			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
 					return;
@@ -50,7 +51,8 @@ namespace StudentDriver.Droid
 					}
 				}
 			};
-			activity.StartActivity (auth.GetUI (activity));
+			this.Context.StartActivity (auth.GetUI (this.Context));
+			//activity.StartActivity (auth.GetUI (activity));
 		}
 
 		public class AuthenticatedUser

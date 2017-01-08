@@ -8,6 +8,7 @@ using Android.App;
 using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using Android.Widget;
 
 [assembly: ExportRenderer (typeof (GoogleLoginPage), typeof (GoogleLoginPageRenderer))]
 namespace StudentDriver.Droid
@@ -21,13 +22,13 @@ namespace StudentDriver.Droid
 		protected override void OnElementChanged (ElementChangedEventArgs<Page> e)
 		{
 			base.OnElementChanged (e);
-			var activity = this.Context as Activity;
 			var auth = new OAuth2Authenticator (
-				clientId: OAuth.FACEBOOK_APP_ID,
+				clientId: OAuth.GOOGLE_APP_ID,
 				scope: "email",
-				authorizeUrl: new Uri (OAuth.FACEBOOK_OAUTH_URL),
-				redirectUrl: new Uri (OAuth.FACEBOOK_SUCCESS));
-			auth.AllowCancel = false;
+				authorizeUrl: new Uri (OAuth.GOOGLE_OAUTH_URL),
+				redirectUrl: new Uri (OAuth.GOOGLE_SUCCESS));
+			auth.AllowCancel = true;
+			auth.Title = "Connect to Google";
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
 					return;
@@ -49,7 +50,7 @@ namespace StudentDriver.Droid
 					}
 				}
 			};
-			activity.StartActivity (auth.GetUI (activity));
+			this.Context.StartActivity (auth.GetUI (this.Context));
 		}
 	}
 

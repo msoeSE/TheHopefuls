@@ -29,6 +29,7 @@ namespace StudentDriver.iOS
 											   authorizeUrl: new Uri (OAuth.FACEBOOK_OAUTH_URL),
 											   redirectUrl: new Uri (OAuth.FACEBOOK_SUCCESS));
 			auth.AllowCancel = false;
+			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, e) => {
 				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {
