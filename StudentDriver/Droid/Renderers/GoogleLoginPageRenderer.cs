@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Android.Widget;
+using StudentDriver.Services;
 
 [assembly: ExportRenderer (typeof (GoogleLoginPage), typeof (GoogleLoginPageRenderer))]
 namespace StudentDriver.Droid
@@ -35,17 +36,8 @@ namespace StudentDriver.Droid
 				} else {
 					var access = ev.Account.Properties ["access_token"];
 					using (var client = new HttpClient ()) {
-						var content = new FormUrlEncodedContent (new [] {
-							new KeyValuePair<string,string>("accessToken",access),
-						});
-						var authResponse = await client.PostAsync (new Uri ("https://host.dylanwalseth.me/auth/facebook/token"), content);
-						if (authResponse.IsSuccessStatusCode) {
-							var responseContent = await authResponse.Content.ReadAsStringAsync ();
-							var authTicket = JsonConvert.DeserializeObject<AuthenticatedUser> (responseContent);
-							//TODO Find out what dylan is sending
-							if (authTicket != null) {
-								var apiAccessToken = authTicket.Access_Token;
-							}
+						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+							WebService.GetInstance ().SetTokenHeader (access);
 						}
 					}
 				}

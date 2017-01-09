@@ -78,6 +78,7 @@
     <Compile Include="Views\FacebookLoginPage.cs" />
     <Compile Include="Views\GoogleLoginPage.cs" />
     <Compile Include="Helpers\Settings.cs" />
+    <Compile Include="Services\WebService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Xamarin.Forms.Core">
