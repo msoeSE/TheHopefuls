@@ -33,6 +33,9 @@ app.use("/libs", express.static(__dirname + "/libs"));
 var routes = require("./app/routes/mainRoutes");
 app.use("/api", routes);
 
+var index = require("./app/routes/index");
+app.use("/", index);
+
 // start app ===============================================
 app.listen(port);
 console.log("Magic happens on port " + port); // eslint-disable-line
