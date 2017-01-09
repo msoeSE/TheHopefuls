@@ -115,9 +115,6 @@
       <HintPath>..\packages\Xam.Plugin.Geolocator.3.0.4\lib\MonoAndroid10\Plugin.Geolocator.dll</HintPath>
     </Reference>
     <Reference Include="System.Json" />
-    <Reference Include="Xamarin.Auth.Android">
-      <HintPath>..\Components\xamarin.auth-1.2.3.1\lib\android\Xamarin.Auth.Android.dll</HintPath>
-    </Reference>
     <Reference Include="Acr.Support.Android">
       <HintPath>..\packages\Acr.Support.2.1.0\lib\MonoAndroid10\Acr.Support.Android.dll</HintPath>
     </Reference>
@@ -139,6 +136,9 @@
     </Reference>
     <Reference Include="Plugin.Settings">
       <HintPath>..\packages\Xam.Plugins.Settings.2.5.1.0\lib\MonoAndroid10\Plugin.Settings.dll</HintPath>
+    </Reference>
+    <Reference Include="Xamarin.Auth.Android">
+      <HintPath>..\Components\xamarin.auth-1.2.3.1\lib\android\Xamarin.Auth.Android.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
