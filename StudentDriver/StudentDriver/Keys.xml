@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<OAuth>
+	<Facebook
+		oauthURL=""
+		success="">
+		<Dev
+			id=""
+			secret="">
+		</Dev>
+		<Prod
+			id=""
+			secret="">
+		</Prod>
+	</Facebook>
+	<Google
+		oauthURL=""
+		success="">
+		<Dev
+			id=""
+			secret="">
+		</Dev>
+		<Prod
+			id=""
+			secret="">
+		</Prod>
+	</Google>
+</OAuth>
