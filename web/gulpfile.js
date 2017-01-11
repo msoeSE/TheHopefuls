@@ -10,31 +10,31 @@ var ngAnnotate = require("gulp-ng-annotate");
 var pump = require("pump");
 
 gulp.task("lint", function() {
-	return gulp.src(["app/**/*.js", "public/js/**/*.js"])
+	return gulp.src(["app/**/*.js", "public/**/*.js"])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
 });
 
 gulp.task("minify-js", function (cb) {
-  pump([
-		gulp.src(["public/**/*.js", "!public/libs/**/*.js"]),
+	pump([
+		gulp.src(["public/**/*.js"]),
 		ngAnnotate(),
 		uglify(),
 		gulp.dest("dist/")
 	],
 	cb
-  );
+	);
 });
 
 gulp.task("minify-html", function() {
-  return gulp.src("public/**/*.html")
+	return gulp.src("public/**/*.html")
 	.pipe(htmlmin({collapseWhitespace: true}))
 	.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("minify-css", function() {
-  return gulp.src(["public/**/*.css", "!public/libs/**/*.css"])
+	return gulp.src("public/**/*.css")
 	.pipe(cleanCSS({compatibility: "ie8"}))
 	.pipe(gulp.dest("dist/"));
 });
