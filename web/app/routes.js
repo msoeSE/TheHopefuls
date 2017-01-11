@@ -5,9 +5,21 @@ module.exports = function(app) {
 	// authentication routes
 
 	// frontend routes =========================================================
-	// route to handle all angular requests
-	app.get("*", function(req, res) {
-		res.sendfile("./public/index.html");
+	var staticFilesLocation = process.env.NODE_ENV === "production" ? "dist" : "public";
+	app.get("/login", function(req, res) {
+		if(req.isAuthenticated()) {
+			res.redirect("/");
+		} else {
+			res.sendfile(`./${staticFilesLocation}/login.html`);
+		}
 	});
 
+	// route to handle all angular requests
+	app.get("*", function(req, res) {
+		if(req.isAuthenticated()) {
+			res.sendfile(`./${staticFilesLocation}/index.html`);
+		} else {
+			res.redirect("/login");
+		}
+	});
 };

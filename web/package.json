@@ -4,11 +4,17 @@
   "dependencies": {
     "body-parser": "~1.4.2",
     "express": "~4.5.1",
+    "express-session": "^1.14.2",
     "method-override": "~2.0.2",
     "moment": "^2.17.0",
     "moment-timezone": "^0.5.10",
     "mongodb": "^2.2.10",
-    "mongoose": "~3.8.0"
+    "mongoose": "~3.8.0",
+    "passport": "^0.3.2",
+    "passport-facebook": "^2.1.1",
+    "passport-facebook-token": "^3.3.0",
+    "passport-google-oauth2": "^0.1.6",
+    "passport-google-token": "^0.1.2"
   },
   "devDependencies": {
     "eslint": "^3.8.1",

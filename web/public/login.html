@@ -1,0 +1,91 @@
+<!doctype html>
+<html>
+
+<head>
+	<title>Login</title>
+	<script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+	<style>
+		.btn:hover {
+			filter: alpha(opacity=80);
+			opacity: .8;
+		}
+		.btn {
+			margin: 0 auto;
+			width: 100%;
+		}
+		#login-facebook {
+			background-color: #244DA3;
+		}
+		#login-google {
+			background-color: #DF4A32;
+		}
+		.card {
+			filter: alpha(opacity=90);
+			opacity: .9;
+		}
+		body {
+			background-image: url("images/login-background.jpg");
+		}
+		#about-link {
+			color: white;
+			font-size: 18px;
+			text-shadow: 1px 1px 1px black !important;
+		}
+		#about-link:hover {
+			color: #244DA3;
+		}
+	</style>
+</head>
+
+<body class="blue">
+	<div class="container">
+		<div class="row">
+			<div class="card col s6 push-s3" style="">
+				<div class="card-content container">
+					<div id="name-row" class="row">
+						<div class="col s12 u-pad-top-10">
+							<h2 class="center-align">Driving Log Online</h2>
+						</div>
+					</div>
+					<div id="logo-row" class="row">
+						<div class="col s12 u-pad-top-10">
+							<img class="center-align circle responsive-img" src="images/logo.png" height="100%" width="100%" alt="Logo" />
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 u-pad-top-10">
+							<input class="btn" id="login-facebook" name="login-facebook" onclick="location.href='/auth/facebook';" type="button" value="Login with Facebook">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 u-pad-top-10">
+							<p class="center-align">--- or ---</p>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col s12 u-pad-top-10">
+							<input class="btn" id="login-google" name="login-google" onclick="location.href='/auth/google';" type="button" value="Login with Google">
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<footer class="app-footer">
+		<div class="container">
+			<div class="row">
+				<div class="col s12">
+					<p class="center center-align about">
+						<a id="about-link" href="https://github.com/msoeSE/TheHopefuls">About</a>
+					</p>
+				</div>
+			</div>
+		</div>
+	</footer>
+
+</body>
+
+</html>
