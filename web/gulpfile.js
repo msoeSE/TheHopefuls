@@ -8,6 +8,7 @@ var zopfli = require("imagemin-zopfli");
 var htmlmin = require("gulp-htmlmin");
 var ngAnnotate = require("gulp-ng-annotate");
 var pump = require("pump");
+var server = require('karma').Server;
 
 gulp.task("lint", function() {
 	return gulp.src(["app/**/*.js", "public/**/*.js"])
@@ -63,3 +64,16 @@ gulp.task("default",
 		// "minify-css"
 	]
 );
+
+gulp.task('test', function (done) {
+  new server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+gulp.task('tdd', function (done) {
+  new server({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start();
+});

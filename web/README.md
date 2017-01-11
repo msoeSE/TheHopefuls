@@ -20,3 +20,7 @@
 3. Set environment variable (for respective OS) `NODE_ENV=production`
 4. Start up the server: `node server.js` or `npm start`
 (Note: Don't develop in this unless you like having to do `gulp build` for every change)
+
+# Testing
+ 1. To run the tests: `gulp test`
+ 2. To run tests on file change: `gulp tdd`
