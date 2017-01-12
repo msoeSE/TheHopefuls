@@ -1,9 +1,11 @@
 var DrivingSchool = require("../models/DrivingSchool");
+var _ = require("underscore");
+var of = require("../libs/objectFunctions");
 
 // TODO: Check if Address, State, and Zip are valid (maybe some regex or external lib)
 exports.createSchool = function(info, callback, error) {
 	var requiredItems = ["addressLine1", "state", "zip"];
-	var missingItems = MissingProperties(info, requiredItems);
+	var missingItems = of.MissingProperties(info, requiredItems);
 
 	if (_.any(missingItems)) {
 		error({
@@ -12,13 +14,13 @@ exports.createSchool = function(info, callback, error) {
 		});
 		return;
 	}
-	var newSchool = new DrivingSchool({
-		addressLine1: req.body.addressLine1,
-		addressLine2: req.body.addressLine2,
-		state: req.body.state,
-		zip: req.body.zip
-	});
-	newSchool.save(function(err) {
+
+	DrivingSchool.create({
+		addressLine1: info.addressLine1,
+		addressLine2: info.addressLine2,
+		state: info.state,
+		zip: info.zip
+	}, function(err, newSchool) {
 		if (err) {
 			error({
 				"message": "Error creating a new school",

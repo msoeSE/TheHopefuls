@@ -1,4 +1,4 @@
-MissingProperties = function(object, properties) {
+exports.MissingProperties = function(object, properties) {
 	if(typeof object !== "object" || !Array.isArray(properties)) // eslint-disable-line
 		return;
 	var missingProperties = [];

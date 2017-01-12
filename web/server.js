@@ -14,9 +14,6 @@ var passportGoogleToken = require("passport-google-token");
 var GoogleTokenStrategy = passportGoogleToken.Strategy;
 var passportFacebookToken = require("passport-facebook-token");
 var FacebookTokenStrategy = passportFacebookToken;
-var requireDir = require("require-dir");
-requireDir("./app/libs");
-_ = require("underscore");
 
 // configuration ===========================================
 

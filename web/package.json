@@ -12,7 +12,6 @@
     "mongodb": "^2.2.10",
     "mongoose": "^4.1.12",
     "mongoose-auto-increment": "^5.0.1",
-    "require-dir": "^0.3.1",
     "underscore": "^1.8.3",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",

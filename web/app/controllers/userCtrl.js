@@ -1,8 +1,11 @@
 var User = require("../models/User");
+var _ = require("underscore");
+var of = require("../libs/objectFunctions");
+
 
 exports.createUser = function(info, userType, callback, error) {
 	var requiredItems = ["firstName", "lastName", "loginDetails"];
-	var missingItems = MissingProperties(info, requiredItems);
+	var missingItems = of.MissingProperties(info, requiredItems);
 
 	if(_.any(missingItems)){
 		error({
@@ -12,7 +15,7 @@ exports.createUser = function(info, userType, callback, error) {
 		return;
 	}
 
-	var newStudent = new User({
+	User.create({
 		loginDetails: {
 			userId: info.loginDetails.userId,
 			service: info.loginDetails.service
@@ -20,9 +23,7 @@ exports.createUser = function(info, userType, callback, error) {
 		firstName: info.firstName,
 		lastName: info.lastName,
 		userType: userType
-	});
-
-	newStudent.save(function(err) {
+	}, function(err, newUser) {
 		if (err) {
 			error({
 				"message": "Error creating new user",
@@ -30,7 +31,7 @@ exports.createUser = function(info, userType, callback, error) {
 			});
 			return;
 		}
-		callback(newStudent);
+		callback(newUser);
 	});
 };
 
