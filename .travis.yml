@@ -8,7 +8,7 @@ before_script:
     - npm install -g gulp
 script:
     - gulp lint
-    - node_modules/jasmine-node/bin/jasmine-node spec/app
+    - npm run test-coverage
 
 notifications:
   slack:
