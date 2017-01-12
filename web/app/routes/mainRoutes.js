@@ -23,7 +23,7 @@ router.get("/students/:_id", function(req, res) {
 });
 
 // Create a new student, return the JSON represntation for the new student
-router.post("/students/", function(req, res) {
+router.post("/students", function(req, res) {
 	userCtrl.createStudent(req.body, (student)=>{
 		res.status(statusCodes.CREATED);
 		res.json(student);

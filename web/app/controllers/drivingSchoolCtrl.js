@@ -3,9 +3,9 @@ var DrivingSchool = require("../models/DrivingSchool");
 // TODO: Check if Address, State, and Zip are valid (maybe some regex or external lib)
 exports.createSchool = function(info, callback, error) {
 	var requiredItems = ["addressLine1", "state", "zip"];
-	var missingItems = info.missingProperties(requiredItems);
+	var missingItems = MissingProperties(info, requiredItems);
 
-	if (missingItems.any()) {
+	if (_.any(missingItems)) {
 		error({
 			"message": "Required fields for creating school are missing",
 			"missing-items": missingItems

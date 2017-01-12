@@ -8,35 +8,36 @@ var zopfli = require("imagemin-zopfli");
 var htmlmin = require("gulp-htmlmin");
 var ngAnnotate = require("gulp-ng-annotate");
 var pump = require("pump");
+var server = require('karma').Server;
 
 gulp.task("lint", function() {
-	return gulp.src(["app/**/*.js", "public/js/**/*.js"])
+	return gulp.src(["app/**/*.js", "public/**/*.js"])
 		.pipe(eslint())
 		.pipe(eslint.format())
 		.pipe(eslint.failAfterError());
 });
 
 gulp.task("minify-js", function (cb) {
-  pump([
-		gulp.src("public/js/**/*.js"),
+	pump([
+		gulp.src(["public/**/*.js"]),
 		ngAnnotate(),
 		uglify(),
-		gulp.dest("dist/js/")
+		gulp.dest("dist/")
 	],
 	cb
-  );
+	);
 });
 
 gulp.task("minify-html", function() {
-  return gulp.src("public/**/*.html")
+	return gulp.src("public/**/*.html")
 	.pipe(htmlmin({collapseWhitespace: true}))
 	.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("minify-css", function() {
-  return gulp.src("public/css/**/*.css")
+	return gulp.src("public/**/*.css")
 	.pipe(cleanCSS({compatibility: "ie8"}))
-	.pipe(gulp.dest("dist/css/"));
+	.pipe(gulp.dest("dist/"));
 });
 
 gulp.task("minify-img", function() {
@@ -63,3 +64,16 @@ gulp.task("default",
 		// "minify-css"
 	]
 );
+
+gulp.task('test', function (done) {
+  new server({
+    configFile: __dirname + '/karma.conf.js',
+    singleRun: true
+  }, done).start();
+});
+
+gulp.task('tdd', function (done) {
+  new server({
+    configFile: __dirname + '/karma.conf.js'
+  }, done).start();
+});

@@ -2,9 +2,9 @@ var User = require("../models/User");
 
 exports.createUser = function(info, userType, callback, error) {
 	var requiredItems = ["firstName", "lastName", "loginDetails"];
-	var missingItems = info.missingProperties(requiredItems);
+	var missingItems = MissingProperties(info, requiredItems);
 
-	if(missingItems.any()){
+	if(_.any(missingItems)){
 		error({
 			"message": "Required fields for creating student are missing",
 			"missing-items": missingItems
