@@ -6,6 +6,11 @@ module.exports = function(app) {
 
 	// frontend routes =========================================================
 	var staticFilesLocation = process.env.NODE_ENV === "production" ? "dist" : "public";
+
+	app.get("/login-success", function(req, res){
+		res.sendfile(`./${staticFilesLocation}/login-success.html`);
+	});
+
 	app.get("/login", function(req, res) {
 		if(req.isAuthenticated()) {
 			res.redirect("/");
