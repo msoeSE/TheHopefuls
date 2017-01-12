@@ -17,6 +17,8 @@ function calculateDuration(startTime, endTime) {
 	return endTime.diff(startTime);
 }
 
+
+// TODO Do to this file what I did to the other two. Too tired for rn
 function updateStudentDrive(userId, newDrivingSession, res) {
 	User.findOne({
 		_id: userId
@@ -35,16 +37,18 @@ function updateStudentDrive(userId, newDrivingSession, res) {
 }
 
 function checkCreateRequest(newDrivingSession, res) {
+	let badRequest = 400; // TODO: Remove
+	let created = 201;
 	if (!newDrivingSession.startTime) {
-		res.status(400);
+		res.status(badRequest);
 		res.send("Start time required!");
 	} else if (!newDrivingSession.endTime) {
-		res.status(400);
+		res.status(badRequest);
 		res.send("End time required!");
 	} else {
 		newDrivingSession.save(function(err) {
 			if (!err) {
-				res.status(201);
+				res.status(created);
 				res.json(newDrivingSession);
 			} else {
 				json.send("Error saving driving session, " + err);
