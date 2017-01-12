@@ -1,42 +1,47 @@
 var DrivingSchool = require("../models/DrivingSchool");
 
-exports.createSchool = function(req, res) {
-  var newSchool = new DrivingSchool({
-    addressLine1: req.body.addressLine1,
-    addressLine2: req.body.addressLine2,
-    state: req.body.state,
-    zip: req.body.zip
-  });
+// TODO: Check if Address, State, and Zip are valid (maybe some regex or external lib)
+exports.createSchool = function(info, callback, error) {
+	var requiredItems = ["addressLine1", "state", "zip"];
+	var missingItems = info.missingProperties(requiredItems);
 
-  if(!req.body.addressLine1) {
-    res.status(400);
-    res.send("Address required!");
-  } else if(!req.body.state) {
-    res.status(400);
-    res.send("State required!");
-  } else if(!req.body.zip) {
-    res.status(400);
-    res.send("Zipcode required!");
-  }
-  else {
-    newSchool.save(function(err) {
-      if(!err) {
-        res.statusCode = 201;
-        res.json(newSchool);
-      } else {
-        res.send("Error creating a new school, " + err);
-      }
-    });
-  }
+	if (missingItems.any()) {
+		error({
+			"message": "Required fields for creating school are missing",
+			"missing-items": missingItems
+		});
+		return;
+	}
+	var newSchool = new DrivingSchool({
+		addressLine1: req.body.addressLine1,
+		addressLine2: req.body.addressLine2,
+		state: req.body.state,
+		zip: req.body.zip
+	});
+	newSchool.save(function(err) {
+		if (err) {
+			error({
+				"message": "Error creating a new school",
+				"error": err
+			});
+			return;
+		}
+		callback(newSchool);
+	});
 };
 
-exports.getSchool = function(req, res) {
-  DrivingSchool.findOne({ schoolId: req.params.schoolId }, function(err, doc) {
-		if(!err) {
-			res.statusCode = 200;
-			res.json(doc);
-		} else {
-			res.send("Error retrieving student's data, " + err);
+
+exports.getSchool = function(schoolId, callback, error) {
+	DrivingSchool.findOne({
+		schoolId: schoolId
+	}, function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error finding school",
+				"error": err
+			});
+			return;
 		}
-  });
+		callback(doc);
+	});
 };
