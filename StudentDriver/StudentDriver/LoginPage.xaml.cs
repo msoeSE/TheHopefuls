@@ -24,8 +24,7 @@ namespace StudentDriver
 		{
 			googleLogin.Opacity = 0.25;
 			googleLogin.FadeTo (1.0);
-			//await Navigation.PushModalAsync (new GoogleLoginPage ());
-			App.Current.MainPage = new StudentDriverPage ();
+			await Navigation.PushModalAsync (new GoogleLoginPage ());
 		}
 
 		async Task FacebookFrameTapped (View view, object obj)
