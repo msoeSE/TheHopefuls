@@ -16,9 +16,9 @@
 					x:Name="profileImage"
 					HorizontalOptions="Center"
 					VerticalOptions="Center"
-					WidthRequest="65"
-					HeightRequest="75"
-					Source=""
+					WidthRequest="85"
+					HeightRequest="95"
+					Source="facebook.png"
 					Aspect="AspectFill">
 				</controls:CircleImage>
 				<Label
@@ -40,19 +40,6 @@
 					x:Name="statePicker"
 					HorizontalOptions="Fill"
 					VerticalOptions="Center"
-					Margin="30,0,30,0">
-				</Picker>
-				<Label
-					Text="Night Mode"
-					FontSize="Medium"
-					HorizontalOptions="Center"
-					VerticalOptions="CenterAndExpand"
-					FontAttributes="Bold">
-				</Label>
-				<Picker
-					x:Name="nightModePicker"
-					HorizontalOptions="Fill"
-					VerticalOptions="CenterAndExpand"
 					Margin="30,0,30,0">
 				</Picker>
 				<Label
