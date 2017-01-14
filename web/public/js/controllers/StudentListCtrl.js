@@ -3,11 +3,11 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 	vm.tagline = "List of Students for your school!";
 
 	vm.mockStudentData = [
-		["Nathan Dobbins", "1/08/2017"],
-    ["Hardip Gill", "1/07/2017"],
-    ["Gerald Soriano", "1/01/2017"],
-    ["Dylan Walseth", "1/12/2017"],
-    ["Patrick Zawadzki", "1/16/2017"]];
+		["0","<a href=\"/stats?0\">Nathan Dobbins</a>", "1/08/2017"],
+    ["1","Hardip Gill", "1/07/2017"],
+    ["2","Gerald Soriano", "1/01/2017"],
+    ["3","Dylan Walseth", "1/12/2017"],
+    ["4","Patrick Zawadzki", "1/16/2017"]];
 
 	$log.log(vm);
 
@@ -15,6 +15,7 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 	var table = $(".student-list-table").DataTable({
 		data: vm.mockStudentData,
 		columns: [
+			{ title: "studentID", visible: false},
 			{ title: "Student Name" },
 			{ title: "Last Log Date" },
 			{ title: "Action",
@@ -22,14 +23,15 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 		]
 	});
 
-	table.on("click", "tr", function() {
-		// redirect to stats page here?
-		// would have to account for remove button
-		if ($(this).hasClass("selected")) {
-			$(this).removeClass("selected");
-		} else {
-			table.$("tr.selected").removeClass("selected");
-			$(this).addClass("selected");
-		}
-	});
+	// table.on("click", "tr", function() {
+	// 	var selectedRow = this;
+	// 	// redirect to stats page here?
+	// 	// would have to account for remove button
+	// 	if ($(selectedRow).hasClass("selected")) {
+	// 		$(selectedRow).removeClass("selected");
+	// 	} else {
+	// 		table.$("tr.selected").removeClass("selected");
+	// 		$(selectedRow).addClass("selected");
+	// 	}
+	// });
 });
