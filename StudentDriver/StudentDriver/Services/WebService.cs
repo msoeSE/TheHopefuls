@@ -95,9 +95,10 @@ namespace StudentDriver.Services
 			} else {
 				endpoint = "auth/google/token";
 			}
-			var json = new JObject (new JProperty ("accept_token", token));
+			var json = new JObject (new JProperty ("access_token", token));
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync (GenerateRequestUri (BaseUrl, endpoint), content);
+			var uri = GenerateRequestUri (BaseUrl, endpoint);
+			var response = await client.PostAsync (uri, content);
 			if (response.IsSuccessStatusCode) {
 				return true;
 			}
@@ -107,7 +108,11 @@ namespace StudentDriver.Services
 
 		private string GenerateRequestUri (string host, string endPoint, Dictionary<string, string> paramDictionary = null)
 		{
-			var queryString = string.Format (string.Join ("&", paramDictionary.Select (kvp => $"{kvp.Key}={kvp.Value}")));
+			var queryString = string.Empty;
+			if (paramDictionary != null) {
+				queryString = string.Format (string.Join ("&", paramDictionary.Select (kvp => $"{kvp.Key}={kvp.Value}")));
+			}
+
 
 			var builder = new UriBuilder {
 				Host = host,

@@ -38,7 +38,7 @@ namespace StudentDriver.iOS
 				} else {
 					var access = e.Account.Properties ["access_token"];
 					using (var client = new HttpClient ()) {
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
 							WebService.GetInstance ().SetTokenHeader (access);
 						}
 					}
