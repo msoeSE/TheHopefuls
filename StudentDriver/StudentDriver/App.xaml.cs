@@ -9,12 +9,12 @@ namespace StudentDriver
 		public App ()
 		{
 			InitializeComponent ();
-
 			MainPage = new LoginPage ();
 		}
 
 		protected override void OnStart ()
 		{
+			OAuth.InitializeKeys ();
 			// Handle when your app starts
 		}
 

@@ -2,7 +2,69 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
 	x:Class="StudentDriver.SettingsPage">
 	<ContentPage.Content>
+		<ScrollView
+			VerticalOptions="FillAndExpand"
+			HorizontalOptions="FillAndExpand">
+			<StackLayout
+				Padding="5"
+				VerticalOptions="FillAndExpand"
+				HorizontalOptions="FillAndExpand">
+				<controls:CircleImage
+					x:Name="profileImage"
+					HorizontalOptions="Center"
+					VerticalOptions="Center"
+					WidthRequest="85"
+					HeightRequest="95"
+					Source="facebook.png"
+					Aspect="AspectFill">
+				</controls:CircleImage>
+				<Label
+					Text="Jonathon Smith"
+					x:Name="studentName"
+					FontSize="Large"
+					FontAttributes="Bold"
+					HorizontalOptions="CenterAndExpand"
+					VerticalOptions="Center">
+				</Label>
+				<Label
+					Text="Driving State"
+					FontSize="Medium"
+					HorizontalOptions="Center"
+					VerticalOptions="Center"
+					FontAttributes="Bold">
+				</Label>
+				<Picker
+					x:Name="statePicker"
+					HorizontalOptions="Fill"
+					VerticalOptions="Center"
+					Margin="30,0,30,0">
+				</Picker>
+				<Label
+					Text="Driving School"
+					FontSize="Medium"
+					HorizontalOptions="Center"
+					VerticalOptions="CenterAndExpand"
+					FontAttributes="Bold">
+				</Label>
+				<Entry
+					Placeholder="Driving School ID"
+					x:Name="schoolEntry"
+					VerticalOptions="Center"
+					HorizontalOptions="CenterAndExpand">
+				</Entry>
+				<Button
+					Text="Log Out"
+					x:Name="logOutButton"
+					BorderColor="Black"
+					VerticalOptions="EndAndExpand"
+					HorizontalOptions="FillAndExpand"
+					BackgroundColor="Red"
+					TextColor="White">
+				</Button>
+			</StackLayout>
+		</ScrollView>
 	</ContentPage.Content>
 </ContentPage>
