@@ -7,6 +7,7 @@ using Xamarin.Auth;
 using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using StudentDriver.Helpers;
 using UIKit;
 using StudentDriver.Services;
 
@@ -33,15 +34,13 @@ namespace StudentDriver.iOS
 				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {
 					return;
-				} else {
-					var access = e.Account.Properties ["access_token"];
-					using (var client = new HttpClient ()) {
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-							WebService.GetInstance ().SetTokenHeader ();
-						}
-					}
-
 				}
+			    var access = e.Account.Properties ["access_token"];
+			    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+			        Settings.OAuthAccessToken = access;
+			        Settings.OAuthSourceProvier = WebService.OAuthSource.Google;
+			        WebService.GetInstance ().SetTokenHeader ();
+			    }
 			};
 
 			UIViewController vc = auth.GetUI ();

@@ -35,15 +35,14 @@ namespace StudentDriver.Droid
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
 					return;
-				} else {
-					var access = ev.Account.Properties ["access_token"];
-                    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access))
-                    {
-                        Settings.OAuthAccessToken = access;
-                        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
-						WebService.GetInstance().SetTokenHeader();
-					}
 				}
+			    var access = ev.Account.Properties ["access_token"];
+			    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access))
+			    {
+			        Settings.OAuthAccessToken = access;
+			        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+			        WebService.GetInstance().SetTokenHeader();
+			    }
 			};
 			activity.StartActivity (auth.GetUI (activity));
 		}

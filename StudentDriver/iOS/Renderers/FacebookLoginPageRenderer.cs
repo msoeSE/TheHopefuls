@@ -36,14 +36,13 @@ namespace StudentDriver.iOS
 				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {
 					return;
-				} else {
-					var access = e.Account.Properties ["access_token"];
-                    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
-                        Settings.OAuthAccessToken = access;
-                        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
-                        WebService.GetInstance ().SetTokenHeader ();
-					}
 				}
+			    var access = e.Account.Properties ["access_token"];
+			    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
+			        Settings.OAuthAccessToken = access;
+			        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+			        WebService.GetInstance ().SetTokenHeader ();
+			    }
 			};
 
 			UIViewController vc = auth.GetUI ();

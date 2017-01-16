@@ -9,6 +9,7 @@ using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Android.Widget;
+using StudentDriver.Helpers;
 using StudentDriver.Services;
 
 [assembly: ExportRenderer (typeof (GoogleLoginPage), typeof (GoogleLoginPageRenderer))]
@@ -33,14 +34,13 @@ namespace StudentDriver.Droid
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
 					return;
-				} else {
-					var access = ev.Account.Properties ["access_token"];
-					using (var client = new HttpClient ()) {
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-							WebService.GetInstance ().SetTokenHeader ();
-						}
-					}
 				}
+			    var access = ev.Account.Properties ["access_token"];
+			    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+			        Settings.OAuthAccessToken = access;
+			        Settings.OAuthSourceProvier = WebService.OAuthSource.Google;
+			        WebService.GetInstance ().SetTokenHeader ();
+			    }
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));
 		}
