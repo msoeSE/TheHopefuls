@@ -1,4 +1,4 @@
-angular.module("StudentListCtrl", []).controller("StudentListController", function($log) {
+angular.module("StudentListCtrl", []).controller("StudentListController", function($log, $location) {
 	var vm = this;
 	vm.tagline = "List of Students for your school!";
 
@@ -11,6 +11,7 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 
 	$log.log(vm);
 
+	$log.log($location)
 
 	var table = $(".student-list-table").DataTable({
 		data: vm.mockStudentData,
