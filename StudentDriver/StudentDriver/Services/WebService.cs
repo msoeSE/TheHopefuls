@@ -19,6 +19,7 @@ namespace StudentDriver.Services
 
 		public enum OAuthSource
 		{
+            None,
 			Facebook,
 			Google
 		}
@@ -38,12 +39,10 @@ namespace StudentDriver.Services
 			client.DefaultRequestHeaders.Add ("access_token", "");
 		}
 
-		public void SetTokenHeader (string token)
+		public void SetTokenHeader ()
 		{
-			if (!string.IsNullOrEmpty (token)) {
-				client.DefaultRequestHeaders.Remove ("access_token");
-				client.DefaultRequestHeaders.Add ("access_token", token);
-			}
+			client.DefaultRequestHeaders.Remove ("access_token");
+            client.DefaultRequestHeaders.Add ("access_token", Settings.OAuthAccessToken);
 		}
 
 		public async Task<UserStats> GetStudentStats (int id)
@@ -99,10 +98,11 @@ namespace StudentDriver.Services
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
 			var uri = GenerateRequestUri (BaseUrl, endpoint);
 			var response = await client.PostAsync (uri, content);
-			if (response.IsSuccessStatusCode) {
-				return true;
-			}
-			return false;
+		    if (response.StatusCode == HttpStatusCode.Unauthorized)
+		    {
+		        
+		    }
+			return response.IsSuccessStatusCode;
 		}
 
 

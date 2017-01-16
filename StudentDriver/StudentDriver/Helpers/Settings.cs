@@ -1,6 +1,7 @@
 // Helpers/Settings.cs
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
+using StudentDriver.Services;
 
 namespace StudentDriver.Helpers
 {
@@ -24,6 +25,9 @@ namespace StudentDriver.Helpers
     private const string SettingsKey = "settings_key";
     private static readonly string SettingsDefault = string.Empty;
 
+    private const string oAuthAccessToken = "oAuthAccessToken";
+    private const string oAuthSourceProvider = "oAuthSourceProvider";
+
     #endregion
 
 
@@ -39,5 +43,17 @@ namespace StudentDriver.Helpers
       }
     }
 
-  }
+      public static string OAuthAccessToken
+      {
+          get { return AppSettings.GetValueOrDefault(oAuthAccessToken, SettingsDefault); }
+          set { AppSettings.AddOrUpdateValue(oAuthAccessToken, value); }
+      }
+
+    public static WebService.OAuthSource OAuthSourceProvier
+    {
+        get { return AppSettings.GetValueOrDefault(oAuthSourceProvider, WebService.OAuthSource.None); }
+        set { AppSettings.AddOrUpdateValue(oAuthSourceProvider, value); }
+    }
+
+    }
 }

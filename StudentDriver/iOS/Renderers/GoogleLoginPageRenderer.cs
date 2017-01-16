@@ -37,7 +37,7 @@ namespace StudentDriver.iOS
 					var access = e.Account.Properties ["access_token"];
 					using (var client = new HttpClient ()) {
 						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-							WebService.GetInstance ().SetTokenHeader (access);
+							WebService.GetInstance ().SetTokenHeader ();
 						}
 					}
 

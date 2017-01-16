@@ -8,6 +8,7 @@ using Xamarin.Auth;
 using System.Net.Http;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using StudentDriver.Helpers;
 using StudentDriver.Services;
 
 [assembly: ExportRenderer (typeof (FacebookLoginPage), typeof (FacebookLoginPageRenderer))]
@@ -36,11 +37,11 @@ namespace StudentDriver.Droid
 					return;
 				} else {
 					var access = ev.Account.Properties ["access_token"];
-
-					using (var client = new HttpClient ()) {
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-							WebService.GetInstance ().SetTokenHeader (access);
-						}
+                    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access))
+                    {
+                        Settings.OAuthAccessToken = access;
+                        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+						WebService.GetInstance().SetTokenHeader();
 					}
 				}
 			};
