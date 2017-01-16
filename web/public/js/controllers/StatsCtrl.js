@@ -1,6 +1,8 @@
-angular.module("StatsCtrl", []).controller("StatsController", function($log) {
+angular.module("StatsCtrl", []).controller("StatsController", function($log, $location) {
 	var vm = this;
 	vm.tagline = "User Stats!";
+
+	$log.log($location.search().id);
 
 	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],
