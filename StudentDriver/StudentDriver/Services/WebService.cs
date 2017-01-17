@@ -22,7 +22,7 @@ namespace StudentDriver.Services
 			Facebook,
 			Google
 		}
-		private static string BaseUrl = "";
+		private static string BaseUrl = "e35d3f6c.ngrok.io";
 
 		private static HttpClient client;
 		private static WebService service;
@@ -92,8 +92,10 @@ namespace StudentDriver.Services
 			string endpoint = "";
 			if (source == OAuthSource.Facebook) {
 				endpoint = "auth/facebook/token";
+				Settings.OAuthSource = "facebook";
 			} else {
 				endpoint = "auth/google/token";
+				Settings.OAuthSource = "google";
 			}
 			var json = new JObject (new JProperty ("access_token", token));
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
@@ -103,6 +105,24 @@ namespace StudentDriver.Services
 				return true;
 			}
 			return false;
+		}
+
+		public async Task<bool> OAuthLogout ()
+		{
+			string url = "";
+			if (Settings.OAuthSource.Equals ("facebook")) {
+				url = string.Format ("https://facebook.com/logout.php?next=www.drivinglog.online&access_token={0}", Settings.AccessToken);
+			} else {
+
+			}
+			this.SetTokenHeader ("");
+			var response = await client.GetAsync (url);
+			if (response.IsSuccessStatusCode) {
+				Settings.OAuthSource = "";
+				return true;
+			}
+			return false;
+
 		}
 
 

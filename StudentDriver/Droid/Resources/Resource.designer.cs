@@ -26,7 +26,6 @@ namespace StudentDriver.Droid
 		
 		public static void UpdateIdValues()
 		{
-			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::StudentDriver.Droid.Resource.Attribute.actionBarSize;
 			global::AndroidHUD.Resource.Attribute.ahBarColor = global::StudentDriver.Droid.Resource.Attribute.ahBarColor;
 			global::AndroidHUD.Resource.Attribute.ahBarLength = global::StudentDriver.Droid.Resource.Attribute.ahBarLength;
 			global::AndroidHUD.Resource.Attribute.ahBarWidth = global::StudentDriver.Droid.Resource.Attribute.ahBarWidth;
@@ -65,6 +64,7 @@ namespace StudentDriver.Droid
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextColor = global::StudentDriver.Droid.Resource.Styleable.ProgressWheel_ahTextColor;
 			global::AndroidHUD.Resource.Styleable.ProgressWheel_ahTextSize = global::StudentDriver.Droid.Resource.Styleable.ProgressWheel_ahTextSize;
 			global::Splat.Resource.String.library_name = global::StudentDriver.Droid.Resource.String.library_name;
+			global::Xamarin.Forms.Platform.Android.Resource.Attribute.actionBarSize = global::StudentDriver.Droid.Resource.Attribute.actionBarSize;
 		}
 		
 		public partial class Animation

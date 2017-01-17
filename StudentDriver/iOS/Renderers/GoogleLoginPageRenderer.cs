@@ -9,6 +9,8 @@ using System.Collections.Generic;
 using Newtonsoft.Json;
 using UIKit;
 using StudentDriver.Services;
+using StudentDriver.Helpers;
+using Acr.UserDialogs;
 
 [assembly: ExportRenderer (typeof (GoogleLoginPage), typeof (GoogleLoginPageRenderer))]
 namespace StudentDriver.iOS
@@ -30,18 +32,29 @@ namespace StudentDriver.iOS
 			auth.AllowCancel = false;
 			auth.Title = "Connect to Google";
 			auth.Completed += async (sender, e) => {
-				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {
+					DismissViewController (true, () => {
+						App.Current.MainPage = new LoginPage ();
+					});
 					return;
 				} else {
+					UserDialogs.Instance.Loading ("Logging In...");
 					var access = e.Account.Properties ["access_token"];
 					using (var client = new HttpClient ()) {
 						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
 							WebService.GetInstance ().SetTokenHeader (access);
+							Settings.AccessToken = access;
+							DismissViewController (true, () => {
+								App.Current.MainPage = new StudentDriverPage ();
+							});
+						} else {
+							DismissViewController (true, () => {
+								App.Current.MainPage = new LoginPage ();
+							});
 						}
 					}
-
 				}
+				UserDialogs.Instance.HideLoading ();
 			};
 
 			UIViewController vc = auth.GetUI ();

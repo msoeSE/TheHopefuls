@@ -10,6 +10,8 @@ using Splat;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using StudentDriver.Services;
+using StudentDriver.Helpers;
+using Acr.UserDialogs;
 
 [assembly: ExportRenderer (typeof (FacebookLoginPage), typeof (FacebookLoginPageRenderer))]
 
@@ -32,24 +34,39 @@ namespace StudentDriver.iOS
 			auth.AllowCancel = false;
 			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, e) => {
-				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {
+					DismissViewController (true, new Action (() => {
+						App.Current.MainPage = new LoginPage ();
+					}));
 					return;
 				} else {
+					UserDialogs.Instance.Loading ("Logging In...");
 					var access = e.Account.Properties ["access_token"];
 					using (var client = new HttpClient ()) {
 						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
 							WebService.GetInstance ().SetTokenHeader (access);
+							Settings.AccessToken = access;
+							DismissViewController (true, new Action (() => {
+								App.Current.MainPage = new StudentDriverPage ();
+							}));
+
+						} else {
+							DismissViewController (true, new Action (() => {
+								App.Current.MainPage = new LoginPage ();
+							}));
+							UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 						}
 					}
 
 				}
+				UserDialogs.Instance.HideLoading ();
 			};
 
 			UIViewController vc = auth.GetUI ();
 			ViewController.AddChildViewController (vc);
 			ViewController.View.Add (vc.View);
 			vc.ChildViewControllers [0].NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Cancel, async (o, e) => await App.Current.MainPage.Navigation.PopModalAsync ());
+
 		}
 
 
