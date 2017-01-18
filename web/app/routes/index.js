@@ -4,6 +4,11 @@ var router = express.Router();
 // frontend routes =========================================================
 // route to handle all angular requests
 var staticFilesLocation = process.env.NODE_ENV === "production" ? "dist" : "public";
+
+router.get("/login-success", function(req, res){
+	res.sendfile(`./${staticFilesLocation}/login-success.html`);
+});
+
 router.get("/login", function(req, res) {
 	if(req.isAuthenticated()) {
 		res.redirect("/");
