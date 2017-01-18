@@ -4,24 +4,24 @@
         oauthURL="https://facebook.com/v2.8/dialog/oauth"
         success="https://www.facebook.com/connect/login_success.html">
         <Dev
-            id="225826001185438"
-            secret="dd8318be3e8c1f5d0e289e89f5f39e81">
+            id=""
+            secret="">
         </Dev>
         <Prod
-            id="225804867854218"
-            secret="5d966962642333d915f1073c30a123a7">
+            id=""
+            secret="">
         </Prod>
     </Facebook>
     <Google
         oauthURL="https://accounts.google.com/o/oauth2/v2/auth"
         success="">
         <Dev
-            id="1054498335576-aqan6e7gtd9c7r69i1qi8d1q3n0dh80c.apps.googleusercontent.com"
-            secret="DzktatoNvQSJDY93qqZ1Oem3">
+            id=""
+            secret="">
         </Dev>
         <Prod
-            id="1054498335576-f5bf6j1k6tl12utn46cpcrdnhlu4nvgj.apps.googleusercontent.com"
-            secret="Keb8Ubql194Ni9E_tSiWGGtw">
+            id=""
+            secret="">
         </Prod>
     </Google>
 </OAuth>
