@@ -7,6 +7,10 @@ using Android.App;
 using System.Net.Http;
 using StudentDriver.Helpers;
 using Xamarin.Auth;
+using System.Net.Http;
+using System.Collections.Generic;
+using Newtonsoft.Json;
+using StudentDriver.Helpers;
 using StudentDriver.Services;
 using Acr.UserDialogs;
 
@@ -39,15 +43,15 @@ namespace StudentDriver.Droid
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
 					var access = ev.Account.Properties ["access_token"];
-					using (var client = new HttpClient ()) {
 						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+							Settings.OAuthAccessToken = access;
+							Settings.OAuthSourceProvier = access;
 							WebService.GetInstance ().SetTokenHeader (access);
-							Settings.AccessToken = access;
 							App.Current.MainPage = new StudentDriverPage ();
 						} else {
 							App.Current.MainPage = new LoginPage ();
 						}
-					}
+
 				}
 				UserDialogs.Instance.HideLoading ();
 			};

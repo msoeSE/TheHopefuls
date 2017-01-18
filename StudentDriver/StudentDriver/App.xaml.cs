@@ -1,4 +1,7 @@
-﻿using Xamarin.Forms;
+﻿using System;
+using StudentDriver.Helpers;
+using StudentDriver.Services;
+using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
 [assembly: XamlCompilation (XamlCompilationOptions.Compile)]
@@ -9,14 +12,21 @@ namespace StudentDriver
 		public App ()
 		{
 			InitializeComponent ();
-			MainPage = new LoginPage ();
+			MainPage = new StudentDriverPage();
 		}
 
 		protected override void OnStart ()
 		{
-			OAuth.InitializeKeys ();
-			// Handle when your app starts
-		}
+            OAuth.InitializeKeys();
+            //Settings.OAuthAccessToken = "";
+            //Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+            var authenticated = WebService.GetInstance().PostOAuthToken(Settings.OAuthSourceProvier, Settings.OAuthAccessToken).Result;
+            if (!authenticated)
+            {
+                LoginAction();
+            }
+            // Handle when your app starts
+        }
 
 		protected override void OnSleep ()
 		{
@@ -27,5 +37,27 @@ namespace StudentDriver
 		{
 			// Handle when your app resumes
 		}
-	}
+
+	    public static Action SucessfulLoginAction
+	    {
+	        get
+	        {
+	            return () =>
+	                   {
+	                       Current.MainPage = new StudentDriverPage();
+	                   };
+	        }
+	    }
+
+        public static Action LoginAction
+        {
+            get
+            {
+                return () =>
+                       {
+                           Current.MainPage = new LoginPage();
+                       };
+            }
+        }
+    }
 }

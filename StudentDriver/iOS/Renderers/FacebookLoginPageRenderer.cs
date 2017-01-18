@@ -9,6 +9,7 @@ using System.Net.Http;
 using Splat;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using StudentDriver.Helpers;
 using StudentDriver.Services;
 using StudentDriver.Helpers;
 using Acr.UserDialogs;
@@ -44,8 +45,9 @@ namespace StudentDriver.iOS
 					var access = e.Account.Properties ["access_token"];
 					using (var client = new HttpClient ()) {
 						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
-							WebService.GetInstance ().SetTokenHeader (access);
-							Settings.AccessToken = access;
+                            Settings.OAuthAccessToken = access;
+                            Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+                            WebService.GetInstance().SetTokenHeader();
 							DismissViewController (true, new Action (() => {
 								App.Current.MainPage = new StudentDriverPage ();
 							}));
