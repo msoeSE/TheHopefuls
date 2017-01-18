@@ -40,6 +40,7 @@ namespace StudentDriver.Droid
 			        Settings.OAuthAccessToken = access;
 			        Settings.OAuthSourceProvier = WebService.OAuthSource.Google;
 			        WebService.GetInstance ().SetTokenHeader ();
+			        App.SucessfulLoginAction();
 			    }
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));

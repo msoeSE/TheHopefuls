@@ -23,32 +23,33 @@ namespace StudentDriver.Services
 			Facebook,
 			Google
 		}
-		private static string BaseUrl = "";
+		private static string ApiBaseUrl = "192.168.1.67";
+	    private static int ApiBasePort = 3000;
 
-		private static HttpClient client;
-		private static WebService service;
+		private static HttpClient _client;
+		private static WebService _service;
 
 		public static WebService GetInstance ()
 		{
-			return service ?? (service = new WebService ());
+			return _service ?? (_service = new WebService ());
 		}
 
 		private WebService ()
 		{
-			client = new HttpClient ();
-			client.DefaultRequestHeaders.Add ("access_token", "");
-		}
+			_client = new HttpClient ();
+			_client.DefaultRequestHeaders.Add ("access_token", "");
+        }
 
 		public void SetTokenHeader ()
 		{
-			client.DefaultRequestHeaders.Remove ("access_token");
-            client.DefaultRequestHeaders.Add ("access_token", Settings.OAuthAccessToken);
+			_client.DefaultRequestHeaders.Remove ("access_token");
+            _client.DefaultRequestHeaders.Add ("access_token", Settings.OAuthAccessToken);
 		}
 
 		public async Task<UserStats> GetStudentStats (int id)
 		{
-			var requestUri = GenerateRequestUri (BaseUrl, "students", new Dictionary<string, string> () { { "userId", id.ToString () } });
-			var response = await client.GetAsync (requestUri);
+			var requestUri = GenerateRequestUri (ApiBaseUrl, "students", new Dictionary<string, string> () { { "userId", id.ToString () } });
+			var response = await _client.GetAsync (requestUri);
 			var json = response.Content.ReadAsStringAsync ().Result;
 			var userStats = JsonConvert.DeserializeObject<UserStats> (json);
 			return userStats;
@@ -59,15 +60,15 @@ namespace StudentDriver.Services
 			var json = new JObject (new JProperty ("unsyncDrives", unsyncDrives));
 
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
-			var requestUri = GenerateRequestUri (BaseUrl, "drivingsessions");
-			var response = await client.PostAsync (requestUri, content);
+			var requestUri = GenerateRequestUri (ApiBaseUrl, "drivingsessions");
+			var response = await _client.PostAsync (requestUri, content);
 			return response.IsSuccessStatusCode;
 		}
 
 		public async Task<List<StateReqs>> GetStateReqs ()
 		{
-			var requestUri = GenerateRequestUri (BaseUrl, "statereqs");
-			var response = await client.GetAsync (requestUri);
+			var requestUri = GenerateRequestUri (ApiBaseUrl, "statereqs");
+			var response = await _client.GetAsync (requestUri);
 			var json = response.Content.ReadAsStringAsync ().Result;
 			var stateReqs = JsonConvert.DeserializeObject<List<StateReqs>> (json);
 			return stateReqs;
@@ -77,7 +78,7 @@ namespace StudentDriver.Services
 		public async Task<Object> GetWeatherData (double latitude, double longitude)
 		{
 			var requestUri = GenerateDarkSkyWeatherRequestUri ("", latitude, longitude);
-			var response = await client.GetAsync (requestUri);
+			var response = await _client.GetAsync (requestUri);
 			var json = response.Content.ReadAsStringAsync ().Result;
 			var weatherData = JsonConvert.DeserializeObject (json);
 			return weatherData;
@@ -96,12 +97,8 @@ namespace StudentDriver.Services
 			}
 			var json = new JObject (new JProperty ("access_token", token));
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
-			var uri = GenerateRequestUri (BaseUrl, endpoint);
-			var response = await client.PostAsync (uri, content);
-		    if (response.StatusCode == HttpStatusCode.Unauthorized)
-		    {
-		        
-		    }
+			var uri = GenerateRequestUri (ApiBaseUrl, endpoint);
+			var response = await _client.PostAsync (uri, content).ConfigureAwait(false);
 			return response.IsSuccessStatusCode;
 		}
 
@@ -117,8 +114,9 @@ namespace StudentDriver.Services
 			var builder = new UriBuilder {
 				Host = host,
 				Path = endPoint,
-				Query = queryString
-			};
+				Query = queryString,
+                Port = ApiBasePort
+            };
 			return builder.ToString ();
 
 		}

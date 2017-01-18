@@ -42,6 +42,7 @@ namespace StudentDriver.Droid
 			        Settings.OAuthAccessToken = access;
 			        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
 			        WebService.GetInstance().SetTokenHeader();
+			        App.SucessfulLoginAction();
 			    }
 			};
 			activity.StartActivity (auth.GetUI (activity));

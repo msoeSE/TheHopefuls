@@ -40,6 +40,7 @@ namespace StudentDriver.iOS
 			        Settings.OAuthAccessToken = access;
 			        Settings.OAuthSourceProvier = WebService.OAuthSource.Google;
 			        WebService.GetInstance ().SetTokenHeader ();
+			        App.SucessfulLoginAction();
 			    }
 			};
 

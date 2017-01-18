@@ -42,6 +42,7 @@ namespace StudentDriver.iOS
 			        Settings.OAuthAccessToken = access;
 			        Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
 			        WebService.GetInstance ().SetTokenHeader ();
+			        App.SucessfulLoginAction();
 			    }
 			};
 

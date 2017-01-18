@@ -12,12 +12,14 @@ namespace StudentDriver
 		public App ()
 		{
 			InitializeComponent ();
-			MainPage = new DrivePage();
+			MainPage = new StudentDriverPage();
 		}
 
 		protected override void OnStart ()
 		{
-		    OAuth.InitializeKeys();
+            OAuth.InitializeKeys();
+            //Settings.OAuthAccessToken = "";
+            //Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
             var authenticated = WebService.GetInstance().PostOAuthToken(Settings.OAuthSourceProvier, Settings.OAuthAccessToken).Result;
             if (!authenticated)
             {
@@ -42,7 +44,7 @@ namespace StudentDriver
 	        {
 	            return () =>
 	                   {
-	                       Current.MainPage = new DrivePage();
+	                       Current.MainPage = new StudentDriverPage();
 	                   };
 	        }
 	    }
