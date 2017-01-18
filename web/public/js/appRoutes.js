@@ -12,6 +12,11 @@ angular.module("appRoutes", []).config(
 			controller: "StatsController as vm"
 		})
 
+		.when("/settings", {
+			templateUrl: "views/settings.html",
+			controller: "SettingsController as vm"
+		})
+
 		.otherwise({ redirectTo: "/" });
 
 		$locationProvider.html5Mode(true);
