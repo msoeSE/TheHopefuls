@@ -6,7 +6,9 @@ before_script:
     - cd web/
     - npm install
     - npm install -g gulp
-script: gulp
+script:
+    - gulp lint
+    - npm run test-coverage
 
 notifications:
   slack:

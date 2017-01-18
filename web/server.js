@@ -203,7 +203,12 @@ app.get("/auth/logout",
 	}
 );
 // routes ==================================================
-require("./app/routes")(app); // pass our application into our routes
+// require("./app/routes")(app); // pass our application into our routes
+var routes = require("./app/routes/mainRoutes");
+app.use("/api", routes);
+
+var index = require("./app/routes/index");
+app.use("/", index);
 
 // start app ===============================================
 app.listen(port);
