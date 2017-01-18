@@ -3,11 +3,11 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 	vm.tagline = "List of Students for your school!";
 
 	vm.mockStudentData = [
-		["0","<a href=\"/stats?0\">Nathan Dobbins</a>", "1/08/2017"],
-    ["1","Hardip Gill", "1/07/2017"],
-    ["2","Gerald Soriano", "1/01/2017"],
-    ["3","Dylan Walseth", "1/12/2017"],
-    ["4","Patrick Zawadzki", "1/16/2017"]];
+		["0","<a href=\"/stats?id=0\">Nathan Dobbins</a>", "1/08/2017"],
+    ["1","<a href=\"/stats?id=1\">Hardip Gill</a>", "1/07/2017"],
+    ["2","<a href=\"/stats?id=2\">Gerald Soriano</a>", "1/01/2017"],
+    ["3","<a href=\"/stats?id=3\">Dylan Walseth</a>", "1/12/2017"],
+    ["4","<a href=\"/stats?id=4\">Patrick Zawadzki</a>", "1/16/2017"]];
 
 	$log.log(vm);
 
