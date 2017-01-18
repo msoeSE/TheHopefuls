@@ -1,95 +1,125 @@
 var DrivingSession = require("../models/DrivingSession");
 var User = require("../models/User");
+var _ = require("underscore");
+var geolib = require("geolib");
+var of = require("../libs/objectFunctions");
+var moment = require("moment"); // eslint-disable-line
 
-// TODO: find an accurate formula for distance from gps points
-// TODO 2: More likely, use Google maps, depends on what mobile is doing and
-// what we can expect the data to look like
 function calculateDistance(drivePoints) {
-	// 0 for now
-	var distance = 0;
 	// drivePoints obj has lat, lon, speed, time
-	return distance;
+	var geolibPoints = drivePoints.map((point) => {
+		return {latitude: point.lat, longitude: point.lon};
+	});
+	return geolibPoints.reduce((data, point) => {
+		data.distance += geolib.getDistance(data.point, point);
+		data.point = point;
+		return data;
+	}, {distance: 0, location: geolibPoints.shift()}).distance;
 }
 
-// Diff in time in Milliseconds
-// Takes in two MomentJS objects
-function calculateDuration(startTime, endTime) {
-	return endTime.diff(startTime);
+function calculateDuration(start, end) {
+	return moment(end).diff(moment(start));
 }
 
-
-// TODO Do to this file what I did to the other two. Too tired for rn
-function updateStudentDrive(userId, newDrivingSession, res) {
-	User.findOne({
+function updateUser(userId, session, callback, error){
+	User.findOneAndUpdate({
 		_id: userId
-	}, function(err, student) {
-		if (!err) {
-			student.drivingSessions.push(newDrivingSession);
-			student.save(function(saveErr) {
-				if (saveErr) {
-					res.send("Error saving driving session to student, " + saveErr);
-				}
+	}, {$push: {drivingSessions: session}},
+	function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error updating user's driving session",
+				"error": err
 			});
-		} else {
-			res.send("Error retrieving driving session data, " + err);
+			return;
 		}
+		callback(session);
 	});
 }
 
-function checkCreateRequest(newDrivingSession, res) {
-	let badRequest = 400; // TODO: Remove
-	let created = 201;
-	if (!newDrivingSession.startTime) {
-		res.status(badRequest);
-		res.send("Start time required!");
-	} else if (!newDrivingSession.endTime) {
-		res.status(badRequest);
-		res.send("End time required!");
-	} else {
-		newDrivingSession.save(function(err) {
-			if (!err) {
-				res.status(created);
-				res.json(newDrivingSession);
-			} else {
-				json.send("Error saving driving session, " + err);
-			}
+exports.createDrivingSession = function(userId, driveSession, callback, error) {
+	var requiredItems = ["DrivePoints", "UnsyncDrive", "DriveWeatherData"];
+	var missingItems = of.MissingProperties(driveSession, requiredItems);
+	if(_.any(missingItems)){
+		error({
+			"message": "Required fields for creating driving session are missing",
+			"missing-items": missingItems
 		});
+		return;
 	}
-}
 
-exports.createDrivingSession = function(req, res) {
-	driveSessions = req.body;
-	driveSessions.forEach(function(driveSession) {
-		var finalDistance = calculateDistance(driveSession.DrivePoints);
-		var finalDuration = calculateDuration(driveSession.UnsyncDrive.startTime,
-			driveSession.UnsyncDrive.endTime);
-		newDrivingSession = new DrivingSession({
-			startTime: new Date(driveSession.UnsyncDrive.startTime),
-			endTime: new Date(driveSession.UnsyncDrive.endTime),
-			distance: finalDistance,
-			//TODO: figure out what units are
-			duration: finalDuration,
-			weatherData: {
-				temperature: driveSession.DriveWeatherData.temperature,
-				summary: driveSession.DriveWeatherData.summary
-			}
-		});
-
-		checkCreateRequest(newDrivingSession, res);
-		updateStudentDrive(req.params.userId, newDrivingSession, res);
+	var distance = calculateDistance(driveSession.DrivePoints);
+	var duration = calculateDuration(driveSession.UnsyncDrive.startTime,
+		driveSession.UnsyncDrive.endTime);
+	DrivingSession.create({
+		startTime: new Date(driveSession.UnsyncDrive.startTime),
+		endTime: new Date(driveSession.UnsyncDrive.endTime),
+		distance: distance,
+		duration: duration,
+		weatherData: {
+			temperature: driveSession.DriveWeatherData.temperature,
+			summary: driveSession.DriveWeatherData.summary
+		}
+	}, (err, session)=>{
+		if(err){
+			error({
+				"message": "Error creating driving session",
+				"error":err
+			});
+			return;
+		}
+		updateUser(userId, session, callback, error);
 	});
 };
 
-exports.listDrivingSessions = function(req, res) {
+function closureArray(sizeToRunFunction, fun){
+	var a = [];
+	return (r) => {
+		a.push(r);
+		if(a.length >= sizeToRunFunction){
+			fun(a);
+		}
+	};
+}
+
+// Welcome to callback hell
+// mwhahahahaah
+// seriously tho, I will comeback and clean this up, got all these async calls tho
+// Ever tried to do an array of async calls? Not fun.
+// pinky promise @dylanwalseth
+// TODO
+exports.createDrivingSessions = function(userId, drivingSessions, callback, error){
+	var closure = closureArray(drivingSessions.length, (results)=>{
+		var errorResults = results.filter((result) => result.error !== undefined);  // eslint-disable-line
+		if(_.any(errorResults)){
+			error({
+				"message": "One or more driving sessions failed to update",
+				"numFailed": errorResults.length,
+				"error": errorResults,
+				"allResults": closure.array
+			});
+			return;
+		}
+		callback(results);
+	});
+	drivingSessions.forEach((session) => {
+		exports.createDrivingSession(userId, session, closure, closure);
+	});
+};
+
+exports.listDrivingSessions = function(userId, callback, error) {
 	User.findOne({
-			_id: req.params.userId
-		}, "drivingSessions")
-		.populate("drivingSessions").exec(function(err, drivingSessions) {
-			if (!err) {
-				res.statusCode = 200;
-				res.json(drivingSessions);
-			} else {
-				res.send("Error retrieving driving session data, " + err);
-			}
-		});
+		_id: userId
+	}, "drivingSessions")
+	.populate("drivingSessions")
+	.exec(function(err, drivingSessions) {
+		if (err){
+			error({
+				"message": "Error finding driving sessions",
+				"error": err
+			});
+			return;
+		}
+		callback(drivingSessions);
+	});
 };

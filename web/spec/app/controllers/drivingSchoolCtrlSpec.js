@@ -1,5 +1,5 @@
-var DrivingSchool = require("../../../app/models/DrivingSchool");
-var toTest = require("../../../app/controllers/drivingSchoolCtrl");
+var DrivingSchool = require(`${process.env.PWD}/app/models/DrivingSchool`);
+var toTest = require(`${process.env.PWD}/app/controllers/drivingSchoolCtrl`);
 
 describe("Driving School Controller Tests", function() {
 	var success;

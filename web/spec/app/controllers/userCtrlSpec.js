@@ -1,5 +1,5 @@
-var User = require("../../../app/models/User");
-var toTest = require("../../../app/controllers/userCtrl");
+var User = require(`${process.env.PWD}/app/models/User`);
+var toTest = require(`${process.env.PWD}/app/controllers/userCtrl`);
 
 describe("User Controller Tests", function() {
 	var success;

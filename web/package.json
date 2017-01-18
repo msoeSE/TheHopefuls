@@ -4,20 +4,21 @@
   "dependencies": {
     "body-parser": "~1.4.2",
     "express": "~4.5.1",
-    "http-status-codes": "^1.0.6",
     "express-session": "^1.14.2",
+    "geolib": "^2.0.22",
+    "http-status-codes": "^1.0.6",
     "method-override": "~2.0.2",
     "moment": "^2.17.0",
     "moment-timezone": "^0.5.10",
     "mongodb": "^2.2.10",
     "mongoose": "^4.1.12",
     "mongoose-auto-increment": "^5.0.1",
-    "underscore": "^1.8.3",
     "passport": "^0.3.2",
     "passport-facebook": "^2.1.1",
     "passport-facebook-token": "^3.3.0",
     "passport-google-oauth2": "^0.1.6",
-    "passport-google-token": "^0.1.2"
+    "passport-google-token": "^0.1.2",
+    "underscore": "^1.8.3"
   },
   "devDependencies": {
     "eslint": "^3.8.1",
@@ -44,7 +45,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/msoeSE/TheHopefuls.git"
-},
+  },
   "scripts": {
     "test-coverage": "istanbul cover --include-all-sources jasmine-node spec/app",
     "test": "jasmine-node spec/app"

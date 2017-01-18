@@ -6,6 +6,7 @@ var mongoose = require("mongoose");
 // https://www.npmjs.com/package/http-status-codes
 var statusCodes = require("http-status-codes");
 
+// TODO Replace with config
 mongoose.connect("mongodb://localhost/routerdb");
 
 var userCtrl = require("../controllers/userCtrl");
@@ -13,8 +14,8 @@ var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 
 // Get the JSON for the student with the specified _id
-router.get("/students/:_id", function(req, res) {
-	userCtrl.getStudent(req.params._id, (user)=>{
+router.get("/students/:userId", function(req, res) {
+	userCtrl.getStudent(req.params.userId, (user)=>{
 		res.json(user);
 	}, (err)=>{
 		res.status(statusCodes.BAD_REQUEST);
@@ -22,7 +23,7 @@ router.get("/students/:_id", function(req, res) {
 	});
 });
 
-// Create a new student, return the JSON represntation for the new student
+// Create a new student, return the JSON representation for the new student
 router.post("/students", function(req, res) {
 	userCtrl.createStudent(req.body, (student)=>{
 		res.status(statusCodes.CREATED);
@@ -35,12 +36,23 @@ router.post("/students", function(req, res) {
 
 // Get all existing driving sessions for a student
 router.get("/students/:userId/drivingsessions", function(req, res) {
-	drivingSessionCtrl.listDrivingSessions(req, res);
+	drivingSessionCtrl.listDrivingSessions(req.params.userId, (drivingSessions)=>{
+		res.json(drivingSessions);
+	},(err)=>{
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
-// Allow a new driving session to be added, return the JSON of the sessino
+// Allow a new driving session to be added, return the JSON of the session
 router.post("/students/:userId/drivingsessions", function(req, res) {
-	drivingSessionCtrl.createDrivingSession(req, res);
+	drivingSessionCtrl.createDrivingSessions(req.params.userId, req.body, (results)=>{
+		res.status(statusCodes.CREATED);
+		res.json(results);
+	}, (err)=>{
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // TODO: add later
