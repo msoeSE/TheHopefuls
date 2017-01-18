@@ -12,21 +12,20 @@ namespace StudentDriver
 		public App ()
 		{
 			InitializeComponent ();
-			MainPage = new StudentDriverPage();
+			MainPage = new StudentDriverPage ();
 		}
 
 		protected override void OnStart ()
 		{
-            OAuth.InitializeKeys();
-            //Settings.OAuthAccessToken = "";
-            //Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
-            var authenticated = WebService.GetInstance().PostOAuthToken(Settings.OAuthSourceProvier, Settings.OAuthAccessToken).Result;
-            if (!authenticated)
-            {
-                LoginAction();
-            }
-            // Handle when your app starts
-        }
+			OAuth.InitializeKeys ();
+			//Settings.OAuthAccessToken = "";
+			//Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+			var authenticated = WebService.GetInstance ().PostOAuthToken (Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
+			if (!authenticated) {
+				LoginAction ();
+			}
+			// Handle when your app starts
+		}
 
 		protected override void OnSleep ()
 		{
@@ -38,26 +37,20 @@ namespace StudentDriver
 			// Handle when your app resumes
 		}
 
-	    public static Action SucessfulLoginAction
-	    {
-	        get
-	        {
-	            return () =>
-	                   {
-	                       Current.MainPage = new StudentDriverPage();
-	                   };
-	        }
-	    }
+		public static Action SuccessfulLoginAction {
+			get {
+				return () => {
+					Current.MainPage = new StudentDriverPage ();
+				};
+			}
+		}
 
-        public static Action LoginAction
-        {
-            get
-            {
-                return () =>
-                       {
-                           Current.MainPage = new LoginPage();
-                       };
-            }
-        }
-    }
+		public static Action LoginAction {
+			get {
+				return () => {
+					Current.MainPage = new LoginPage ();
+				};
+			}
+		}
+	}
 }

@@ -36,32 +36,26 @@ namespace StudentDriver.iOS
 			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, e) => {
 				if (!e.IsAuthenticated) {
-					DismissViewController (true, new Action (() => {
-						App.Current.MainPage = new LoginPage ();
-					}));
+					DismissViewController (true, App.LoginAction);
+					UserDialogs.Instance.Alert ("Unable to Login, user not authenticated. Please Try Again", "Error", "Okay");
 					return;
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
 					var access = e.Account.Properties ["access_token"];
-					using (var client = new HttpClient ()) {
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
-                            Settings.OAuthAccessToken = access;
-                            Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
-                            WebService.GetInstance().SetTokenHeader();
-							DismissViewController (true, new Action (() => {
-								App.Current.MainPage = new StudentDriverPage ();
-							}));
+					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
+						Settings.OAuthAccessToken = access;
+						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
+						WebService.GetInstance ().SetTokenHeader ();
+						DismissViewController (true, App.SuccessfulLoginAction);
 
-						} else {
-							DismissViewController (true, new Action (() => {
-								App.Current.MainPage = new LoginPage ();
-							}));
-							UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
-						}
+					} else {
+						DismissViewController (true, App.LoginAction);
+						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 					}
 
+					UserDialogs.Instance.HideLoading ();
+
 				}
-				UserDialogs.Instance.HideLoading ();
 			};
 
 			UIViewController vc = auth.GetUI ();

@@ -19,12 +19,12 @@ namespace StudentDriver.Services
 
 		public enum OAuthSource
 		{
-            None,
+			None,
 			Facebook,
 			Google
 		}
 		private static string ApiBaseUrl = "192.168.1.67";
-	    private static int ApiBasePort = 3000;
+		private static int ApiBasePort = 3000;
 
 		private static HttpClient _client;
 		private static WebService _service;
@@ -38,12 +38,12 @@ namespace StudentDriver.Services
 		{
 			_client = new HttpClient ();
 			_client.DefaultRequestHeaders.Add ("access_token", "");
-        }
+		}
 
 		public void SetTokenHeader ()
 		{
 			_client.DefaultRequestHeaders.Remove ("access_token");
-            _client.DefaultRequestHeaders.Add ("access_token", Settings.OAuthAccessToken);
+			_client.DefaultRequestHeaders.Add ("access_token", Settings.OAuthAccessToken);
 		}
 
 		public async Task<UserStats> GetStudentStats (int id)
@@ -100,7 +100,7 @@ namespace StudentDriver.Services
 			var json = new JObject (new JProperty ("access_token", token));
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
 			var uri = GenerateRequestUri (ApiBaseUrl, endpoint);
-			var response = await _client.PostAsync (uri, content).ConfigureAwait(false);
+			var response = await _client.PostAsync (uri, content).ConfigureAwait (false);
 			return response.IsSuccessStatusCode;
 		}
 
@@ -112,8 +112,8 @@ namespace StudentDriver.Services
 			} else {
 
 			}
-			this.SetTokenHeader ("");
-			var response = await client.GetAsync (url);
+			this.SetTokenHeader ();
+			var response = await _client.GetAsync (url);
 			if (response.IsSuccessStatusCode) {
 				Settings.OAuthSource = "";
 				return true;
@@ -135,8 +135,8 @@ namespace StudentDriver.Services
 				Host = host,
 				Path = endPoint,
 				Query = queryString,
-                Port = ApiBasePort
-            };
+				Port = ApiBasePort
+			};
 			return builder.ToString ();
 
 		}

@@ -34,27 +34,24 @@ namespace StudentDriver.Droid
 			auth.Title = "Connect to Google";
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
+					App.LoginAction.Invoke ();
+					UserDialogs.Instance.Alert ("Unable to Login, user not authenticated. Please Try Again", "Error", "Okay");
 					return;
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
 					var access = ev.Account.Properties ["access_token"];
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-							Settings.OAuthAccessToken = access;
-							Settings.OAuthSourceProvider = WebService.OAuthSource.Google;
-							WebService.GetInstance ().SetTokenHeader (access);
-							App.Current.MainPage = new StudentDriverPage ();
-						} else {
-							App.Current.MainPage = new LoginPage ();
-						}
+					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+						Settings.OAuthAccessToken = access;
+						Settings.OAuthSourceProvider = WebService.OAuthSource.Google;
+						WebService.GetInstance ().SetTokenHeader ();
+						App.SuccessfulLoginAction.Invoke ();
+					} else {
+						App.LoginAction.Invoke ();
+						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 
+					}
+					UserDialogs.Instance.HideLoading ();
 				}
-			    var access = ev.Account.Properties ["access_token"];
-			    if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-			        Settings.OAuthAccessToken = access;
-			        Settings.OAuthSourceProvier = WebService.OAuthSource.Google;
-			        WebService.GetInstance ().SetTokenHeader ();
-			        App.SucessfulLoginAction();
-			    }
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));
 		}

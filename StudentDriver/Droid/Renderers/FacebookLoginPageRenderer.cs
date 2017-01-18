@@ -38,22 +38,23 @@ namespace StudentDriver.Droid
 			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
-					App.Current.MainPage = new LoginPage ();
+					App.LoginAction.Invoke ();
+					UserDialogs.Instance.Alert ("Unable to Login, user not authenticated. Please Try Again", "Error", "Okay");
 					return;
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
 					var access = ev.Account.Properties ["access_token"];
-						if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
-							Settings.OAuthAccessToken = access;
-							Settings.OAuthSourceProvier = access;
-							WebService.GetInstance ().SetTokenHeader (access);
-							App.Current.MainPage = new StudentDriverPage ();
-						} else {
-							App.Current.MainPage = new LoginPage ();
-						}
-
+					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+						Settings.OAuthAccessToken = access;
+						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
+						WebService.GetInstance ().SetTokenHeader ();
+						App.SuccessfulLoginAction.Invoke ();
+					} else {
+						App.LoginAction.Invoke ();
+						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
+					}
+					UserDialogs.Instance.HideLoading ();
 				}
-				UserDialogs.Instance.HideLoading ();
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));
 		}
