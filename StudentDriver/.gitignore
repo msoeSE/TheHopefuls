@@ -1,17 +1,17 @@
-**/Components
-**/packages
-**/Resource.designer.cs
+#**/Components
+#**/packages
+#**/Resource.designer.cs
 
-**/bin
-**/obj
+#**/bin
+#**/obj
 
-*.pidb
-*.userprefs
-*.swp
-*.DS_Store
-*.nib
-*.suo
-*.user
-*.pfx
+#*.pidb
+#*.userprefs
+#*.swp
+#*.DS_Store
+#*.nib
+#*.suo
+#*.user
+#*.pfx
 
-_ReSharper./
+#_ReSharper./

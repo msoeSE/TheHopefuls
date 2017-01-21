@@ -294,4 +294,6 @@ build/
 
 _ReSharper./
 
-*.xml
+Keys.xml
+config.json
+
