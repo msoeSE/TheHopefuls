@@ -47,6 +47,8 @@
     "url": "https://github.com/msoeSE/TheHopefuls.git"
   },
   "scripts": {
+    "build": "gulp build",
+    "prod": "NODE_ENV=production node server.js",
     "test-coverage": "istanbul cover --include-all-sources jasmine-node spec/app",
     "test": "jasmine-node spec/app"
   }
