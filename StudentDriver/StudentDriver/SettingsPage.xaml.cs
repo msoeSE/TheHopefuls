@@ -5,6 +5,7 @@ using Xamarin.Forms;
 using StudentDriver.Services;
 using StudentDriver.Helpers;
 using System.Threading.Tasks;
+using Acr.UserDialogs;
 
 namespace StudentDriver
 {
@@ -28,7 +29,13 @@ namespace StudentDriver
 
 		async Task LogOutTapped (object sender, EventArgs e)
 		{
-			await WebService.GetInstance ().OAuthLogout ();
+			UserDialogs.Instance.ShowLoading ("Logging Out...");
+			if (await WebService.GetInstance ().OAuthLogout ()) {
+				App.LoginAction.Invoke ();
+			} else {
+				UserDialogs.Instance.ShowError ("Unable to Logout");
+			}
+			UserDialogs.Instance.HideLoading ();
 
 		}
 	}

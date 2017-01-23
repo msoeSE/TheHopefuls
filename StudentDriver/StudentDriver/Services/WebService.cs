@@ -23,7 +23,8 @@ namespace StudentDriver.Services
 			Facebook,
 			Google
 		}
-		private static string ApiBaseUrl = "192.168.1.67";
+		private static string ApiBaseUrl = "";
+
 		private static int ApiBasePort = 3000;
 
 		private static HttpClient _client;
@@ -31,7 +32,16 @@ namespace StudentDriver.Services
 
 		public static WebService GetInstance ()
 		{
+#if DEBUG
+			ApiBaseUrl = "dev.drivinglog.online/";
+
+#else
+
+		ApiBaseUrl = "drivinglog.online/";
+#endif
+
 			return _service ?? (_service = new WebService ());
+
 		}
 
 		private WebService ()
@@ -92,11 +102,10 @@ namespace StudentDriver.Services
 			string endpoint = "";
 			if (source == OAuthSource.Facebook) {
 				endpoint = "auth/facebook/token";
-				Settings.OAuthSource = "facebook";
 			} else {
 				endpoint = "auth/google/token";
-				Settings.OAuthSource = "google";
 			}
+			Settings.OAuthSourceProvider = source;
 			var json = new JObject (new JProperty ("access_token", token));
 			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
 			var uri = GenerateRequestUri (ApiBaseUrl, endpoint);
@@ -107,15 +116,16 @@ namespace StudentDriver.Services
 		public async Task<bool> OAuthLogout ()
 		{
 			string url = "";
-			if (Settings.OAuthSource.Equals ("facebook")) {
-				url = string.Format ("https://facebook.com/logout.php?next=www.drivinglog.online&access_token={0}", Settings.AccessToken);
+			if (Settings.OAuthSourceProvider == OAuthSource.Facebook) {
+				url = string.Format ("https://facebook.com/logout.php?next={0}&access_token={1}", WebService.ApiBaseUrl, Settings.OAuthAccessToken);
 			} else {
 
 			}
-			this.SetTokenHeader ();
 			var response = await _client.GetAsync (url);
 			if (response.IsSuccessStatusCode) {
-				Settings.OAuthSource = "";
+				Settings.OAuthSourceProvider = OAuthSource.None;
+				Settings.OAuthAccessToken = "";
+				this.SetTokenHeader ();
 				return true;
 			}
 			return false;

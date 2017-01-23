@@ -23,10 +23,6 @@ namespace StudentDriver.Helpers
 		private const string SettingsKey = "settings_key";
 		private static readonly string SettingsDefault = string.Empty;
 		private static readonly int SettingsDefaultInt = 0;
-		private const string AccessKey = "accessToken";
-		private static readonly string AccessTokenDefault = string.Empty;
-		private const string OAuthKey = "OAuthSource";
-		private static readonly string OAuthSourceDefault = string.Empty;
 		private const string FACEBOOK_OAUTH = "facebook";
 		private const string GOOGLE_OAUTH = "google";
 		#endregion
@@ -38,24 +34,6 @@ namespace StudentDriver.Helpers
 		private const string oAuthSourceProvider = "oAuthSourceProvider";
 
 
-
-		public static string OAuthSource {
-			get {
-				return AppSettings.GetValueOrDefault<string> (OAuthKey, OAuthSourceDefault);
-			}
-			set {
-				AppSettings.AddOrUpdateValue<string> (OAuthKey, value);
-			}
-		}
-
-		public static string AccessToken {
-			get {
-				return AppSettings.GetValueOrDefault<string> (AccessKey, AccessTokenDefault);
-			}
-			set {
-				AppSettings.AddOrUpdateValue<string> (AccessKey, value);
-			}
-		}
 		public static string GeneralSettings {
 			get {
 				return AppSettings.GetValueOrDefault<string> (SettingsKey, SettingsDefault);

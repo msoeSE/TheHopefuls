@@ -52,7 +52,6 @@ namespace StudentDriver.iOS
 						DismissViewController (true, App.LoginAction);
 						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 					}
-
 					UserDialogs.Instance.HideLoading ();
 
 				}

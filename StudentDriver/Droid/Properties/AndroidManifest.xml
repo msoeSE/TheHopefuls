@@ -3,10 +3,10 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:versionCode="1"
 	android:versionName="1.0"
-	package="io.patz.student_driver">
+	package="io.patz.driving-log">
 	<uses-sdk
 		android:minSdkVersion="16" />
 	<application
-		android:label="Student Driver">
+		android:label="Driving Log">
 	</application>
 </manifest>
