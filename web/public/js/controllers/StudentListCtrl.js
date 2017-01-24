@@ -11,7 +11,7 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 
 	$log.log(vm);
 
-	$log.log($location)
+	$log.log($location);
 
 	var table = $(".student-list-table").DataTable({
 		data: vm.mockStudentData,
@@ -24,15 +24,4 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 		]
 	});
 
-	// table.on("click", "tr", function() {
-	// 	var selectedRow = this;
-	// 	// redirect to stats page here?
-	// 	// would have to account for remove button
-	// 	if ($(selectedRow).hasClass("selected")) {
-	// 		$(selectedRow).removeClass("selected");
-	// 	} else {
-	// 		table.$("tr.selected").removeClass("selected");
-	// 		$(selectedRow).addClass("selected");
-	// 	}
-	// });
 });
