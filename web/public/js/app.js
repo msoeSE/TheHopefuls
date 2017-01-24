@@ -1,1 +1,2 @@
-angular.module("mainApp", ["ngRoute", "appRoutes", "MainCtrl", "StatsCtrl", "StatsService", "StudentListCtrl"]);
+angular.module("mainApp", ["ngRoute", "appRoutes", "MainCtrl", "StatsCtrl", "StatsService",
+	"StudentListCtrl", "StudentListService"]);

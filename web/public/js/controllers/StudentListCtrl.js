@@ -10,7 +10,6 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
     ["4","<a href=\"/stats?id=4\">Patrick Zawadzki</a>", "1/16/2017"]];
 
 	$log.log(vm);
-
 	$log.log($location);
 
 	var table = $(".student-list-table").DataTable({
