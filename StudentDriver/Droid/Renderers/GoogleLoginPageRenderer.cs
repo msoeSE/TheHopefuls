@@ -4,14 +4,9 @@ using StudentDriver;
 using StudentDriver.Droid;
 using Xamarin.Forms;
 using Xamarin.Auth;
-using System.Net.Http;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using Android.Widget;
 using StudentDriver.Helpers;
 using StudentDriver.Services;
 using Acr.UserDialogs;
-using StudentDriver.Helpers;
 
 [assembly: ExportRenderer (typeof (GoogleLoginPage), typeof (GoogleLoginPageRenderer))]
 namespace StudentDriver.Droid

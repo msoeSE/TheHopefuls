@@ -4,13 +4,8 @@ using StudentDriver;
 using Xamarin.Forms;
 using StudentDriver.Droid;
 using Android.App;
-using System.Net.Http;
 using StudentDriver.Helpers;
 using Xamarin.Auth;
-using System.Net.Http;
-using System.Collections.Generic;
-using Newtonsoft.Json;
-using StudentDriver.Helpers;
 using StudentDriver.Services;
 using Acr.UserDialogs;
 

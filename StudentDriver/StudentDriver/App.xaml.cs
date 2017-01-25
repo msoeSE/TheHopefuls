@@ -18,8 +18,7 @@ namespace StudentDriver
 		protected override void OnStart ()
 		{
 			OAuth.InitializeKeys ();
-            Settings.OAuthAccessToken = "";
-            //Settings.OAuthSourceProvier = WebService.OAuthSource.Facebook;
+            Settings.OAuthAccessToken = "";  // just forcing us to have to login everytime -- for demo
             var authenticated = WebService.GetInstance ().PostOAuthToken (Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
 			if (!authenticated) {
 				LoginAction ();
