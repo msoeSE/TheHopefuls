@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using StudentDriver.Models;
-using Xamarin.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Helpers;
@@ -21,7 +18,6 @@ namespace StudentDriver.Services
 		{
 			None,
 			Facebook,
-			Google
 		}
 		private static string ApiBaseUrl = "";
 		private static int ApiBasePort = 3000;
@@ -101,8 +97,6 @@ namespace StudentDriver.Services
 			string endpoint = "";
 			if (source == OAuthSource.Facebook) {
 				endpoint = "auth/facebook/token";
-			} else {
-				endpoint = "auth/google/token";
 			}
 			Settings.OAuthSourceProvider = source;
 			var json = new JObject (new JProperty ("access_token", token));
@@ -117,8 +111,6 @@ namespace StudentDriver.Services
 			string url = "";
 			if (Settings.OAuthSourceProvider == OAuthSource.Facebook) {
 				url = string.Format ("https://facebook.com/logout.php?next={0}&access_token={1}", WebService.ApiBaseUrl, Settings.OAuthAccessToken);
-			} else {
-
 			}
 			var response = await _client.GetAsync (url);
 			if (response.IsSuccessStatusCode) {
@@ -138,7 +130,6 @@ namespace StudentDriver.Services
 			if (paramDictionary != null) {
 				queryString = string.Format (string.Join ("&", paramDictionary.Select (kvp => $"{kvp.Key}={kvp.Value}")));
 			}
-
 
 			var builder = new UriBuilder {
 				Host = host,

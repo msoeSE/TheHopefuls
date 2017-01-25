@@ -186,7 +186,6 @@
     <Compile Include="Renderers\CustomProgressBarRenderer.cs" />
     <Compile Include="SQLite_iOS.cs" />
     <Compile Include="Renderers\FacebookLoginPageRenderer.cs" />
-    <Compile Include="Renderers\GoogleLoginPageRenderer.cs" />
     <Compile Include="Helpers\Settings.cs" />
   </ItemGroup>
   <ItemGroup>
