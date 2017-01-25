@@ -23,7 +23,7 @@ namespace StudentDriver.Services
 			Facebook,
 			Google
 		}
-		private static string ApiBaseUrl = "192.168.1.67";
+		private static string ApiBaseUrl = "dev.drivinglog.online";
 		private static int ApiBasePort = 3000;
 
 		private static HttpClient _client;
@@ -134,8 +134,7 @@ namespace StudentDriver.Services
 			var builder = new UriBuilder {
 				Host = host,
 				Path = endPoint,
-				Query = queryString,
-				Port = ApiBasePort
+				Query = queryString
 			};
 			return builder.ToString ();
 
