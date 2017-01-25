@@ -10,11 +10,12 @@ namespace StudentDriver.Droid
 		private static string GetDatabasePath ()
 		{
 			string dbName = "StudentDriver.db3";
+			var docPath = string.Empty;
 
 #if DEBUG
-			var docPath = Path.Combine (Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads);
+			docPath = Path.Combine (Android.OS.Environment.ExternalStorageDirectory.AbsolutePath, Android.OS.Environment.DirectoryDownloads);
 #else
-			docPath = Envrionment.GetFolderPath(Environment.SpecialFolder.Personal);
+			docPath = Environment.GetFolderPath (Environment.SpecialFolder.Personal);
 #endif
 			return Path.Combine (docPath, dbName);
 		}
