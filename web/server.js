@@ -56,7 +56,7 @@ passport.use(
 		clientID: config.Auth.FacebookAuth.ID,
 		clientSecret: config.Auth.FacebookAuth.Secret,
 		callbackURL: `${config.Auth.CallbackURLBase}/auth/facebook/callback`,
-		profileFields: ["id", "email", "gender", "name"]
+		profileFields: ["id", "email", "gender", "name", "picture.type(large)"]
 	}, function(accessToken, refreshToken, profile, done) {
 		// User.findOrCreate({ facebookId: profile.id }, function (err, user) {
 		// 	return cb(err, user);

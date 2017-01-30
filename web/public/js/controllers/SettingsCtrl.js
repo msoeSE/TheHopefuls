@@ -3,6 +3,7 @@ angular.module("SettingsCtrl", ["SettingsService"]).controller("SettingsControll
 
 	SettingsOb.getProfile().then(function(settings){
 		vm.username = settings.first_name + " " + settings.last_name;
+		vm.profilePicture = settings.picture.data.url;
 	});
 
 
