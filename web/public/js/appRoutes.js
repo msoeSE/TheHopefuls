@@ -12,6 +12,11 @@ angular.module("appRoutes", []).config(
 			controller: "StatsController as vm"
 		})
 
+		.when("/students", {
+			templateUrl: "views/students.html",
+			controller: "StudentListController as vm"
+		})
+
 		.otherwise({ redirectTo: "/" });
 
 		$locationProvider.html5Mode(true);
