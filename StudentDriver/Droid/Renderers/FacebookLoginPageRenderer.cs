@@ -39,7 +39,7 @@ namespace StudentDriver.Droid
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
 					var access = ev.Account.Properties ["access_token"];
-					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Google, access)) {
+					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
 						Settings.OAuthAccessToken = access;
 						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
 						WebService.GetInstance ().SetTokenHeader ();
