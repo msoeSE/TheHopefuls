@@ -15,6 +15,7 @@ namespace StudentDriver
 		{
 			InitializeComponent ();
 			//Just placeholder states to resize the elements
+		    
 			statePicker.Items.Add ("Wisconsin");
 			statePicker.SelectedIndexChanged += StateSelected;
 			logOutButton.Clicked += async (object sender, EventArgs e) => {
@@ -22,7 +23,14 @@ namespace StudentDriver
 			};
 		}
 
-		void StateSelected (object sender, EventArgs e)
+	    protected override async void OnAppearing()
+	    {
+	        var user = await SQLiteDatabase.GetInstance().GetUser();
+	        studentName.Text = user.FirstName;
+	    }
+
+
+        void StateSelected (object sender, EventArgs e)
 		{
 
 		}

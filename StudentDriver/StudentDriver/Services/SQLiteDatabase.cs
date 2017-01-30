@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using SQLite;
 using StudentDriver.Helpers;
 using StudentDriver.Models;
@@ -9,7 +10,7 @@ namespace StudentDriver
 {
 	public class SQLiteDatabase
 	{
-		private readonly SQLiteAsyncConnection _database;
+		private static SQLiteAsyncConnection _database;
 	    private static SQLiteDatabase _sqLiteDatabaseInstance;
 
 	    public static SQLiteDatabase GetInstance()
@@ -26,63 +27,70 @@ namespace StudentDriver
 	        _database.CreateTableAsync<DrivePoint>();
 		    _database.CreateTableAsync<UnsyncDrive>();
 	        _database.CreateTableAsync<DriveWeatherData>();
-		}
+        }
 
-	    public bool AddUser(User user)
+	    public async Task<User> AddUser(User user)
 	    {
-	        return _database.InsertAsync(user).IsCompleted;
+	        await _database.InsertAsync(user);
+	        return await GetUser();
 	    }
 
-	    public bool UpdateStateReqs(IEnumerable<StateReqs> stateReqs)
+	    public async Task<int> UpdateUser(User user)
 	    {
-	        return _database.UpdateAllAsync(stateReqs).IsCompleted;
+	        return await _database.UpdateAsync(user);
 	    }
 
-	    public bool UpdateUserStats(UserStats userStats)
+	    public async Task<int> UpdateStateReqs(IEnumerable<StateReqs> stateReqs)
 	    {
-	        return _database.UpdateAsync(userStats).IsCompleted;
+	        return await _database.UpdateAllAsync(stateReqs);
 	    }
 
-	    public User GetUser()
+	    public async Task<int> UpdateUserStats(UserStats userStats)
 	    {
-	        return _database.Table<User>().FirstOrDefaultAsync().Result;
+	        return await _database.UpdateAsync(userStats);
 	    }
 
-	    public int StartAsyncDrive()
+	    public async Task<User> GetUser()
+	    {
+	        var user = await _database.Table<User>().FirstOrDefaultAsync();
+            return  user ?? await AddUser(new User());
+	    }
+
+	    public async Task<int> StartAsyncDrive()
 	    {
             var unsyncDrive = new UnsyncDrive
                               {
                                   UserId = GetUser().Id,
                                   StartDateTime = new DateTime().ToUniversalTime()
                               };
-	        return _database.InsertAsync(unsyncDrive).Result;
+	        return await _database.InsertAsync(unsyncDrive);
 	    }
 
-	    public bool AddDrivePoint(DrivePoint drivePoint)
+	    public async Task<int> AddDrivePoint(DrivePoint drivePoint)
 	    {
-	        return _database.InsertAsync(drivePoint).IsCompleted;
+	        return await _database.InsertAsync(drivePoint);
 	    }
 
-        public bool AddDrivePoints(IEnumerable<DrivePoint> drivePoints)
+        public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> drivePoints)
         {
-            return _database.InsertAllAsync(drivePoints).IsCompleted;
+            return await _database.InsertAllAsync(drivePoints);
         }
 
-	    public bool AddDriveWeatherData(DriveWeatherData driveWeatherData)
+	    public async Task<int> AddDriveWeatherData(DriveWeatherData driveWeatherData)
 	    {
-	        return _database.InsertAsync(driveWeatherData).IsCompleted;
+	        return await _database.InsertAsync(driveWeatherData);
 	    }
-        public void StopAsyncDrive(int unsyncDriveId)
+        public async Task<int> StopAsyncDrive(int unsyncDriveId)
 	    {
 	        var unsyncDrive = _database.Table<UnsyncDrive>().Where(x => x.Id == unsyncDriveId).FirstAsync().Result;
             unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
-	        _database.UpdateAsync(unsyncDrive);
+	        return await _database.UpdateAsync(unsyncDrive);
 	    }
 
-	    public List<DriveSession> GetUnsyncDriveSessions()
+	    public async Task<List<DriveSession>> GetUnsyncDriveSessions()
 	    {
 	        var driveSessions = new List<DriveSession>();
-	        foreach (var unsyncDrive in _database.Table<UnsyncDrive>().ToListAsync().Result)
+	        foreach (var unsyncDrive in await _database.Table<UnsyncDrive>().ToListAsync())
 	        {
 	            var drivePoints = _database.Table<DrivePoint>().Where(x => x.UnsyncDriveId == unsyncDrive.Id).ToListAsync().Result;
 	            var weatherData = _database.Table<DriveWeatherData>().Where(x => x.UnsyncDriveId == unsyncDrive.Id).FirstOrDefaultAsync().Result;

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Linq;
 using StudentDriver.Helpers;
 using StudentDriver.Services;
+using Xamarin.Auth;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -18,6 +20,8 @@ namespace StudentDriver
 		protected override void OnStart ()
 		{
 			OAuth.InitializeKeys ();
+		    //var account = AccountStore.Create().FindAccountsForService("facebook").First();
+		    Settings.OAuthAccessToken = "";
 			var authenticated = WebService.GetInstance ().PostOAuthToken (Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
 			if (!authenticated) {
 				LoginAction ();
