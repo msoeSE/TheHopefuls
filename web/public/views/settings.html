@@ -1,5 +1,48 @@
-<div class="jumbotron text-center">
+<div class="jumbotron text-center row">
 	<h1>Settings</h1>
-	<p>{{ vm.tagline }}</p>
 
+	<form class="col s12">
+		<div class="row">
+			<div class="input-field col s6">
+				<img src="../images/logo.png" style="width:100px;height:100px">
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12">
+				<p>{{ vm.username }}</p>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s3">
+				<select class="browser-default">
+					<option value="" disabled>Choose one</option>
+					<option value="AL">Alabama</option>
+					<option value="WI">Wisconsin</option>
+				</select>
+			</div>
+		</div>
+
+		<div class="row">
+      <div class="input-field col s2">
+        <input id="school_id" type="text" class="validate">
+        <label for="password">Driving School Code</label>
+      </div>
+    </div>
+
+		<div class="row">
+			<div class="input-field col s12">
+				<a class="waves-effect waves-light btn" target="_self" ng-href="/auth/logout">Logout</a>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="input-field col s12">
+				<button class="waves-effect waves-light btn" type="submit" name="action">Save</button>
+			</div>
+		</div>
+
+	</form>
+<p>{{ vm.profileData}}</p>
 </div>
