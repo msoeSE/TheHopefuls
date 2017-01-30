@@ -4,10 +4,11 @@ using StudentDriver;
 using Xamarin.Forms;
 using StudentDriver.Droid;
 using Android.App;
+using StudentDriver.Helpers;
 using Xamarin.Auth;
-using System.Net.Http;
-using System.Collections.Generic;
-using Newtonsoft.Json;
+using StudentDriver.Services;
+using Acr.UserDialogs;
+
 
 [assembly: ExportRenderer (typeof (FacebookLoginPage), typeof (FacebookLoginPageRenderer))]
 
@@ -32,36 +33,27 @@ namespace StudentDriver.Droid
 			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, ev) => {
 				if (!ev.IsAuthenticated) {
+					App.LoginAction.Invoke ();
+					UserDialogs.Instance.Alert ("Unable to Login, user not authenticated. Please Try Again", "Error", "Okay");
 					return;
 				} else {
+					UserDialogs.Instance.Loading ("Logging In...");
 					var access = ev.Account.Properties ["access_token"];
-					using (var client = new HttpClient ()) {
-						var content = new FormUrlEncodedContent (new [] {
-							new KeyValuePair<string,string>("accessToken",access),
-						});
-						var authResponse = await client.PostAsync (new Uri ("https://host.dylanwalseth.me/auth/facebook/token"), content);
-						if (authResponse.IsSuccessStatusCode) {
-							var responseContent = await authResponse.Content.ReadAsStringAsync ();
-							var authTicket = JsonConvert.DeserializeObject<AuthenticatedUser> (responseContent);
-							//TODO Find out what dylan is sending
-							if (authTicket != null) {
-								var apiAccessToken = authTicket.Access_Token;
-							}
-						}
+					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
+						Settings.OAuthAccessToken = access;
+						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
+						WebService.GetInstance ().SetTokenHeader ();
+						App.SuccessfulLoginAction.Invoke ();
+					} else {
+						App.LoginAction.Invoke ();
+						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 					}
+					UserDialogs.Instance.HideLoading ();
 				}
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));
-			//activity.StartActivity (auth.GetUI (activity));
-		}
-
-		public class AuthenticatedUser
-		{
-			public string Access_Token {
-				get;
-				set;
-			}
 		}
 	}
+
 }
 

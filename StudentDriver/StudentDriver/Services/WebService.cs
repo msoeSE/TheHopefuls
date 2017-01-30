@@ -1,87 +1,148 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Net;
 using System.Net.Http;
 using System.Text;
-using System.Threading;
 using System.Threading.Tasks;
 using StudentDriver.Models;
-using Xamarin.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Helpers;
 
 namespace StudentDriver.Services
 {
-    public static class WebService
-    {
-        private static string BaseUrl = "";
+	public class WebService
+	{
 
-        public static async Task<UserStats> GetStudentStats(int id)
-        {
-            var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl,"students", new Dictionary<string, string>() {{"userId", id.ToString()}});
-            var response = await client.GetAsync(requestUri);
-            var json = response.Content.ReadAsStringAsync().Result;
-            var userStats = JsonConvert.DeserializeObject<UserStats>(json);
-            return userStats;
-        }
+		public enum OAuthSource
+		{
+			None,
+			Facebook,
+		}
+		private static string ApiBaseUrl = "";
+		private static int ApiBasePort = 3000;
 
-        public static async Task<bool> PostUnsyncDrivingSessions(List<UnsyncDrive> unsyncDrives)
-        {
-            var json = new JObject(new JProperty("unsyncDrives",unsyncDrives));
+		private static HttpClient _client;
+		private static WebService _service;
 
-            var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-            var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl,"drivingsessions");
+		public static WebService GetInstance ()
+		{
+#if DEBUG
+			ApiBaseUrl = "dev.drivinglog.online/";
 
-            var response = await client.PostAsync(requestUri, content);
-            return response.IsSuccessStatusCode;
-        }
+#else
 
-        public static async Task<List<StateReqs>> GetStateReqs()
-        {
-            var client = new HttpClient();
-            var requestUri = GenerateRequestUri(BaseUrl, "statereqs");
+		ApiBaseUrl = "drivinglog.online/";
+#endif
 
-            var response = await client.GetAsync(requestUri);
-            var json = response.Content.ReadAsStringAsync().Result;
-            var stateReqs = JsonConvert.DeserializeObject<List<StateReqs>>(json);
-            return stateReqs;
-        }
+			return _service ?? (_service = new WebService ());
 
-        // TODO still need to define the WeatherData Object
-        public static async Task<Object> GetWeatherData(double latitude, double longitude)
-        {
-            var client = new HttpClient();
-            var requestUri = GenerateDarkSkyWeatherRequestUri("",latitude,longitude);
-            var response = await client.GetAsync(requestUri);
-            var json = response.Content.ReadAsStringAsync().Result;
-            var weatherData = JsonConvert.DeserializeObject(json);
-            return weatherData;
-        }
+		}
+
+		private WebService ()
+		{
+			_client = new HttpClient ();
+			_client.DefaultRequestHeaders.Add ("access_token", "");
+		}
+
+		public void SetTokenHeader ()
+		{
+			_client.DefaultRequestHeaders.Remove ("access_token");
+			_client.DefaultRequestHeaders.Add ("access_token", Settings.OAuthAccessToken);
+		}
+
+		public async Task<UserStats> GetStudentStats (int id)
+		{
+			var requestUri = GenerateRequestUri (ApiBaseUrl, "students", new Dictionary<string, string> () { { "userId", id.ToString () } });
+			var response = await _client.GetAsync (requestUri);
+			var json = response.Content.ReadAsStringAsync ().Result;
+			var userStats = JsonConvert.DeserializeObject<UserStats> (json);
+			return userStats;
+		}
+
+		public async Task<bool> PostUnsyncDrivingSessions (List<UnsyncDrive> unsyncDrives)
+		{
+			var json = new JObject (new JProperty ("unsyncDrives", unsyncDrives));
+
+			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
+			var requestUri = GenerateRequestUri (ApiBaseUrl, "drivingsessions");
+			var response = await _client.PostAsync (requestUri, content);
+			return response.IsSuccessStatusCode;
+		}
+
+		public async Task<List<StateReqs>> GetStateReqs ()
+		{
+			var requestUri = GenerateRequestUri (ApiBaseUrl, "statereqs");
+			var response = await _client.GetAsync (requestUri);
+			var json = response.Content.ReadAsStringAsync ().Result;
+			var stateReqs = JsonConvert.DeserializeObject<List<StateReqs>> (json);
+			return stateReqs;
+		}
+
+		// TODO still need to define the WeatherData Object
+		public async Task<Object> GetWeatherData (double latitude, double longitude)
+		{
+			var requestUri = GenerateDarkSkyWeatherRequestUri ("", latitude, longitude);
+			var response = await _client.GetAsync (requestUri);
+			var json = response.Content.ReadAsStringAsync ().Result;
+			var weatherData = JsonConvert.DeserializeObject (json);
+			return weatherData;
+		}
+
+		public async Task<bool> PostOAuthToken (OAuthSource source, string token)
+		{
+			if (string.IsNullOrEmpty (token)) {
+				return false;
+			}
+			string endpoint = "";
+			if (source == OAuthSource.Facebook) {
+				endpoint = "auth/facebook/token";
+			}
+			Settings.OAuthSourceProvider = source;
+			var json = new JObject (new JProperty ("access_token", token));
+			var content = new StringContent (json.ToString (), Encoding.UTF8, "application/json");
+			var uri = GenerateRequestUri (ApiBaseUrl, endpoint);
+			var response = await _client.PostAsync (uri, content).ConfigureAwait (false);
+			return response.IsSuccessStatusCode;
+		}
+
+		public async Task<bool> OAuthLogout ()
+		{
+			string url = "";
+			if (Settings.OAuthSourceProvider == OAuthSource.Facebook) {
+				url = string.Format ("https://facebook.com/logout.php?next={0}&access_token={1}", WebService.ApiBaseUrl, Settings.OAuthAccessToken);
+			}
+			var response = await _client.GetAsync (url);
+			if (response.IsSuccessStatusCode) {
+				Settings.OAuthSourceProvider = OAuthSource.None;
+				Settings.OAuthAccessToken = "";
+				this.SetTokenHeader ();
+				return true;
+			}
+			return false;
+
+		}
 
 
+		private string GenerateRequestUri (string host, string endPoint, Dictionary<string, string> paramDictionary = null)
+		{
+			var queryString = string.Empty;
+			if (paramDictionary != null) {
+				queryString = string.Format (string.Join ("&", paramDictionary.Select (kvp => $"{kvp.Key}={kvp.Value}")));
+			}
 
-        private static string GenerateRequestUri(string host, string endPoint, Dictionary<string, string> paramDictionary = null)
-        {
-            var queryString = string.Format(string.Join("&", paramDictionary.Select(kvp => $"{kvp.Key}={kvp.Value}")));
+			var builder = new UriBuilder {
+				Host = host,
+				Path = endPoint,
+				Query = queryString
+			};
+			return builder.ToString ();
 
-            var builder = new UriBuilder
-                          {
-                              Host = host,
-                              Path = endPoint,
-                              Query = queryString
-                          };
-            return builder.ToString();
+		}
 
-        }
-
-        private static string GenerateDarkSkyWeatherRequestUri(string apiKey, double latitude, double longitude)
-        {
-            return string.Join(",",string.Join("/", "https://api.darksky.net", "forecast", apiKey),latitude,longitude);
-        }
-    }
+		private string GenerateDarkSkyWeatherRequestUri (string apiKey, double latitude, double longitude)
+		{
+			return string.Join (",", string.Join ("/", "https://api.darksky.net", "forecast", apiKey), latitude, longitude);
+		}
+	}
 }

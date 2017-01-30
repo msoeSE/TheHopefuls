@@ -9,6 +9,10 @@ using System.Net.Http;
 using Splat;
 using System.Collections.Generic;
 using Newtonsoft.Json;
+using StudentDriver.Helpers;
+using StudentDriver.Services;
+using StudentDriver.Helpers;
+using Acr.UserDialogs;
 
 [assembly: ExportRenderer (typeof (FacebookLoginPage), typeof (FacebookLoginPageRenderer))]
 
@@ -31,26 +35,24 @@ namespace StudentDriver.iOS
 			auth.AllowCancel = false;
 			auth.Title = "Connect to Facebook";
 			auth.Completed += async (sender, e) => {
-				DismissViewController (true, null);
 				if (!e.IsAuthenticated) {
+					DismissViewController (true, App.LoginAction);
+					UserDialogs.Instance.Alert ("Unable to Login, user not authenticated. Please Try Again", "Error", "Okay");
 					return;
 				} else {
+					UserDialogs.Instance.Loading ("Logging In...");
 					var access = e.Account.Properties ["access_token"];
-					using (var client = new HttpClient ()) {
-						var content = new FormUrlEncodedContent (new [] {
-							new KeyValuePair<string,string>("accessToken", access),
-						});
-						var authResponse = await client.PostAsync (new Uri ("https://host.walseth.me/auth/facebook/token"), content);
-						if (authResponse.IsSuccessStatusCode) {
-							var responseContent = await authResponse.Content.ReadAsStringAsync ();
-							var authTicket = JsonConvert.DeserializeObject<AuthenticatedUser> (responseContent);
-							//TODO Find out what Dylan is sending.
-							if (authTicket != null) {
-								var apiAccessToken = authTicket.Access_Token;
+					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
+						Settings.OAuthAccessToken = access;
+						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
+						WebService.GetInstance ().SetTokenHeader ();
+						DismissViewController (true, App.SuccessfulLoginAction);
 
-							}
-						}
+					} else {
+						DismissViewController (true, App.LoginAction);
+						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 					}
+					UserDialogs.Instance.HideLoading ();
 
 				}
 			};
@@ -59,15 +61,9 @@ namespace StudentDriver.iOS
 			ViewController.AddChildViewController (vc);
 			ViewController.View.Add (vc.View);
 			vc.ChildViewControllers [0].NavigationItem.LeftBarButtonItem = new UIBarButtonItem (UIBarButtonSystemItem.Cancel, async (o, e) => await App.Current.MainPage.Navigation.PopModalAsync ());
+
 		}
 
 
-	}
-	public class AuthenticatedUser
-	{
-		public string Access_Token {
-			get;
-			set;
-		}
 	}
 }

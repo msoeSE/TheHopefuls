@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -41,11 +41,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\iOS\StudentDriver.iOS.csproj">
-      <Project>{8C61008F-DB52-42DF-8AC4-1CDD69AFD7D5}</Project>
-      <Name>StudentDriver.iOS</Name>
-      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
-      <Private>False</Private>
+    <ProjectReference Include="..\Droid\StudentDriver.Droid.csproj">
+      <Project>{f4fbaa2e-c847-406d-b787-1979bf5a8560}</Project>
+      <Name>StudentDriver.Droid</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
