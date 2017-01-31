@@ -1,0 +1,10 @@
+instrumentation:
+    root: .
+    include-all-sources: true
+    verbose: true
+    excludes: ["spec/**/*.js" ,"public/**/*.js", "config/**/*.js", "dist/**/*.js", "gulpfile.js", "karma.conf.js"]
+reporting:
+    print: summary
+    reports:
+        - lcov
+    dir: "coverage"

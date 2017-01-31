@@ -1,7 +1,7 @@
 {
     "extends": "angular",
     "rules": {
-        "indent": [2, 4],
+        "indent": [1, "tab"],
         "camelcase": [2, {"properties": "always"}],
         "linebreak-style": [2, "unix"],
         "no-trailing-spaces": [2, { "skipBlankLines": false }],
@@ -28,7 +28,7 @@
         "handle-callback-err": 2,
         "no-process-exit": 2,
         "no-shadow": [2, {"builtinGlobals": true, "hoist": "all", "allow": []}],
-        "no-unused-vars": [1, {"vars": "all", "args": "all"}],
+        "no-unused-vars": [1, {"vars": "all", "args": "after-used"}],
         "comma-dangle": [2, "never"],
         "no-warning-comments": [1, { "terms": ["todo", "fixme"], "location": "start" }],
         "eqeqeq": [2, "smart"],
