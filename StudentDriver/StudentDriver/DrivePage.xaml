@@ -17,69 +17,83 @@
 				FontSize="Large"
 				FontAttributes="Bold">
 			</Label>
-			<Grid
-				HorizontalOptions="Center"
-				VerticalOptions="Center">
-				<Grid.RowDefinitions>
-					<RowDefinition
-						Height="Auto">
-					</RowDefinition>
-					<RowDefinition
-						Height="Auto">
-					</RowDefinition>
-					<RowDefinition
-						Height="Auto">
-					</RowDefinition>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="*">
-					</ColumnDefinition>
-					<ColumnDefinition
-						Width="Auto">
-					</ColumnDefinition>
-				</Grid.ColumnDefinitions>
-				<Label
-					Grid.Row="0"
-					Grid.Column="0"
-					Text="Distance"
-					FontAttributes="Bold"
-					FontSize="Medium">
-				</Label>
-				<Label
-					x:Name="distanceLabel"
-					Grid.Row="0"
-					Grid.Column="1"
-					Text="0.0 mi"
-					FontSize="Medium">
-				</Label>
-				<Label
-					Grid.Row="1"
-					Grid.Column="0"
-					Text="Average Speed"
-					FontSize="Medium"
-					FontAttributes="Bold">
-				</Label>
-				<Label
-					x:Name="avgSpeedLabel"
-					Grid.Row="1"
-					Grid.Column="1"
-					FontSize="Medium">
-				</Label>
-				<Label
-					Text="Time Elapsed"
-					Grid.Row="2"
-					Grid.Column="0"
-					FontAttributes="Bold"
-					FontSize="Medium">
-				</Label>
-				<Label
-					x:Name="timeLabel"
-					Grid.Row="2"
-					Grid.Column="2"
-					FontSize="Medium">
-				</Label>
-			</Grid>
+			<Frame
+				HorizontalOptions="FillAndExpand"
+				VerticalOptions="CenterAndExpand"
+				HasShadow="false"
+				OutlineColor="{x:Static local:AppColors.Second}">
+				<Grid
+					HorizontalOptions="FillAndExpand"
+					VerticalOptions="FillAndExpand">
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="Auto">
+						</ColumnDefinition>
+						<ColumnDefinition
+							Width="*">
+						</ColumnDefinition>
+					</Grid.ColumnDefinitions>
+					<Label
+						Grid.Row="0"
+						Grid.Column="0"
+						Text="Distance"
+						FontAttributes="Bold"
+						FontSize="Medium"
+						HorizontalOptions="Start">
+					</Label>
+					<Label
+						x:Name="distanceLabel"
+						Grid.Row="0"
+						Grid.Column="1"
+						Text="0.0 mi"
+						FontSize="Medium"
+						HorizontalOptions="EndAndExpand">
+					</Label>
+					<Label
+						Grid.Row="1"
+						Grid.Column="0"
+						Text="Average Speed"
+						FontSize="Medium"
+						FontAttributes="Bold"
+						HorizontalOptions="Start">
+					</Label>
+					<Label
+						x:Name="avgSpeedLabel"
+						Grid.Row="1"
+						Grid.Column="1"
+						FontSize="Medium"
+						Text="0.0 MPH"
+						HorizontalOptions="EndAndExpand">
+					</Label>
+					<Label
+						Text="Time Elapsed"
+						Grid.Row="2"
+						Grid.Column="0"
+						FontAttributes="Bold"
+						FontSize="Medium"
+						HorizontalOptions="Start">
+					</Label>
+					<Label
+						x:Name="timeLabel"
+						Grid.Row="2"
+						Grid.Column="1"
+						FontSize="Medium"
+						Text="0 min"
+						HorizontalOptions="EndAndExpand">
+					</Label>
+				</Grid>
+			</Frame>
 			<Label
 				Text="Current Conditions"
 				FontSize="Large"
@@ -87,62 +101,71 @@
 				HorizontalOptions="Center"
 				VerticalOptions="Center">
 			</Label>
-			<Grid
-				HorizontalOptions="Center"
-				VerticalOptions="Center">
-				<Grid.RowDefinitions>
-					<RowDefinition
-						Height="Auto">
-					</RowDefinition>
-					<RowDefinition
-						Height="Auto">
-					</RowDefinition>
-				</Grid.RowDefinitions>
-				<Grid.ColumnDefinitions>
-					<ColumnDefinition
-						Width="Auto">
-					</ColumnDefinition>
-					<ColumnDefinition
-						Width="Auto">
-					</ColumnDefinition>
-				</Grid.ColumnDefinitions>
-				<Label
-					Text="Weather"
-					HorizontalOptions="Center"
-					VerticalOptions="Center"
-					Grid.Row="0"
-					Grid.Column="0">
-				</Label>
-				<controls:CircleImage
-					x:Name="weatherImage"
-					Aspect="AspectFill"
-					HeightRequest="80"
-					WidthRequest="80"
-					Grid.Row="1"
-					Grid.Column="0">
-				</controls:CircleImage>
-				<Label
-					Text="Time of Day"
-					HorizontalOptions="Center"
-					VerticalOptions="Center"
-					Grid.Row="0"
-					Grid.Column="1">
-				</Label>
-				<controls:CircleImage
-					x:Name="timeImage"
-					Aspect="AspectFill"
-					HeightRequest="80"
-					WidthRequest="80"
-					Grid.Row="1"
-					Grid.Column="1">
-				</controls:CircleImage>
-			</Grid>
+			<Frame
+				HorizontalOptions="FillAndExpand"
+				VerticalOptions="FillAndExpand"
+				HasShadow="false"
+				OutlineColor="{x:Static local:AppColors.Second}">
+				<Grid
+					HorizontalOptions="FillAndExpand"
+					VerticalOptions="FillAndExpand">
+					<Grid.RowDefinitions>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
+					</Grid.RowDefinitions>
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition
+							Width="*">
+						</ColumnDefinition>
+						<ColumnDefinition
+							Width="*">
+						</ColumnDefinition>
+					</Grid.ColumnDefinitions>
+					<Label
+						Text="Weather"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Center"
+						FontAttributes="Bold"
+						Grid.Row="0"
+						Grid.Column="0">
+					</Label>
+					<controls:CircleImage
+						x:Name="weatherImage"
+						Aspect="AspectFill"
+						HeightRequest="80"
+						WidthRequest="80"
+						Grid.Row="1"
+						Grid.Column="0">
+					</controls:CircleImage>
+					<Label
+						Text="Time of Day"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Center"
+						FontAttributes="Bold"
+						Grid.Row="0"
+						Grid.Column="1">
+					</Label>
+					<controls:CircleImage
+						x:Name="timeImage"
+						Aspect="AspectFill"
+						HeightRequest="80"
+						WidthRequest="80"
+						Grid.Row="1"
+						Grid.Column="1">
+					</controls:CircleImage>
+				</Grid>
+			</Frame>
 			<Button
-				HorizontalOptions="CenterAndExpand"
+				HorizontalOptions="FillAndExpand"
 				VerticalOptions="CenterAndExpand"
 				x:Name="drivingButton"
 				Text="Start"
-				BackgroundColor="{x:Static local:AppColors.Main}">
+				TextColor="White"
+				BackgroundColor="{x:Static local:AppColors.Third}">
 			</Button>
 		</StackLayout>
 	</ContentPage.Content>
