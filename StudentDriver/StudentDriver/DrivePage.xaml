@@ -135,11 +135,12 @@
 					</Label>
 					<controls:CircleImage
 						x:Name="weatherImage"
-						Aspect="AspectFill"
-						HeightRequest="80"
-						WidthRequest="80"
+						Aspect="AspectFit"
+						HeightRequest="40"
+						WidthRequest="40"
 						Grid.Row="1"
-						Grid.Column="0">
+						Grid.Column="0"
+						Source="noImage.png">
 					</controls:CircleImage>
 					<Label
 						Text="Time of Day"
@@ -151,11 +152,12 @@
 					</Label>
 					<controls:CircleImage
 						x:Name="timeImage"
-						Aspect="AspectFill"
-						HeightRequest="80"
-						WidthRequest="80"
+						Aspect="AspectFit"
+						HeightRequest="40"
+						WidthRequest="40"
 						Grid.Row="1"
-						Grid.Column="1">
+						Grid.Column="1"
+						Source="noImage.png">
 					</controls:CircleImage>
 				</Grid>
 			</Frame>

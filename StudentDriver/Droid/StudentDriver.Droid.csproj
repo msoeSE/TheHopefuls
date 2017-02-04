@@ -173,6 +173,7 @@
     <None Include="Properties\AndroidManifest.xml" />
     <None Include="packages.config" />
     <None Include="Assets\AboutAssets.txt" />
+    <None Include="Resources\drawable\Resources\noImage.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\layout\Tabbar.axml" />
