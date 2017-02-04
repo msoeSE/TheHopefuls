@@ -31,5 +31,14 @@ describe("State Regulations Endpoint Tests", function() {
 			expect(success).toHaveBeenCalledWith(stateRegsMockObject);
 			expect(failure).not.toHaveBeenCalled();
 		});
+		it("should get an error if there is a database error", function(){
+			shouldErr = true;
+			toTest.getStateRegs("state", success, failure);
+			expect(success).not.toHaveBeenCalled();
+			expect(failure).toHaveBeenCalledWith({
+				"message": "Error retrieving state regulations",
+				"error": "error"
+			});
+		});
 	})
 });
