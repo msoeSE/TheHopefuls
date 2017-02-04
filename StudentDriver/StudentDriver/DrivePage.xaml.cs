@@ -10,6 +10,7 @@ namespace StudentDriver
 		public DrivePage ()
 		{
 			InitializeComponent ();
+			NavigationPage.SetHasNavigationBar (this, false);
 		}
 	}
 }

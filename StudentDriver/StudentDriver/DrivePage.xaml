@@ -2,7 +2,148 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="StudentDriver.Config"
+	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
 	x:Class="StudentDriver.DrivePage">
 	<ContentPage.Content>
+		<StackLayout
+			HorizontalOptions="FillAndExpand"
+			VerticalOptions="FillAndExpand"
+			Padding="5, 20, 5, 5">
+			<Label
+				VerticalOptions="Center"
+				HorizontalOptions="Center"
+				Text="Current Session"
+				FontSize="Large"
+				FontAttributes="Bold">
+			</Label>
+			<Grid
+				HorizontalOptions="Center"
+				VerticalOptions="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="Auto">
+					</RowDefinition>
+					<RowDefinition
+						Height="Auto">
+					</RowDefinition>
+					<RowDefinition
+						Height="Auto">
+					</RowDefinition>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="*">
+					</ColumnDefinition>
+					<ColumnDefinition
+						Width="Auto">
+					</ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Label
+					Grid.Row="0"
+					Grid.Column="0"
+					Text="Distance"
+					FontAttributes="Bold"
+					FontSize="Medium">
+				</Label>
+				<Label
+					x:Name="distanceLabel"
+					Grid.Row="0"
+					Grid.Column="1"
+					Text="0.0 mi"
+					FontSize="Medium">
+				</Label>
+				<Label
+					Grid.Row="1"
+					Grid.Column="0"
+					Text="Average Speed"
+					FontSize="Medium"
+					FontAttributes="Bold">
+				</Label>
+				<Label
+					x:Name="avgSpeedLabel"
+					Grid.Row="1"
+					Grid.Column="1"
+					FontSize="Medium">
+				</Label>
+				<Label
+					Text="Time Elapsed"
+					Grid.Row="2"
+					Grid.Column="0"
+					FontAttributes="Bold"
+					FontSize="Medium">
+				</Label>
+				<Label
+					x:Name="timeLabel"
+					Grid.Row="2"
+					Grid.Column="2"
+					FontSize="Medium">
+				</Label>
+			</Grid>
+			<Label
+				Text="Current Conditions"
+				FontSize="Large"
+				FontAttributes="Bold"
+				HorizontalOptions="Center"
+				VerticalOptions="Center">
+			</Label>
+			<Grid
+				HorizontalOptions="Center"
+				VerticalOptions="Center">
+				<Grid.RowDefinitions>
+					<RowDefinition
+						Height="Auto">
+					</RowDefinition>
+					<RowDefinition
+						Height="Auto">
+					</RowDefinition>
+				</Grid.RowDefinitions>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition
+						Width="Auto">
+					</ColumnDefinition>
+					<ColumnDefinition
+						Width="Auto">
+					</ColumnDefinition>
+				</Grid.ColumnDefinitions>
+				<Label
+					Text="Weather"
+					HorizontalOptions="Center"
+					VerticalOptions="Center"
+					Grid.Row="0"
+					Grid.Column="0">
+				</Label>
+				<controls:CircleImage
+					x:Name="weatherImage"
+					Aspect="AspectFill"
+					HeightRequest="80"
+					WidthRequest="80"
+					Grid.Row="1"
+					Grid.Column="0">
+				</controls:CircleImage>
+				<Label
+					Text="Time of Day"
+					HorizontalOptions="Center"
+					VerticalOptions="Center"
+					Grid.Row="0"
+					Grid.Column="1">
+				</Label>
+				<controls:CircleImage
+					x:Name="timeImage"
+					Aspect="AspectFill"
+					HeightRequest="80"
+					WidthRequest="80"
+					Grid.Row="1"
+					Grid.Column="1">
+				</controls:CircleImage>
+			</Grid>
+			<Button
+				HorizontalOptions="CenterAndExpand"
+				VerticalOptions="CenterAndExpand"
+				x:Name="drivingButton"
+				Text="Start"
+				BackgroundColor="{x:Static local:AppColors.Main}">
+			</Button>
+		</StackLayout>
 	</ContentPage.Content>
 </ContentPage>

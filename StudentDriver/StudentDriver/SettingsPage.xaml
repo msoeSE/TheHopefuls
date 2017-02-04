@@ -9,7 +9,7 @@
 			VerticalOptions="FillAndExpand"
 			HorizontalOptions="FillAndExpand">
 			<StackLayout
-				Padding="5"
+				Padding="5, 20, 5, 5"
 				VerticalOptions="FillAndExpand"
 				HorizontalOptions="FillAndExpand">
 				<controls:CircleImage
