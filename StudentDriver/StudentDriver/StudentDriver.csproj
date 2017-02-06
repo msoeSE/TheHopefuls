@@ -79,6 +79,7 @@
     <Compile Include="Views\GoogleLoginPage.cs" />
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Services\WebService.cs" />
+    <Compile Include="Config\AppColors.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.Net.Http">

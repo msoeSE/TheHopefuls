@@ -27,6 +27,7 @@ namespace StudentDriver
 		public StatsPage ()
 		{
 			InitializeComponent ();
+			NavigationPage.SetHasNavigationBar (this, false);
 			daytimeDistanceText = daytimeDistanceLabel.Text;
 			nighttimeDistnaceText = nighttimeDistanceLabel.Text;
 			totalDistanceText = totalDistanceLabel.Text;
