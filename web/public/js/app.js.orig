@@ -1,7 +1,0 @@
-<<<<<<< HEAD
-angular.module("mainApp", ["ngRoute", "appRoutes", "MainCtrl", "StatsCtrl", "StatsService",
-	"StudentListCtrl", "StudentListService"]);
-=======
-angular.module("mainApp", ["ngRoute", "appRoutes", "MainCtrl",
-	"StatsCtrl", "SettingsCtrl", "SettingsService", "StatsService"]);
->>>>>>> issue-75
