@@ -2,8 +2,9 @@
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:color="StudentDriver.Config"
 	x:Class="StudentDriver.LoginPage"
-	BackgroundColor="White">
+	BackgroundColor="{x:Static color:AppColors.PageBackground}">
 	<ContentPage.Content>
 		<Grid
 			Padding="0,40,0,0">
@@ -29,8 +30,7 @@
 				Grid.Column="0">
 			</Label>
 			<Frame
-				BackgroundColor="#e5e5e5"
-				OutlineColor="Black"
+				OutlineColor="{x:Static color:AppColors.Second}"
 				HorizontalOptions="CenterAndExpand"
 				VerticalOptions="CenterAndExpand"
 				Margin="5"
