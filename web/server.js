@@ -128,13 +128,6 @@ app.post("/auth/facebook/token",
 	}
 );
 
-app.get("/profile",
-	function(req, res){
-		if(req.user)
-			res.write(JSON.stringify(req.user)); // eslint-disable-line
-		res.end();
-	}
-);
 app.get("/auth/logout",
 	function(req, res){
 		req.logout();
