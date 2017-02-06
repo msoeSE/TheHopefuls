@@ -117,10 +117,10 @@ router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res
 });
 
 // GET the driving regulations for a specified state
-rouer.get("/stateregulations/:state", function(req, res) {
-	stateRegsCtrl.getStateRegs(req.params.state, (sateRegs)=>{
+router.get("/stateregulations/:state", function(req, res) {
+	stateRegsCtrl.getStateRegs(req.params.state, (stateRegs)=>{
 		res.json(stateRegs);
-	}, (error)=>{
+	}, (err)=>{
 		res.status(statusCodes.BAD_REQUEST);
 		res.json(err);
 	});
