@@ -45,6 +45,7 @@ describe("Driving School Controller Tests", function() {
 			}));
 			expect(DrivingSchool.create).not.toHaveBeenCalled();
 			expect(success).not.toHaveBeenCalled();
+			console.log(expect(success));
 		});
 
 		it("should not create a new school if the database fails to update", function(){

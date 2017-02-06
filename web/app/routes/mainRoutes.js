@@ -13,6 +13,21 @@ var userCtrl = require("../controllers/userCtrl");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 
+function ensureAuthenticated(req, res, next){
+	if(req.isAuthenticated())
+		next();
+	res.status(statusCodes.FORBIDDEN);
+	res.json({error: "Not Authenticated"});
+}
+
+app.get("/profile", ensureAuthenticated,
+	function(req, res){
+		if(req.user)
+			res.write(JSON.stringify(req.user)); // eslint-disable-line
+		res.end();
+	}
+);
+
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
 	userCtrl.getStudent(req.params.userId, (user)=>{
