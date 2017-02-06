@@ -126,4 +126,9 @@ rouer.get("/stateregulations/:state", function(req, res) {
 	});
 });
 
+// POST to link an account to a driving school
+router.post("/linkacctoschool", function (req, res) {
+
+});
+
 module.exports = router;
