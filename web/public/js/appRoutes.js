@@ -24,7 +24,7 @@ angular.module("appRoutes", []).config(
 
 		.when("/instructors", {
 			templateUrl: "views/instructors.html",
-			controller: "InstructorsCtrl as vm"
+			controller: "InstructorListController as vm"
 		})
 
 		.otherwise({ redirectTo: "/" });
