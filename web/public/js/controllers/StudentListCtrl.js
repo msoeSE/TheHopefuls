@@ -12,7 +12,7 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 	$log.log(vm);
 	$log.log($location);
 
-	var table = $(".student-list-table").DataTable({
+	$(".student-list-table").DataTable({
 		data: vm.mockStudentData,
 		columns: [
 			{ title: "studentID", visible: false},
@@ -24,8 +24,8 @@ angular.module("StudentListCtrl", []).controller("StudentListController", functi
 		]
 	});
 
-	$(".btn").on("click", function (event){
-		//table.row($(this).parents("tr")).remove().draw();
+	$(".btn").on("click", function (){
+		// table.row($(this).parents("tr")).remove().draw();
 		// TODO Remove from DB
 	});
 
