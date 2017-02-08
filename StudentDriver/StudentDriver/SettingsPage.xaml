@@ -3,7 +3,9 @@
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-	x:Class="StudentDriver.SettingsPage">
+	x:Class="StudentDriver.SettingsPage"
+	BackgroundColor="{x:Static local:AppColors.PageBackground}"
+	xmlns:local="StudentDriver.Config">
 	<ContentPage.Content>
 		<ScrollView
 			VerticalOptions="FillAndExpand"
@@ -29,32 +31,52 @@
 					HorizontalOptions="CenterAndExpand"
 					VerticalOptions="Center">
 				</Label>
-				<Label
-					Text="Driving State"
-					FontSize="Medium"
-					HorizontalOptions="Center"
-					VerticalOptions="Center"
-					FontAttributes="Bold">
-				</Label>
-				<Picker
-					x:Name="statePicker"
-					HorizontalOptions="Fill"
-					VerticalOptions="Center"
-					Margin="30,0,30,0">
-				</Picker>
-				<Label
-					Text="Driving School"
-					FontSize="Medium"
-					HorizontalOptions="Center"
+				<Frame
+					HorizontalOptions="FillAndExpand"
 					VerticalOptions="CenterAndExpand"
-					FontAttributes="Bold">
-				</Label>
-				<Entry
-					Placeholder="Driving School ID"
-					x:Name="schoolEntry"
-					VerticalOptions="Center"
-					HorizontalOptions="CenterAndExpand">
-				</Entry>
+					HasShadow="false"
+					OutlineColor="{x:Static local:AppColors.Second}">
+					<StackLayout
+						VerticalOptions="FillAndExpand"
+						HorizontalOptions="FillAndExpand">
+						<Label
+							Text="Driving State"
+							FontSize="Medium"
+							HorizontalOptions="Center"
+							VerticalOptions="Center"
+							FontAttributes="Bold">
+						</Label>
+						<Picker
+							x:Name="statePicker"
+							HorizontalOptions="Fill"
+							VerticalOptions="Center"
+							Margin="30,0,30,0">
+						</Picker>
+					</StackLayout>
+				</Frame>
+				<Frame
+					HorizontalOptions="FillAndExpand"
+					VerticalOptions="CenterAndExpand"
+					HasShadow="false"
+					OutlineColor="{x:Static local:AppColors.Second}">
+					<StackLayout
+						VerticalOptions="FillAndExpand"
+						HorizontalOptions="FillAndExpand">
+						<Label
+							Text="Driving School"
+							FontSize="Medium"
+							HorizontalOptions="Center"
+							VerticalOptions="CenterAndExpand"
+							FontAttributes="Bold">
+						</Label>
+						<Entry
+							Placeholder="Driving School ID"
+							x:Name="schoolEntry"
+							VerticalOptions="Center"
+							HorizontalOptions="CenterAndExpand">
+						</Entry>
+					</StackLayout>
+				</Frame>
 				<Button
 					Text="Log Out"
 					x:Name="logOutButton"

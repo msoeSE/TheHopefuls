@@ -4,7 +4,8 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="StudentDriver.Config"
 	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
-	x:Class="StudentDriver.DrivePage">
+	x:Class="StudentDriver.DrivePage"
+	BackgroundColor="{x:Static local:AppColors.PageBackground}">
 	<ContentPage.Content>
 		<StackLayout
 			HorizontalOptions="FillAndExpand"
