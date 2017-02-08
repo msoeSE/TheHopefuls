@@ -6,6 +6,7 @@ using StudentDriver.Services;
 using StudentDriver.Helpers;
 using System.Threading.Tasks;
 using Acr.UserDialogs;
+using ImageCircle.Forms.Plugin.Abstractions;
 
 namespace StudentDriver
 {
@@ -25,8 +26,11 @@ namespace StudentDriver
 
 	    protected override async void OnAppearing()
 	    {
-	        var user = await SQLiteDatabase.GetInstance().GetUser();
+	        var user =  await SQLiteDatabase.GetInstance().GetUser();
 	        studentName.Text = user.FirstName;
+	        var image = new CircleImage() {Aspect = Aspect.AspectFit};
+            profileImage.Source = ImageSource.FromUri(new Uri(user.ImageUrl));
+	        profileImage = image;
 	    }
 
 

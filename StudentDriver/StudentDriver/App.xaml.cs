@@ -17,7 +17,7 @@ namespace StudentDriver
 			MainPage = new StudentDriverPage ();
 		}
 
-		protected override void OnStart ()
+		protected override async void OnStart ()
 		{
 			OAuth.InitializeKeys ();
 		    //var account = AccountStore.Create().FindAccountsForService("facebook").First();

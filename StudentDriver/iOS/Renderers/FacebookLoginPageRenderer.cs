@@ -5,14 +5,10 @@ using StudentDriver.iOS;
 using StudentDriver;
 using Xamarin.Forms;
 using Xamarin.Auth;
-using System.Net.Http;
-using Splat;
-using System.Collections.Generic;
-using Newtonsoft.Json;
 using StudentDriver.Helpers;
 using StudentDriver.Services;
-using StudentDriver.Helpers;
 using Acr.UserDialogs;
+using Newtonsoft.Json.Linq;
 
 [assembly: ExportRenderer (typeof (FacebookLoginPage), typeof (FacebookLoginPageRenderer))]
 
@@ -29,7 +25,7 @@ namespace StudentDriver.iOS
 			base.ViewDidAppear (animated);
 			var auth = new OAuth2Authenticator (
 											   clientId: OAuth.FACEBOOK_APP_ID,
-											   scope: "email",
+											   scope: "",
 											   authorizeUrl: new Uri (OAuth.FACEBOOK_OAUTH_URL),
 											   redirectUrl: new Uri (OAuth.FACEBOOK_SUCCESS));
 			auth.AllowCancel = false;
@@ -45,7 +41,7 @@ namespace StudentDriver.iOS
 					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
 						Settings.OAuthAccessToken = access;
 						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
-						WebService.GetInstance ().SetTokenHeader ();
+						SaveFacebookProfile(e.Account);
 						DismissViewController (true, App.SuccessfulLoginAction);
 
 					} else {
@@ -64,6 +60,25 @@ namespace StudentDriver.iOS
 
 		}
 
+        private async void SaveFacebookProfile(Account account)
+        {
+            var request = new OAuth2Request("GET", new Uri(OAuth.FACEBOOK_PROFILE_REQUEST_URL), null, account);
 
-	}
+            await request.GetResponseAsync().ContinueWith(async t =>
+            {
+                if (t.IsFaulted)
+                {
+                    return;
+                }
+                var json = JObject.Parse(t.Result.GetResponseText());
+                var user = SQLiteDatabase.GetInstance().GetUser().Result;
+                user.FirstName = json["name"].ToString();
+                user.ImageUrl = json["picture"]["data"]["url"].ToString();
+                await SQLiteDatabase.GetInstance().UpdateUser(user);
+                WebService.GetInstance().SetTokenHeader();
+            });
+        }
+
+
+    }
 }

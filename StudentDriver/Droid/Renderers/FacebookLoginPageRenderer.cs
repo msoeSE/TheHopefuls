@@ -27,7 +27,7 @@ namespace StudentDriver.Droid
 			var activity = this.Context as Activity;
 		    var auth = new OAuth2Authenticator(
 		        clientId: OAuth.FACEBOOK_APP_ID,
-		        scope: "email",
+		        scope: "",
 		        authorizeUrl: new Uri(OAuth.FACEBOOK_OAUTH_URL),
 		        redirectUrl: new Uri(OAuth.FACEBOOK_SUCCESS))
 		    {
@@ -42,13 +42,11 @@ namespace StudentDriver.Droid
 					UserDialogs.Instance.Loading ("Logging In...");
 					var access = ev.Account.Properties ["access_token"];
 					if (await WebService.GetInstance ().PostOAuthToken (WebService.OAuthSource.Facebook, access)) {
-                        //AccountStore.Create(Context).Save(ev.Account, "facebook");
                         Settings.OAuthAccessToken = access;
 						Settings.OAuthSourceProvider = WebService.OAuthSource.Facebook;
                         SaveFacebookProfile(ev.Account);
-                        WebService.GetInstance ().SetTokenHeader ();
-						App.SuccessfulLoginAction.Invoke ();
-					} else {
+                        App.SuccessfulLoginAction.Invoke();
+                    } else {
 						App.LoginAction.Invoke ();
 						UserDialogs.Instance.Alert ("Unable to Login, Please Try Again", "Error", "Okay");
 					}
@@ -58,21 +56,23 @@ namespace StudentDriver.Droid
 			this.Context.StartActivity (auth.GetUI (this.Context));
 		}
 
-        private void SaveFacebookProfile(Account account)
+        private async void SaveFacebookProfile(Account account)
         {
-            var request = new OAuth2Request("GET", new Uri("https://graph.facebook.com/me"), null, account);
+            var request = new OAuth2Request("GET", new Uri(OAuth.FACEBOOK_PROFILE_REQUEST_URL), null, account);
 
-            request.GetResponseAsync().ContinueWith(t =>
-            {
-                if (t.IsFaulted)
-                {
-                    return;
-                }
-                var json = JObject.Parse(t.Result.GetResponseText());
-                var user = SQLiteDatabase.GetInstance().GetUser().Result;
-                user.FirstName = json["name"].ToString();
-                SQLiteDatabase.GetInstance().UpdateUser(user);
-            });
+            await request.GetResponseAsync().ContinueWith(async t =>
+             {
+                 if (t.IsFaulted)
+                 {
+                     return;
+                 }
+                 var json = JObject.Parse(t.Result.GetResponseText());
+                 var user = SQLiteDatabase.GetInstance().GetUser().Result;
+                 user.FirstName = json["name"].ToString();
+                 user.ImageUrl = json["picture"]["data"]["url"].ToString();
+                 await SQLiteDatabase.GetInstance().UpdateUser(user);
+                 WebService.GetInstance().SetTokenHeader();
+             });
         }
     }
 

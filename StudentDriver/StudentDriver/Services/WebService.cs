@@ -91,10 +91,7 @@ namespace StudentDriver.Services
             return weatherData;
         }
 
-        
-    
-
-    public async Task<bool> PostOAuthToken (OAuthSource source, string token)
+        public async Task<bool> PostOAuthToken (OAuthSource source, string token)
 		{
 			if (string.IsNullOrEmpty (token)) {
 				return false;

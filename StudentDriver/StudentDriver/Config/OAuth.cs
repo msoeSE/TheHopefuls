@@ -12,6 +12,7 @@ namespace StudentDriver
 		public static string FACEBOOK_SECRET_ID { get; private set; }
 		public static string FACEBOOK_OAUTH_URL { get; private set; }
 		public static string FACEBOOK_SUCCESS { get; private set; }
+        public static string FACEBOOK_PROFILE_REQUEST_URL { get; private set; }
 
 		public OAuth ()
 		{
@@ -27,6 +28,7 @@ namespace StudentDriver
 			var fbElement = doc.Element ("OAuth").Descendants ("Facebook");
 			FACEBOOK_OAUTH_URL = fbElement.Attributes ("oauthURL").FirstOrDefault ().Value;
 			FACEBOOK_SUCCESS = fbElement.Attributes ("success").FirstOrDefault ().Value;
+		    FACEBOOK_PROFILE_REQUEST_URL = fbElement.Attributes("profileRequestUrl").FirstOrDefault().Value;
 			var facebookDescendants = fbElement.Descendants ();
 
 #if DEBUG
