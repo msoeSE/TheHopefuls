@@ -8,5 +8,6 @@ namespace StudentDriver
 	{
 		SQLiteConnection GetConnection ();
 		SQLiteAsyncConnection GetAsyncConnection ();
-	}
+	    void DeleteDatabase();
+    }
 }

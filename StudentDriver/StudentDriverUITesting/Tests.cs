@@ -26,8 +26,11 @@ namespace StudentDriverUITesting
 		}
 
 		[Test]
-		public void AppLaunches ()
+		public void LogInWithFacebook_CorrectCredentials_CanSeeNameAndProfilePic ()
 		{
+            app.Repl();
+		    app.WaitForElement(c => c.Marked("Driving Log"));
+            app.Tap(c=>c.Marked("FrameRenderer"));
 			app.Screenshot ("First screen.");
 		}
 	}

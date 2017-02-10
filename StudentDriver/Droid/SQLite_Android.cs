@@ -28,7 +28,7 @@ namespace RACompanion
             //var documentsPath = Path.Combine(path, Android.OS.Environment.DirectoryDownloads);
             var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 #else
-			documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
+			var documentsPath = Environment.GetFolderPath(Environment.SpecialFolder.Personal);
 #endif
 
             return Path.Combine(documentsPath, fileName);
