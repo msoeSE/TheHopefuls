@@ -15,6 +15,7 @@ namespace StudentDriver
 		public SettingsPage ()
 		{
 			InitializeComponent ();
+			NavigationPage.SetHasNavigationBar (this, false);
 			//Just placeholder states to resize the elements
 		    
 			statePicker.Items.Add ("Wisconsin");
