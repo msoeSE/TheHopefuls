@@ -1,9 +1,13 @@
 ﻿using System;
+using SQLite.Net;
+using SQLite.Net.Async;
+
 namespace StudentDriver
 {
 	public interface ISQLite
 	{
-		SQLite.SQLiteConnection GetConnection ();
-		SQLite.SQLiteAsyncConnection GetAsyncConnection ();
-	}
+		SQLiteConnection GetConnection ();
+		SQLiteAsyncConnection GetAsyncConnection ();
+	    void DeleteDatabase();
+    }
 }

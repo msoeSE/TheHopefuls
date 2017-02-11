@@ -4,8 +4,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
 	x:Class="StudentDriver.SettingsPage"
-	BackgroundColor="{x:Static local:AppColors.PageBackground}"
-	xmlns:local="StudentDriver.Config">
+	BackgroundColor="{x:Static studentDriver:AppColors.PageBackground}"
+	xmlns:local="StudentDriver.Config" 
+	xmlns:studentDriver="clr-namespace:StudentDriver;assembly=StudentDriver">
 	<ContentPage.Content>
 		<ScrollView
 			VerticalOptions="FillAndExpand"
@@ -35,7 +36,7 @@
 					HorizontalOptions="FillAndExpand"
 					VerticalOptions="CenterAndExpand"
 					HasShadow="false"
-					OutlineColor="{x:Static local:AppColors.Second}">
+					OutlineColor="{x:Static studentDriver:AppColors.Second}">
 					<StackLayout
 						VerticalOptions="FillAndExpand"
 						HorizontalOptions="FillAndExpand">
@@ -58,7 +59,7 @@
 					HorizontalOptions="FillAndExpand"
 					VerticalOptions="CenterAndExpand"
 					HasShadow="false"
-					OutlineColor="{x:Static local:AppColors.Second}">
+					OutlineColor="{x:Static studentDriver:AppColors.Second}">
 					<StackLayout
 						VerticalOptions="FillAndExpand"
 						HorizontalOptions="FillAndExpand">

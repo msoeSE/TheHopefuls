@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using SQLite;
+﻿using SQLite.Net.Attributes;
 
 namespace StudentDriver.Models
 {
@@ -17,7 +12,8 @@ namespace StudentDriver.Models
         public string LastName { get; set; }
         public int DrivingSchoolId { get; set; }
         public UserType UType { get; set; }
-        public StateReqs State { get; set; }
+        public string ImageUrl { get; set; }
+        //public StateReqs State { get; set; }
 
         public enum UserType
         {
