@@ -28,10 +28,12 @@ namespace StudentDriverUITesting
 		[Test]
 		public void LogInWithFacebook_CorrectCredentials_CanSeeNameAndProfilePic ()
 		{
-            app.Repl();
-		    app.WaitForElement(c => c.Marked("Driving Log"));
-            app.Tap(c=>c.Marked("FrameRenderer"));
-			app.Screenshot ("First screen.");
-		}
+            app.Tap(x => x.Class("FrameRenderer"));
+            app.Tap(x => x.Css("input"));
+            app.EnterText("email");
+            app.EnterText("\t");
+            app.EnterText("password");
+            app.Tap(x => x.Css("button"));
+        }
 	}
 }
