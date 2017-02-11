@@ -22,6 +22,11 @@ angular.module("appRoutes", []).config(
 			controller: "SettingsController as vm"
 		})
 
+		.when("/instructors", {
+			templateUrl: "views/instructors.html",
+			controller: "InstructorListController as vm"
+		})
+
 		.otherwise({ redirectTo: "/" });
 
 		$locationProvider.html5Mode(true);
