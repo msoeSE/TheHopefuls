@@ -22,7 +22,8 @@
 					WidthRequest="85"
 					HeightRequest="95"
 					Source="facebook.png"
-					Aspect="AspectFill">
+					Aspect="AspectFill"
+						Margin="0,10,0,0">
 				</controls:CircleImage>
 				<Label
 					Text="Jonathon Smith"
