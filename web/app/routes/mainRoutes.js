@@ -15,8 +15,10 @@ var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 
 function ensureAuthenticated(req, res, next){
-	if(req.isAuthenticated())
+	if(req.isAuthenticated()){
 		next();
+		return;
+	}
 	res.status(statusCodes.FORBIDDEN);
 	res.json({error: "Not Authenticated"});
 }
