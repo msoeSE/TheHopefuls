@@ -12,6 +12,7 @@ mongoose.connect("mongodb://localhost/routerdb");
 var userCtrl = require("../controllers/userCtrl");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
+var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
@@ -113,6 +114,16 @@ router.post("/drivingschools/:schoolId/instructors", function(req, res) {
 router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res) {
 	res.status(statusCodes.NOT_IMPLEMENTED);
 	res.json({});
+});
+
+// GET the driving regulations for a specified state
+router.get("/stateregulations/:state", function(req, res) {
+	stateRegsCtrl.getStateRegs(req.params.state, (stateRegs)=>{
+		res.json(stateRegs);
+	}, (err)=>{
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 module.exports = router;

@@ -30,7 +30,7 @@ angular.module("StatsCtrl", []).controller("StatsController", function($log, $lo
 	$log.log(vm);
 
 
-	angular.element(".student-stats-table").DataTable({
+	$(".student-stats-table").DataTable({
 		data: vm.mockUserData,
 		columns: [
 			{ title: "Date" },
