@@ -117,7 +117,7 @@ router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res
 });
 
 // GET the driving regulations for a specified state
-rouer.get("/stateregulations/:state", function(req, res) {
+router.get("/stateregulations/:state", function(req, res) {
 	stateRegsCtrl.getStateRegs(req.params.state, (sateRegs)=>{
 		res.json(stateRegs);
 	}, (error)=>{
@@ -128,7 +128,12 @@ rouer.get("/stateregulations/:state", function(req, res) {
 
 // POST to link an account to a driving school
 router.post("/linkacctoschool", function (req, res) {
-
+	linkSchoolCtrl.linkAcc(req.params.schoolToken, (schoolToken)=>{
+		res.json(schoolToken);
+	}, (error)=>{
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 module.exports = router;
