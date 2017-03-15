@@ -1,6 +1,6 @@
 var StateRegulations = require("../models/StateRegulations");
 
-exports.linkAccToSchool = function (schoolId, callback, error) {
+exports.getStateRegs = function (schoolId, callback, error) {
 	User.findOne({
 		state: state
 	}, function(err, doc) {
