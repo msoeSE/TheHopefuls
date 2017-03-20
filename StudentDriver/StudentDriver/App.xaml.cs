@@ -22,6 +22,7 @@ namespace StudentDriver
 			OAuth.InitializeKeys ();
 		    //var account = AccountStore.Create().FindAccountsForService("facebook").First();
 			var authenticated = WebService.GetInstance ().PostOAuthToken (Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
+			authenticated = true;
 			if (!authenticated) {
 				LoginAction ();
 			}

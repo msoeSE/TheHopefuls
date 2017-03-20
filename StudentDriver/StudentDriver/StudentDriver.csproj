@@ -80,6 +80,7 @@
     <Compile Include="Helpers\Settings.cs" />
     <Compile Include="Services\WebService.cs" />
     <Compile Include="Config\AppColors.cs" />
+    <Compile Include="Services\GeoCodeCalc.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="SQLite.Net, Version=3.1.0.0, Culture=neutral, processorArchitecture=MSIL">
