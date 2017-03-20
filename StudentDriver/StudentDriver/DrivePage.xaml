@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -57,7 +57,7 @@
 						x:Name="distanceLabel"
 						Grid.Row="0"
 						Grid.Column="1"
-						Text="0.0 mi"
+						Text="0.00 mi"
 						FontSize="Medium"
 						HorizontalOptions="EndAndExpand">
 					</Label>
@@ -90,7 +90,7 @@
 						Grid.Row="2"
 						Grid.Column="1"
 						FontSize="Medium"
-						Text="0 min"
+						Text="0 sec"
 						HorizontalOptions="EndAndExpand">
 					</Label>
 				</Grid>

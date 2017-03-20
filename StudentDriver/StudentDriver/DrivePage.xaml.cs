@@ -5,17 +5,17 @@ using System.Diagnostics;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms;
+using StudentDriver.Models;
 
 namespace StudentDriver
 {
 	public partial class DrivePage : ContentPage
 	{
 		private bool isStudentDriving = false;
-		private ulong pointsCollected = 0;
 		//speed and distance in miles (imperial)
 		private double currentAverageSpeed = 0.0;
-		private double currentDistance = 0.0;
-		private Position lastPosition = null;
+		private TimeSpan currentTime;
+		private List<DrivePoint> positions = new List<DrivePoint>();
 		private IGeolocator locator;
 
 		protected override void OnAppearing()
@@ -28,20 +28,23 @@ namespace StudentDriver
 				locator.DesiredAccuracy = 5;
 				locator.PositionChanged += (object s, PositionEventArgs eventArg) =>
 				{
-					pointsCollected++;
-					if (lastPosition == null)
+					var currentPosition = eventArg.Position;
+					if (positions.Count < 100) // every 100 points, we will add to the database.
 					{
-						lastPosition = eventArg.Position;
+						var drivePoint = new DrivePoint();
+						drivePoint.Latitude = currentPosition.Latitude;
+						drivePoint.Longitude = currentPosition.Longitude;
+						drivePoint.PointDateTime = currentPosition.Timestamp.DateTime;
+						drivePoint.Speed = (float)currentPosition.Speed;
+						positions.Add(drivePoint);
 						currentAverageSpeed = ConvertSpeeds(eventArg.Position.Speed);
 					}
 					else
 					{
-						currentDistance += GeoCodeCalc.CalcDistance(lastPosition.Latitude, lastPosition.Longitude, eventArg.Position.Latitude, eventArg.Position.Longitude);
-						//do a weighted average in order to not handle drastic jumps
-						currentAverageSpeed = (currentAverageSpeed * 0.95) + (ConvertSpeeds(eventArg.Position.Speed) * 0.05);
+						// Save to database.
+
 
 					}
-					distanceLabel.Text = string.Format("{0} mi", currentDistance.ToString("F"));
 					avgSpeedLabel.Text = string.Format("{0} MPH", currentAverageSpeed.ToString("F1"));
 				};
 			}
@@ -59,11 +62,41 @@ namespace StudentDriver
 
 			drivingButton.Clicked += async (object sender, EventArgs e) =>
 			{
+				Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+				{
+					if (isStudentDriving)
+					{
+						currentTime.Add(new TimeSpan(0, 0, 1));
+						if (currentTime.Days > 0)
+						{
+							timeLabel.Text = string.Format("{0}d {1}h {2}min {3}sec", currentTime.Days, currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
+						}
+						else if (currentTime.Hours > 0)
+						{
+							timeLabel.Text = string.Format("{0}h {1}min {2}sec", currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
+						}
+						else if (currentTime.Minutes > 0)
+						{
+							timeLabel.Text = string.Format("{0}min {1}sec", currentTime.Minutes, currentTime.Seconds);
+						}
+						else
+						{
+							timeLabel.Text = string.Format("{0}sec", currentTime.Seconds);
+						}
+						return true;
+					}
+					else
+					{
+						currentTime = new TimeSpan();
+						return false;
+					}
+				});
 				UpdateDrivingButton();
 				try
 				{
 					//IMPORTANT distances and speeds coming from the geolocator are in meters, so we 
 					//need to do our conversions.
+					Debug.WriteLine(locator.IsGeolocationEnabled);
 					if (!isStudentDriving)
 					{
 						await locator.StopListeningAsync();
@@ -98,13 +131,9 @@ namespace StudentDriver
 			isStudentDriving = !isStudentDriving;
 			if (isStudentDriving)
 			{
-				timeLabel.Text = "0 min";
-				distanceLabel.Text = "0.0 mi";
+				timeLabel.Text = "0 sec";
 				avgSpeedLabel.Text = "0.0 MPH";
-				pointsCollected = 0;
 				currentAverageSpeed = 0;
-				currentDistance = 0;
-				lastPosition = null;
 			}
 			drivingButton.Text = isStudentDriving ? "Stop" : "Start";
 		}
