@@ -15,6 +15,7 @@ var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 var linkSchoolCtrl = require("../controllers/linkSchoolCtrl");
 
+
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
 	userCtrl.getStudent(req.params.userId, (user)=>{
@@ -129,8 +130,7 @@ router.get("/stateregulations/:state", function(req, res) {
 
 // POST to link an account to a driving school
 router.post("/linkacctoschool", function (req, res) {
-	//TODO: get the id from the POST request for the user
-	linkSchoolCtrl.linkAccToSchool(req.params.userId, req.body.schoolId, (results)=>{
+	linkSchoolCtrl.linkAccToSchool(req.user.id, req.body.schoolId, (results)=>{
 		res.status(statusCodes.OK);
 		res.json(results);
 	}, (error)=>{
