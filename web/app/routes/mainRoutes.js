@@ -129,7 +129,8 @@ router.get("/stateregulations/:state", function(req, res) {
 
 // POST to link an account to a driving school
 router.post("/linkacctoschool", function (req, res) {
-	linkSchoolCtrl.linkAcc(req.params.userId, req.body.schoolId, (results)=>{
+	//TODO: get the id from the POST request for the user
+	linkSchoolCtrl.linkAccToSchool(req.params.userId, req.body.schoolId, (results)=>{
 		res.status(statusCodes.OK);
 		res.json(results);
 	}, (error)=>{

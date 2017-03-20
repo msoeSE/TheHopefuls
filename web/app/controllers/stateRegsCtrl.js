@@ -1,7 +1,7 @@
 var StateRegulations = require("../models/StateRegulations");
 
-exports.getStateRegs = function (schoolId, callback, error) {
-	User.findOne({
+exports.getStateRegs = function (state, callback, error) {
+	StateRegulations.findOne({
 		state: state
 	}, function(err, doc) {
 		if (err) {

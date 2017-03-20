@@ -1,19 +1,18 @@
-var DrivingSchool = require("../models/DrivingSchool");
 var User = require("../models/User");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 
 
-// TODO: pull driving school, pull user, update user with schoolId for linking and syncing
+// update user with schoolId for linking
 exports.linkAccToSchool = function (userId, schoolId, callback, error) {
-	User.findOneAndUpdate({ userId: userId}, {schoolId: schoolId}, function(err, doc) {
+	User.findOneAndUpdate({ userId: userId}, {schoolId: schoolId}, function(err, student) {
 		if (err) {
 			error({
-				"message": "Error retrieving state regulations",
+				"message": "Error finding student to link school with",
 				"error": err
 			});
 			return;
 		}
-		drivingSchoolCtrl.addStudentToSchool(schoolId, doc);
-		callback(doc);
+		drivingSchoolCtrl.addStudentToSchool(schoolId, student);
+		callback(student);
 	});
 };

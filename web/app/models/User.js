@@ -22,6 +22,7 @@ var UserSchema = new Schema({
 		required: true
 	},
 	state: String,
+	schoolId: Number,
 	drivingSessions: [{
 		type: Schema.Types.ObjectId,
 		ref: "DrivingSession"

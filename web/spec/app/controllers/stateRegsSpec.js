@@ -39,5 +39,5 @@ describe("State Regulations Endpoint Tests", function() {
 				"error": "error"
 			});
 		});
-	})
+	});
 });
