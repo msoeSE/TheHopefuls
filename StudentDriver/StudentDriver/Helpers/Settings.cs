@@ -1,4 +1,6 @@
 // Helpers/Settings.cs
+
+using System.Diagnostics;
 using Plugin.Settings;
 using Plugin.Settings.Abstractions;
 using StudentDriver.Services;
@@ -12,56 +14,37 @@ namespace StudentDriver.Helpers
 	/// </summary>
 	public static class Settings
 	{
-		private static ISettings AppSettings {
-			get {
-				return CrossSettings.Current;
-			}
-		}
 
-		#region Setting Constants
+        private const string apiDevBaseUrl = "dev.drivinglog.online/";
+        private const string apiProdBaseUrl = "drivinglog.online/";
+        private const string apiDevBasePort = "3000";
+        private const string apiProdBasePort = "3000";
 
-		private const string SettingsKey = "settings_key";
-		private static readonly string SettingsDefault = string.Empty;
-		private static readonly int SettingsDefaultInt = 0;
-		private const string FACEBOOK_OAUTH = "facebook";
-		private const string GOOGLE_OAUTH = "google";
-		#endregion
+        public static string APIBaseUrl
+        {
+            get
+            {
+#if DEBUG
+                return apiDevBaseUrl;
+#else
+                return apiProdBaseUrl
+#endif
+            }
+        }
 
+        public static string APIBasePort
+        {
+            get
+            {
+#if DEBUG
+                return apiDevBasePort;
+#else
+                return apiProdBasePort
+#endif
+            }
+        }
 
-		private const string apiBaseUrl = "apiBaseUrl";
-		private const string apiBasePort = "apiBasePort";
-		private const string oAuthAccessToken = "oAuthAccessToken";
-		private const string oAuthSourceProvider = "oAuthSourceProvider";
+        public const string OAuthEndpoint = "auth/facebook/token";
 
-
-		public static string GeneralSettings {
-			get {
-				return AppSettings.GetValueOrDefault<string> (SettingsKey, SettingsDefault);
-			}
-			set {
-				AppSettings.AddOrUpdateValue<string> (SettingsKey, value);
-			}
-		}
-
-		public static string OAuthAccessToken {
-			get { return AppSettings.GetValueOrDefault (oAuthAccessToken, SettingsDefault); }
-			set { AppSettings.AddOrUpdateValue (oAuthAccessToken, value); }
-		}
-
-		public static WebService.OAuthSource OAuthSourceProvider {
-			get { return AppSettings.GetValueOrDefault (oAuthSourceProvider, WebService.OAuthSource.None); }
-			set { AppSettings.AddOrUpdateValue (oAuthSourceProvider, value); }
-		}
-
-		public static string APIBaseUrl {
-			get { return AppSettings.GetValueOrDefault (apiBaseUrl, SettingsDefault); }
-			set { AppSettings.AddOrUpdateValue (apiBaseUrl, value); }
-		}
-
-		public static int APIBasePort {
-			get { return AppSettings.GetValueOrDefault (apiBasePort, SettingsDefaultInt); }
-			set { AppSettings.AddOrUpdateValue (apiBasePort, value); }
-		}
-
-	}
+    }
 }

@@ -43,7 +43,7 @@ namespace StudentDriver
 		async Task LogOutTapped (object sender, EventArgs e)
 		{
 			//TODO Fix UserDialogs call? it's not working?
-			if (await WebService.GetInstance ().OAuthLogout ()) {
+			if (await WebService.Instance.Logout ()) {
 				App.LoginAction.Invoke ();
 			} else {
 				UserDialogs.Instance.ShowError ("Unable to Logout");
