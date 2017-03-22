@@ -46,22 +46,6 @@
 						</ColumnDefinition>
 					</Grid.ColumnDefinitions>
 					<Label
-						Grid.Row="0"
-						Grid.Column="0"
-						Text="Distance"
-						FontAttributes="Bold"
-						FontSize="Medium"
-						HorizontalOptions="Start">
-					</Label>
-					<Label
-						x:Name="distanceLabel"
-						Grid.Row="0"
-						Grid.Column="1"
-						Text="0.00 mi"
-						FontSize="Medium"
-						HorizontalOptions="EndAndExpand">
-					</Label>
-					<Label
 						Grid.Row="1"
 						Grid.Column="0"
 						Text="Average Speed"
@@ -90,7 +74,7 @@
 						Grid.Row="2"
 						Grid.Column="1"
 						FontSize="Medium"
-						Text="0 sec"
+						Text="0:00:00"
 						HorizontalOptions="EndAndExpand">
 					</Label>
 				</Grid>

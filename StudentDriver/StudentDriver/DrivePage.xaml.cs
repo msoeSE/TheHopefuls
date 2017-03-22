@@ -37,13 +37,16 @@ namespace StudentDriver
 						drivePoint.PointDateTime = currentPosition.Timestamp.DateTime;
 						drivePoint.Speed = (float)currentPosition.Speed;
 						positions.Add(drivePoint);
-						currentAverageSpeed = ConvertSpeeds(eventArg.Position.Speed);
+						currentAverageSpeed = currentAverageSpeed == 0.0 ? ConvertSpeeds(eventArg.Position.Speed) : (0.95 * currentAverageSpeed) + (0.05 * ConvertSpeeds(eventArg.Position.Speed));
 					}
 					else
 					{
-						// Save to database.
-
-
+						Task.Factory.StartNew(async () =>
+						{
+							var database = SQLiteDatabase.GetInstance();
+							await database.AddDrivePoints(positions);
+							positions.Clear();
+						});
 					}
 					avgSpeedLabel.Text = string.Format("{0} MPH", currentAverageSpeed.ToString("F1"));
 				};
@@ -66,23 +69,11 @@ namespace StudentDriver
 				{
 					if (isStudentDriving)
 					{
-						currentTime.Add(new TimeSpan(0, 0, 1));
-						if (currentTime.Days > 0)
+						currentTime = currentTime.Add(new TimeSpan(0, 0, 1));
+						Device.BeginInvokeOnMainThread(() =>
 						{
-							timeLabel.Text = string.Format("{0}d {1}h {2}min {3}sec", currentTime.Days, currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
-						}
-						else if (currentTime.Hours > 0)
-						{
-							timeLabel.Text = string.Format("{0}h {1}min {2}sec", currentTime.Hours, currentTime.Minutes, currentTime.Seconds);
-						}
-						else if (currentTime.Minutes > 0)
-						{
-							timeLabel.Text = string.Format("{0}min {1}sec", currentTime.Minutes, currentTime.Seconds);
-						}
-						else
-						{
-							timeLabel.Text = string.Format("{0}sec", currentTime.Seconds);
-						}
+							timeLabel.Text = currentTime.ToString("g");
+						});
 						return true;
 					}
 					else
@@ -109,7 +100,7 @@ namespace StudentDriver
 						}
 						else
 						{
-							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to use GPS: Please make sure GPS is enabled");
+							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to use GPS: GPS is not enabled");
 							UpdateDrivingButton();
 						}
 					}
@@ -131,7 +122,7 @@ namespace StudentDriver
 			isStudentDriving = !isStudentDriving;
 			if (isStudentDriving)
 			{
-				timeLabel.Text = "0 sec";
+				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
 				currentAverageSpeed = 0;
 			}
