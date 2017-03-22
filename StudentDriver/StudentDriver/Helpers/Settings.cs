@@ -20,31 +20,7 @@ namespace StudentDriver.Helpers
         private const string apiDevBasePort = "3000";
         private const string apiProdBasePort = "3000";
 
-        public static string APIBaseUrl
-        {
-            get
-            {
-#if DEBUG
-                return apiDevBaseUrl;
-#else
-                return apiProdBaseUrl
-#endif
-            }
-        }
-
-        public static string APIBasePort
-        {
-            get
-            {
-#if DEBUG
-                return apiDevBasePort;
-#else
-                return apiProdBasePort
-#endif
-            }
-        }
-
-        public const string OAuthEndpoint = "auth/facebook/token";
+        public const string OAuthUrl = "https://dev.drivinglog.online/auth/facebook/token";
 
     }
 }

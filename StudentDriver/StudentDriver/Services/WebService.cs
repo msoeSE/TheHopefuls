@@ -20,7 +20,8 @@ namespace StudentDriver.Services
     {
         private static HttpClient _client;
         private static WebService _instance;
-        private OAuthController _oAuthController;
+        private readonly OAuthController _oAuthController;
+        private readonly DatabaseController _databaseController;
 
         public static WebService Instance => _instance ?? (_instance = new WebService());
 
@@ -29,6 +30,7 @@ namespace StudentDriver.Services
         {
             _client = new HttpClient();
             _oAuthController = new OAuthController();
+            _databaseController = new DatabaseController();
         }
 
         //public async Task<UserStats> GetStudentStats(int id)
@@ -71,29 +73,14 @@ namespace StudentDriver.Services
 
         public async Task<bool> SaveAccount (AccountDummy dummyAccount)
         {
-            var account = new Account(dummyAccount.Username,dummyAccount.Properties,dummyAccount.Cookies); 
-            if (await VerifiedAccountAgainstFacebook(account))
-            {
-                await SaveAccountToDevice(account);
-            }
-            return true;
+            var account = new Account(dummyAccount.Username,dummyAccount.Properties,dummyAccount.Cookies);
+            var response = await _oAuthController.MakePostRequest(Settings.OAuthUrl, account);
+            if (response?.StatusCode != HttpStatusCode.OK) return false;
+            var responseText = response.GetResponseText();
+            if (string.IsNullOrEmpty(responseText) || responseText.StartsWith("<")) return false;
+            return await _databaseController.SaveUser(responseText);
         }
 
-        private async Task<bool> VerifiedAccountAgainstFacebook(Account account)
-        {
-            var url = GenerateRequestUrl(Settings.APIBaseUrl, Settings.OAuthEndpoint);
-            var response = await _oAuthController.MakePostRequest("https://dev.drivinglog.online/auth/facebook/token", account);
-            return response?.StatusCode == HttpStatusCode.OK;
-        }
-
-        private async Task<bool> SaveAccountToDevice(Account account)
-        {
-            var response = await _oAuthController.GetProfile(account);
-            var json = response.GetResponseText();
-            return true;
-
-
-        }
 
         public async Task<bool> Logout ()
         {
@@ -111,23 +98,6 @@ namespace StudentDriver.Services
 			//	return true;
 			//}
 			return false;
-
-		}
-
-
-		private string GenerateRequestUrl(string host, string endPoint, Dictionary<string, string> paramDictionary = null)
-		{
-			var queryString = string.Empty;
-			if (paramDictionary != null) {
-				queryString = string.Format (string.Join ("&", paramDictionary.Select (kvp => $"{kvp.Key}={kvp.Value}")));
-			}
-
-			var builder = new UriBuilder {
-				Host = host,
-				Path = endPoint,
-				Query = queryString
-			};
-			return builder.ToString ();
 
 		}
 
