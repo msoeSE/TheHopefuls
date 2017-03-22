@@ -5,6 +5,7 @@ using System.Diagnostics;
 using Plugin.Geolocator;
 using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms;
+using StudentDriver.Services;
 using StudentDriver.Models;
 
 namespace StudentDriver
@@ -91,6 +92,8 @@ namespace StudentDriver
 					if (!isStudentDriving)
 					{
 						await locator.StopListeningAsync();
+						//TODO Send information via webservice and empty DB table? Do we even need the "unsync drive table"?
+
 					}
 					else
 					{

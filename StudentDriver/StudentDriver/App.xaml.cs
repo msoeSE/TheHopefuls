@@ -6,51 +6,65 @@ using Xamarin.Auth;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
-[assembly: XamlCompilation (XamlCompilationOptions.Compile)]
+[assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace StudentDriver
 {
 	public partial class App : Application
 	{
-		public App ()
+		public App()
 		{
-			InitializeComponent ();
-			MainPage = new StudentDriverPage ();
+			InitializeComponent();
+			MainPage = new StudentDriverPage();
 		}
 
-		protected override async void OnStart ()
+		protected override async void OnStart()
 		{
-			OAuth.InitializeKeys ();
-		    //var account = AccountStore.Create().FindAccountsForService("facebook").First();
-			var authenticated = WebService.GetInstance ().PostOAuthToken (Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
+			OAuth.InitializeKeys();
+			//var account = AccountStore.Create().FindAccountsForService("facebook").First();
+			var authenticated = WebService.GetInstance().PostOAuthToken(Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
+#if DEBUG
 			authenticated = true;
-			if (!authenticated) {
-				LoginAction ();
+#endif
+			if (!authenticated)
+			{
+				LoginAction();
 			}
+			else
+			{
+				//TODO check for database table of unsynced drive points, and then send it if it is there.
+			}
+
 			// Handle when your app starts
 		}
 
-		protected override void OnSleep ()
+		protected override void OnSleep()
 		{
 			// Handle when your app sleeps
 		}
 
-		protected override void OnResume ()
+		protected override void OnResume()
 		{
 			// Handle when your app resumes
 		}
 
-		public static Action SuccessfulLoginAction {
-			get {
-				return () => {
-					Current.MainPage = new StudentDriverPage ();
+		public static Action SuccessfulLoginAction
+		{
+			get
+			{
+				return () =>
+				{
+					Current.MainPage = new StudentDriverPage();
 				};
 			}
 		}
 
-		public static Action LoginAction {
-			get {
-				return () => {
-					Current.MainPage = new LoginPage ();
+		public static Action LoginAction
+		{
+			get
+			{
+				return () =>
+				{
+					Current.MainPage = new LoginPage();
 				};
 			}
 		}
