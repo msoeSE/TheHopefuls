@@ -86,6 +86,16 @@ namespace StudentDriver.Services
             return await _databaseController.SaveUser(responseText);
         }
 
+        public async Task<bool> ConnectSchool(string schoolId)
+        {
+            var parameters = new Dictionary<string,string>
+                {
+                    { "schoolId",schoolId}
+                };
+            var response = await _oAuthController.MakeGetRequest(Settings.SchoolIdUrl, parameters);
+            return response.StatusCode == HttpStatusCode.OK;
+        }
+
         private async Task<string> VerifyAccount(Account account)
         {
             return await _oAuthController.VerifyAccount(Settings.OAuthUrl, account);
@@ -95,20 +105,6 @@ namespace StudentDriver.Services
         public void Logout ()
         {
             _oAuthController.DeAuthenticateSavedAccount();
-
-			//string url = "";
-			//if (Settings.OAuthSourceProvider == OAuthSource.Facebook) {
-			//	url = string.Format ("https://facebook.com/logout.php?next={0}&access_token={1}", ServiceController._apiBaseUrl, Settings.OAuthAccessToken);
-			//}
-			//var response = await _client.GetAsync (url);
-			//if (response.IsSuccessStatusCode) {
-			//	Settings.OAuthSourceProvider = OAuthSource.None;
-			//	Settings.OAuthAccessToken = "";
-			//	this.SetTokenHeader ();
-			//	return true;
-			//}
-			//return false;
-
 		}
 
 		private string GenerateDarkSkyWeatherRequestUri (string apiKey, double latitude, double longitude)
