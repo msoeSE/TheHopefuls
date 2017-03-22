@@ -5,7 +5,7 @@
 	android:versionName="1.0"
 	package="io.patz.student_driver">
 	<uses-sdk
-		android:minSdkVersion="15" />
+		android:minSdkVersion="16" />
 	<application
 		android:label="Student Driver">
 	</application>

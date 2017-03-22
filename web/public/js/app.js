@@ -1,4 +1,5 @@
 angular.module("mainApp", ["ngRoute", "appRoutes", "MainCtrl",
 	"StatsCtrl", "StatsService",
 	"StudentListCtrl", "StudentListService",
-	"SettingsCtrl", "SettingsService"]);
+	"SettingsCtrl", "SettingsService",
+	"InstructorsCtrl", "InstructorsService"]);

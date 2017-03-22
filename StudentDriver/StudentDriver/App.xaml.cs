@@ -1,5 +1,7 @@
 ﻿using Xamarin.Forms;
+using Xamarin.Forms.Xaml;
 
+[assembly: XamlCompilation (XamlCompilationOptions.Compile)]
 namespace StudentDriver
 {
 	public partial class App : Application
@@ -7,12 +9,12 @@ namespace StudentDriver
 		public App ()
 		{
 			InitializeComponent ();
-
-			MainPage = new StudentDriverPage ();
+			MainPage = new LoginPage ();
 		}
 
 		protected override void OnStart ()
 		{
+			OAuth.InitializeKeys ();
 			// Handle when your app starts
 		}
 

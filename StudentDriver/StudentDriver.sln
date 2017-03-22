@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriver.Droid", "Droi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriverUITesting", "StudentDriverUITesting\StudentDriverUITesting.csproj", "{CFA934CA-A954-46B3-9B51-767544BB29DB}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTests", "UnitTests\UnitTests.csproj", "{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -17,6 +19,7 @@ Global
 		Release|iPhone = Release|iPhone
 		Release|iPhoneSimulator = Release|iPhoneSimulator
 		Debug|iPhone = Debug|iPhone
+		Test|Any CPU = Test|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{57C205CD-D251-46AA-A66D-D7EC7ABFDD97}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
@@ -67,5 +70,23 @@ Global
 		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|iPhone.ActiveCfg = Debug|Any CPU
 		{CFA934CA-A954-46B3-9B51-767544BB29DB}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Release|iPhone.Build.0 = Release|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{C2763CA3-81C3-4F91-BC5E-E61DD6AD6E75}.Debug|iPhone.Build.0 = Debug|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.DotNetNamingPolicy = $1
+		$1.DirectoryNamespaceAssociation = None
+		$1.ResourceNamePolicy = FileFormatDefault
 	EndGlobalSection
 EndGlobal

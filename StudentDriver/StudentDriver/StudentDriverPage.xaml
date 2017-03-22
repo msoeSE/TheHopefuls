@@ -1,11 +1,25 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<ContentPage
+<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="clr-namespace:StudentDriver"
 	x:Class="StudentDriver.StudentDriverPage">
-	<Label
-		Text="Welcome to Xamarin Forms!"
-		VerticalOptions="Center"
-		HorizontalOptions="Center" />
-</ContentPage>
+	<NavigationPage
+		Title="Drive" Icon="wheel.png">
+		<x:Arguments>
+			<local:DrivePage />
+		</x:Arguments>
+	</NavigationPage>
+	<NavigationPage
+		Title="Stats" Icon="graph.png">
+		<x:Arguments>
+			<local:StatsPage />
+		</x:Arguments>
+	</NavigationPage>
+	<NavigationPage
+		Title="Settings" Icon="settings.png">
+		<x:Arguments>
+			<local:SettingsPage />
+		</x:Arguments>
+	</NavigationPage>
+</TabbedPage>
