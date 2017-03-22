@@ -124,7 +124,7 @@ namespace StudentDriver
 			{
 				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
-				currentAverageSpeed = 0;
+				currentAverageSpeed = 0.0;
 			}
 			drivingButton.Text = isStudentDriving ? "Stop" : "Start";
 		}
