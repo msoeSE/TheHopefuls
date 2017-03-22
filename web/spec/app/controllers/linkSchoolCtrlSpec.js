@@ -26,11 +26,11 @@ describe("Link Account to Driving School Test", function() {
 		});
 		it("should link student to school if there is no database error", function() {
 			shouldErr = false;
-			toTest.linkAccToSchool("userID", "schoolId",success, failure);
+			toTest.linkAccToSchool("userID", "schoolId", success, failure);
 			expect(success).toHaveBeenCalledWith(studentMockObject);
 			expect(failure).not.toHaveBeenCalled();
 		});
-		it("should get an error if there is a database error", function(){
+		it("should get an error if there is a database error", function() {
 			shouldErr = true;
 			toTest.linkAccToSchool("userID", "schoolId", success, failure);
 			expect(success).not.toHaveBeenCalled();
