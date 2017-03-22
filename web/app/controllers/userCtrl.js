@@ -37,7 +37,7 @@ exports.createUser = function(info, userType, callback, error) {
 
 exports.getUser = function(id, callback, error){
 	User.findOne({
-		_id: id
+		loginDetails: { userId: id }
 	}, function(err, doc) {
 		if (err) {
 			error({

@@ -1,3 +1,6 @@
+// Mongo files
+var userCtrl = require("./app/controllers/userCtrl");
+
 // modules =================================================
 var express		= require("express");
 var app			= express();
@@ -58,9 +61,21 @@ passport.use(
 		callbackURL: `${config.Auth.CallbackURLBase}/auth/facebook/callback`,
 		profileFields: ["id", "email", "gender", "name", "picture.type(large)"]
 	}, function(accessToken, refreshToken, profile, done) {
-		// User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-		// 	return cb(err, user);
-		// });
+		var json = {firstName: profile._json.first_name,
+			lastName: profile._json.last_name,
+			loginDetails: {
+				userId: profile.id,
+				service: "facebook"
+			}
+		};
+		userCtrl.createUser(json, "student", function(user) {
+			console.log(user)
+		}, function() {
+			console.log("error");
+		});
+		console.log(profile._json.first);
+		console.log(accessToken);
+		console.log(json);
 		return done(null, profile);
 	}
 ));

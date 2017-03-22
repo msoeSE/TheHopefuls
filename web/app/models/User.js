@@ -6,7 +6,10 @@ var Schema = mongoose.Schema;
 // module.exports allows us to pass this to other files when it is called
 var UserSchema = new Schema({
 	loginDetails: {
-		userId: String,
+		userId: {
+			type:String,
+			unique: true
+		},
 		service: String
 	},
 	firstName: {
