@@ -61,21 +61,27 @@ passport.use(
 		callbackURL: `${config.Auth.CallbackURLBase}/auth/facebook/callback`,
 		profileFields: ["id", "email", "gender", "name", "picture.type(large)"]
 	}, function(accessToken, refreshToken, profile, done) {
-		var json = {firstName: profile._json.first_name,
-			lastName: profile._json.last_name,
-			loginDetails: {
-				userId: profile.id,
-				service: "facebook"
+		userCtrl.getUser(profile.id, function(doc){
+			console.log("no error");
+			console.log(doc);
+			if(!doc){
+				var json = {
+					firstName: profile._json.first_name,
+					lastName: profile._json.last_name,
+					userId: profile.id,
+					service: "facebook"
+				};
+				userCtrl.createUser(json, "student", function(user) {
+					console.log("creating user")
+					console.log(user)
+				}, function(error) {
+					console.log(error);
+				});
 			}
-		};
-		userCtrl.createUser(json, "student", function(user) {
-			console.log(user)
-		}, function() {
+		}, function(error){
 			console.log("error");
+			console.log(error);
 		});
-		console.log(profile._json.first);
-		console.log(accessToken);
-		console.log(json);
 		return done(null, profile);
 	}
 ));
@@ -97,9 +103,18 @@ passport.use(
 		clientID: config.Auth.FacebookAuth.ID,
 		clientSecret: config.Auth.FacebookAuth.Secret
 	}, function(accessToken, refreshToken, profile, done) {
-		// User.findOrCreate({facebookId: profile.id}, function (error, user) {
-		// 	return done(error, user);
-		// });
+		var json = {firstName: profile._json.first_name,
+			lastName: profile._json.last_name,
+			loginDetails: {
+				userId: profile.id,
+				service: "facebook"
+			}
+		};
+		userCtrl.createUser(json, "student", function(user) {
+			console.log(user)
+		}, function() {
+			console.log("error");
+		});
 		return done(null, profile);
 	}
 ));
@@ -145,6 +160,7 @@ app.post("/auth/facebook/token",
 
 app.get("/profile",
 	function(req, res){
+		console.log(req.user);
 		if(req.user)
 			res.write(JSON.stringify(req.user)); // eslint-disable-line
 		res.end();
