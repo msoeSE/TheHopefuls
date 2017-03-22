@@ -41,7 +41,7 @@ namespace StudentDriver
 		void LogOutTapped (object sender, EventArgs e)
 		{
 			//TODO Fix UserDialogs call? it's not working?
-            WebService.Instance.Logout();
+            ServiceController.Instance.Logout();
             App.LoginAction.Invoke();
 		}
 	}
