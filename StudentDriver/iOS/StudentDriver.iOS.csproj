@@ -167,10 +167,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OAuthAccess\OAuthAccess.csproj">
-      <Project>{de51c5a2-42ed-45ec-addf-671d66b3237a}</Project>
-      <Name>OAuthAccess</Name>
-    </ProjectReference>
     <ProjectReference Include="..\StudentDriver\StudentDriver.csproj">
       <Project>{57C205CD-D251-46AA-A66D-D7EC7ABFDD97}</Project>
       <Name>StudentDriver</Name>

@@ -20,12 +20,8 @@ namespace StudentDriver
 
 		protected override async void OnStart ()
 		{
-            OAuthSettings.InitializeKeys();
-			//var authenticated = WebService.Instance().PostOAuthToken (Settings.OAuthSourceProvider, Settings.OAuthAccessToken).Result;
-			//if (!authenticated) {
-				LoginAction ();
-			////}
-			// Handle when your app starts
+		    if (!await WebService.Instance.UserLoggedIn()) LoginAction();
+		    // Handle when your app starts
 		}
 
 		protected override void OnSleep ()

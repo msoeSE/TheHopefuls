@@ -68,7 +68,7 @@ namespace OAuth
             private static void InitializeKeys()
             {
                 var assembly = typeof(OAuthSettings).GetTypeInfo().Assembly;
-                var fileStream = assembly.GetManifestResourceStream("OAuthAccess.Keys.xml");
+                var fileStream = assembly.GetManifestResourceStream("StudentDriver.Keys.xml");
 
                 XDocument doc = XDocument.Load(fileStream);
                 var fbElement = doc.Element("OAuth").Descendants("Facebook");

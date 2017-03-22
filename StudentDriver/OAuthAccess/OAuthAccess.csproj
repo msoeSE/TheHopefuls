@@ -35,8 +35,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="AccountDummy.cs" />
-    <Compile Include="AccountHandler.cs" />
-    <Compile Include="OAuthController.cs" />
+    <Compile Include="IAccountHandler.cs" />
     <Compile Include="OAuthRequest.cs" />
     <Compile Include="OAuthSettings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -44,6 +44,7 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OAuth\AccountHandler.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -51,6 +52,11 @@
     <Compile Include="Models\DriveWeatherData.cs" />
     <Compile Include="Models\DrivePoint.cs" />
     <Compile Include="Models\UnsyncDrive.cs" />
+    <Compile Include="OAuth\OAuthController.cs" />
+    <Compile Include="OAuth\AccountDummy.cs" />
+    <Compile Include="OAuth\IAccountHandler.cs" />
+    <Compile Include="OAuth\OAuthRequest.cs" />
+    <Compile Include="OAuth\OAuthSettings.cs" />
     <Compile Include="Services\DatabaseController.cs" />
     <Compile Include="StudentDriverPage.xaml.cs">
       <DependentUpon>StudentDriverPage.xaml</DependentUpon>
@@ -162,10 +168,7 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\OAuthAccess\OAuthAccess.csproj">
-      <Project>{de51c5a2-42ed-45ec-addf-671d66b3237a}</Project>
-      <Name>OAuthAccess</Name>
-    </ProjectReference>
+    <EmbeddedResource Include="Keys.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />

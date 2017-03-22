@@ -23,6 +23,7 @@ namespace StudentDriver.Services
         private readonly OAuthController _oAuthController;
         private readonly DatabaseController _databaseController;
 
+
         public static WebService Instance => _instance ?? (_instance = new WebService());
 
 
@@ -71,20 +72,29 @@ namespace StudentDriver.Services
             return weatherData;
         }
 
-        public async Task<bool> SaveAccount (AccountDummy dummyAccount)
+        public async Task<bool> UserLoggedIn()
         {
-            var account = new Account(dummyAccount.Username,dummyAccount.Properties,dummyAccount.Cookies);
-            var response = await _oAuthController.MakePostRequest(Settings.OAuthUrl, account);
-            if (response?.StatusCode != HttpStatusCode.OK) return false;
-            var responseText = response.GetResponseText();
-            if (string.IsNullOrEmpty(responseText) || responseText.StartsWith("<")) return false;
+            var responseText = await _oAuthController.VerifySavedAccount(Settings.OAuthUrl);
+            if (string.IsNullOrEmpty(responseText)) return false;
             return await _databaseController.SaveUser(responseText);
         }
 
-
-        public async Task<bool> Logout ()
+        public async Task<bool> SaveAccount (AccountDummy dummyAccount)
         {
-   //         _oAuthController.LogOut();
+            var account = new Account(dummyAccount.Username,dummyAccount.Properties,dummyAccount.Cookies);
+            var responseText = await VerifyAccount(account);
+            return await _databaseController.SaveUser(responseText);
+        }
+
+        private async Task<string> VerifyAccount(Account account)
+        {
+            return await _oAuthController.VerifyAccount(Settings.OAuthUrl, account);
+        }
+
+
+        public void Logout ()
+        {
+            _oAuthController.DeAuthenticateSavedAccount();
 
 			//string url = "";
 			//if (Settings.OAuthSourceProvider == OAuthSource.Facebook) {
@@ -97,7 +107,7 @@ namespace StudentDriver.Services
 			//	this.SetTokenHeader ();
 			//	return true;
 			//}
-			return false;
+			//return false;
 
 		}
 

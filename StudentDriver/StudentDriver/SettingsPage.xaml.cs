@@ -20,9 +20,7 @@ namespace StudentDriver
 		    
 			statePicker.Items.Add ("Wisconsin");
 			statePicker.SelectedIndexChanged += StateSelected;
-			logOutButton.Clicked += async (object sender, EventArgs e) => {
-				await LogOutTapped (sender, e);
-			};
+			logOutButton.Clicked += LogOutTapped;
 		}
 
 	    protected override async void OnAppearing()
@@ -40,15 +38,11 @@ namespace StudentDriver
 
 		}
 
-		async Task LogOutTapped (object sender, EventArgs e)
+		void LogOutTapped (object sender, EventArgs e)
 		{
 			//TODO Fix UserDialogs call? it's not working?
-			if (await WebService.Instance.Logout ()) {
-				App.LoginAction.Invoke ();
-			} else {
-				UserDialogs.Instance.ShowError ("Unable to Logout");
-			}
-
+            WebService.Instance.Logout();
+            App.LoginAction.Invoke();
 		}
 	}
 }

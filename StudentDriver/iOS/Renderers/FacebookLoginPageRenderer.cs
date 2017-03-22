@@ -43,7 +43,7 @@ namespace StudentDriver.iOS
                         App.LoginAction.Invoke();
                         UserDialogs.Instance.Alert("Unable to Login, Please Try Again", "Error", "Okay");
                     }
-                    App.LoginAction.Invoke();
+                    App.SuccessfulLoginAction.Invoke();
                     UserDialogs.Instance.HideLoading();
 
                 }

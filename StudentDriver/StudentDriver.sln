@@ -8,8 +8,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriver.iOS", "iOS\St
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "StudentDriver.Droid", "Droid\StudentDriver.Droid.csproj", "{F4FBAA2E-C847-406D-B787-1979BF5A8560}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OAuthAccess", "OAuthAccess\OAuthAccess.csproj", "{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -70,24 +68,6 @@ Global
 		{F4FBAA2E-C847-406D-B787-1979BF5A8560}.Test|Any CPU.ActiveCfg = Release|Any CPU
 		{F4FBAA2E-C847-406D-B787-1979BF5A8560}.Test|iPhone.ActiveCfg = Release|Any CPU
 		{F4FBAA2E-C847-406D-B787-1979BF5A8560}.Test|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Debug|iPhone.ActiveCfg = Debug|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Debug|iPhone.Build.0 = Debug|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Release|iPhone.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Release|iPhone.Build.0 = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Test|Any CPU.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Test|Any CPU.Build.0 = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Test|iPhone.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Test|iPhone.Build.0 = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Test|iPhoneSimulator.ActiveCfg = Release|Any CPU
-		{DE51C5A2-42ED-45EC-ADDF-671D66B3237A}.Test|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
