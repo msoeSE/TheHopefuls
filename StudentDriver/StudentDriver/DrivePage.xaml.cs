@@ -92,7 +92,8 @@ namespace StudentDriver
 					if (!isStudentDriving)
 					{
 						await locator.StopListeningAsync();
-						//TODO Send information via webservice and empty DB table? Do we even need the "unsync drive table"?
+						//TODO Send information via webservice and empty DB table?
+
 
 					}
 					else
