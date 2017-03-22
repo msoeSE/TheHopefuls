@@ -16,18 +16,18 @@ using Xamarin.Auth.Presenters;
 
 namespace StudentDriver.Services
 {
-    public class WebService
+    public class ServiceController
     {
         private static HttpClient _client;
-        private static WebService _instance;
+        private static ServiceController _instance;
         private readonly OAuthController _oAuthController;
         private readonly DatabaseController _databaseController;
 
 
-        public static WebService Instance => _instance ?? (_instance = new WebService());
+        public static ServiceController Instance => _instance ?? (_instance = new ServiceController());
 
 
-        private WebService()
+        private ServiceController()
         {
             _client = new HttpClient();
             _oAuthController = new OAuthController();
@@ -98,7 +98,7 @@ namespace StudentDriver.Services
 
 			//string url = "";
 			//if (Settings.OAuthSourceProvider == OAuthSource.Facebook) {
-			//	url = string.Format ("https://facebook.com/logout.php?next={0}&access_token={1}", WebService._apiBaseUrl, Settings.OAuthAccessToken);
+			//	url = string.Format ("https://facebook.com/logout.php?next={0}&access_token={1}", ServiceController._apiBaseUrl, Settings.OAuthAccessToken);
 			//}
 			//var response = await _client.GetAsync (url);
 			//if (response.IsSuccessStatusCode) {

@@ -43,7 +43,7 @@ namespace StudentDriver.Droid
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
                     var account = ev.Account;
-                    if (!await WebService.Instance.SaveAccount(new AccountDummy(account.Username, account.Properties, account.Cookies)))
+                    if (!await ServiceController.Instance.SaveAccount(new AccountDummy(account.Username, account.Properties, account.Cookies)))
                     {
                         App.LoginAction.Invoke();
                         UserDialogs.Instance.Alert("Unable to Login, Please Try Again", "Error", "Okay");
@@ -54,25 +54,6 @@ namespace StudentDriver.Droid
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));
 		}
-
-        //private async void SaveFacebookProfile(Account account)
-        //{
-        //    var request = new OAuth2Request("GET", new Uri(OAuth.FACEBOOK_PROFILE_REQUEST_URL), null, account);
-
-        //    await request.GetResponseAsync().ContinueWith(async t =>
-        //     {
-        //         if (t.IsFaulted)
-        //         {
-        //             return;
-        //         }
-        //         var json = JObject.Parse(t.Result.GetResponseText());
-        //         var user = SQLiteDatabase.GetInstance().GetUser().Result;
-        //         user.FirstName = json["name"].ToString();
-        //         user.ImageUrl = json["picture"]["data"]["url"].ToString();
-        //         await SQLiteDatabase.GetInstance().UpdateUser(user);
-        //         WebService.GetInstance().SetTokenHeader();
-        //     });
-        //}
     }
 
 }

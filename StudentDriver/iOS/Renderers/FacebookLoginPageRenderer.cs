@@ -38,7 +38,7 @@ namespace StudentDriver.iOS
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
 				    var account = e.Account;
-                    if (!await WebService.Instance.SaveAccount(new AccountDummy(account.Username,account.Properties,account.Cookies)))
+                    if (!await ServiceController.Instance.SaveAccount(new AccountDummy(account.Username,account.Properties,account.Cookies)))
                     {
                         App.LoginAction.Invoke();
                         UserDialogs.Instance.Alert("Unable to Login, Please Try Again", "Error", "Okay");
