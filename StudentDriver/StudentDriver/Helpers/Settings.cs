@@ -21,6 +21,7 @@ namespace StudentDriver.Helpers
         private const string apiProdBasePort = "3000";
 
         public const string OAuthUrl = "https://dev.drivinglog.online/auth/facebook/token";
+	    public const string SchoolIdUrl = "https://dev.drivinglog.online/api/linkacctoschool";
 
-    }
+	}
 }

@@ -21,6 +21,7 @@ namespace StudentDriver
 			statePicker.Items.Add ("Wisconsin");
 			statePicker.SelectedIndexChanged += StateSelected;
 			logOutButton.Clicked += LogOutTapped;
+		    schoolEntry.Unfocused += SchoolEntryUnFocused;
 		}
 
 	    protected override async void OnAppearing()
@@ -44,5 +45,13 @@ namespace StudentDriver
             ServiceController.Instance.Logout();
             App.LoginAction.Invoke();
 		}
+
+	    async void SchoolEntryUnFocused(object sender, FocusEventArgs e)
+	    {
+	        schoolEntry.IsEnabled = false;
+	        var connectSuccessful = await ServiceController.Instance.ConnectSchool(schoolEntry.Text);
+	        await DisplayAlert("Connect To School", connectSuccessful ? "Connection Successful" : "Connection Failed", "OK");
+	        schoolEntry.IsEnabled = true;
+	    }
 	}
 }
