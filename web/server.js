@@ -62,8 +62,6 @@ passport.use(
 		profileFields: ["id", "email", "gender", "name", "picture.type(large)"]
 	}, function(accessToken, refreshToken, profile, done) {
 		userCtrl.getUser(profile.id, function(doc){
-			console.log("no error");
-			console.log(doc);
 			if(!doc){
 				var json = {
 					firstName: profile._json.first_name,
@@ -71,16 +69,17 @@ passport.use(
 					userId: profile.id,
 					service: "facebook"
 				};
+
 				userCtrl.createUser(json, "student", function(user) {
-					console.log("creating user")
-					console.log(user)
+					profile.mongoID = user._id;
 				}, function(error) {
-					console.log(error);
+					$log.log(error);
 				});
+			} else{
+				profile.mongoID = doc._id;
 			}
 		}, function(error){
-			console.log("error");
-			console.log(error);
+			$log.log(error);
 		});
 		return done(null, profile);
 	}
@@ -103,17 +102,25 @@ passport.use(
 		clientID: config.Auth.FacebookAuth.ID,
 		clientSecret: config.Auth.FacebookAuth.Secret
 	}, function(accessToken, refreshToken, profile, done) {
-		var json = {firstName: profile._json.first_name,
-			lastName: profile._json.last_name,
-			loginDetails: {
-				userId: profile.id,
-				service: "facebook"
+		userCtrl.getUser(profile.id, function(doc){
+			if(!doc){
+				var json = {
+					firstName: profile._json.first_name,
+					lastName: profile._json.last_name,
+					userId: profile.id,
+					service: "facebook"
+				};
+
+				userCtrl.createUser(json, "student", function(user) {
+					profile.mongoID = user._id;
+				}, function(error) {
+					$log.log(error);
+				});
+			} else{
+				profile.mongoID = doc._id;
 			}
-		};
-		userCtrl.createUser(json, "student", function(user) {
-			console.log(user)
-		}, function() {
-			console.log("error");
+		}, function(error){
+			$log.log(error);
 		});
 		return done(null, profile);
 	}

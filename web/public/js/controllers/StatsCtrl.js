@@ -1,4 +1,4 @@
-angular.module("StatsCtrl", []).controller("StatsController", function($log, $location) {
+angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", function($log, $location, Stats) {
 	var vm = this;
 	vm.tagline = "User Stats!";
 
@@ -28,9 +28,10 @@ angular.module("StatsCtrl", []).controller("StatsController", function($log, $lo
 	];
 
 	$log.log(vm);
+	$log.log(Stats.test());
 
 
-	angular.element(".student-stats-table").DataTable({
+	$(".student-stats-table").DataTable({
 		data: vm.mockUserData,
 		columns: [
 			{ title: "Date" },
