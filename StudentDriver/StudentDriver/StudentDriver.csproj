@@ -42,9 +42,9 @@
     <EmbeddedResource Include="LoginPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Include="Keys.xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="OAuth\AccountHandler.cs" />
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
@@ -52,6 +52,13 @@
     <Compile Include="Models\DriveWeatherData.cs" />
     <Compile Include="Models\DrivePoint.cs" />
     <Compile Include="Models\UnsyncDrive.cs" />
+    <Compile Include="OAuth\OAuthController.cs" />
+    <Compile Include="OAuth\AccountDummy.cs" />
+    <Compile Include="OAuth\IAccountHandler.cs" />
+    <Compile Include="OAuth\OAuthRequest.cs" />
+    <Compile Include="OAuth\OAuthSettings.cs" />
+    <Compile Include="Services\DatabaseController.cs" />
+    <Compile Include="Services\ServiceController.cs" />
     <Compile Include="StudentDriverPage.xaml.cs">
       <DependentUpon>StudentDriverPage.xaml</DependentUpon>
     </Compile>
@@ -74,11 +81,9 @@
     <Compile Include="LoginPage.xaml.cs">
       <DependentUpon>LoginPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Config\OAuth.cs" />
     <Compile Include="Views\FacebookLoginPage.cs" />
     <Compile Include="Views\GoogleLoginPage.cs" />
     <Compile Include="Helpers\Settings.cs" />
-    <Compile Include="Services\WebService.cs" />
     <Compile Include="Config\AppColors.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -162,7 +167,9 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Keys.xml" />
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
   <Import Project="..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets" Condition="Exists('..\packages\Xamarin.Forms.2.3.3.180\build\portable-win+net45+wp80+win81+wpa81+MonoAndroid10+Xamarin.iOS10+xamarinmac20\Xamarin.Forms.targets')" />
