@@ -28,7 +28,6 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 	];
 
 	$log.log(vm);
-	$log.log(Stats.test());
 
 
 	$(".student-stats-table").DataTable({

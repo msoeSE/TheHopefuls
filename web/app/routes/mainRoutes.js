@@ -23,6 +23,16 @@ router.get("/students/:userId", function(req, res) {
 	});
 });
 
+// Get all students
+router.get("/allStudents", function(req, res) {
+	userCtrl.getAllUsers((users)=>{
+		res.json(users);
+	}, (err)=>{
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
+});
+
 // Create a new student, return the JSON representation for the new student
 router.post("/students", function(req, res) {
 	userCtrl.createStudent(req.body, (student)=>{

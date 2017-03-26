@@ -167,7 +167,6 @@ app.post("/auth/facebook/token",
 
 app.get("/profile",
 	function(req, res){
-		console.log(req.user);
 		if(req.user)
 			res.write(JSON.stringify(req.user)); // eslint-disable-line
 		res.end();

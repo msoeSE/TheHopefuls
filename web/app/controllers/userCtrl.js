@@ -48,6 +48,19 @@ exports.getUser = function(id, callback, error){
 	});
 };
 
+exports.getAllUsers = function(callback, error){// TODO change to users for school
+	User.find(function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error returning users for school",
+				"error": err
+			});
+			return;
+		}
+		callback({data: doc}); // This is weird. Datatables wouldnt load without the added data: tag
+	});
+};
+
 exports.createStudent = (info, callback, error) => exports.createUser(info, "student", callback, error);
 exports.createInstructor = (info, callback, error) => exports.createUser(info, "instructor", callback, error);
 exports.getStudent = exports.getUser;
