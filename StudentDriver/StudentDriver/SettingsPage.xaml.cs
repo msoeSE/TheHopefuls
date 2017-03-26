@@ -20,9 +20,8 @@ namespace StudentDriver
 		    
 			statePicker.Items.Add ("Wisconsin");
 			statePicker.SelectedIndexChanged += StateSelected;
-			logOutButton.Clicked += async (object sender, EventArgs e) => {
-				await LogOutTapped (sender, e);
-			};
+			logOutButton.Clicked += LogOutTapped;
+		    schoolEntry.Unfocused += SchoolEntryUnFocused;
 		}
 
 	    protected override async void OnAppearing()
@@ -40,15 +39,19 @@ namespace StudentDriver
 
 		}
 
-		async Task LogOutTapped (object sender, EventArgs e)
+		void LogOutTapped (object sender, EventArgs e)
 		{
 			//TODO Fix UserDialogs call? it's not working?
-			if (await WebService.GetInstance ().OAuthLogout ()) {
-				App.LoginAction.Invoke ();
-			} else {
-				UserDialogs.Instance.ShowError ("Unable to Logout");
-			}
-
+            ServiceController.Instance.Logout();
+            App.LoginAction.Invoke();
 		}
+
+	    async void SchoolEntryUnFocused(object sender, FocusEventArgs e)
+	    {
+	        schoolEntry.IsEnabled = false;
+	        var connectSuccessful = await ServiceController.Instance.ConnectSchool(schoolEntry.Text);
+	        await DisplayAlert("Connect To School", connectSuccessful ? "Connection Successful" : "Connection Failed", "OK");
+	        schoolEntry.IsEnabled = true;
+	    }
 	}
 }

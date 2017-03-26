@@ -86,11 +86,6 @@ namespace StudentDriver
             int result = -1;
             try
             {
-                var currentUser = GetUser().Result;
-                if (currentUser.ImageUrl != user.ImageUrl)
-                {
-                    
-                }
                 result =  await _database.UpdateAsync(user);
             }
             catch (Exception e)

@@ -95,6 +95,10 @@
       <HintPath>..\packages\Validation.2.2.8\lib\dotnet\Validation.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Xamarin.Android.Support.CustomTabs, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Xamarin.Android.Support.CustomTabs.23.0.1.1\lib\MonoAndroid403\Xamarin.Android.Support.CustomTabs.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Xamarin.Android.Support.v4">
       <HintPath>..\packages\Xamarin.Android.Support.v4.23.3.0\lib\MonoAndroid403\Xamarin.Android.Support.v4.dll</HintPath>
     </Reference>
@@ -206,12 +210,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\StudentDriver\StudentDriver.csproj">
-      <Project>{57C205CD-D251-46AA-A66D-D7EC7ABFDD97}</Project>
-      <Name>StudentDriver</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
+    <Compile Include="AccountHandler_Android.cs" />
     <Compile Include="MainActivity.cs" />
     <Compile Include="Resources\Resource.designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -252,7 +251,12 @@
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\StudentDriver\StudentDriver.csproj">
+      <Project>{57c205cd-d251-46aa-a66d-d7ec7abfdd97}</Project>
+      <Name>StudentDriver</Name>
+    </ProjectReference>
+  </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">
       <Version>1.2.3.1</Version>

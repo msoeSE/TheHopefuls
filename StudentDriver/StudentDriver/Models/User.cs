@@ -1,4 +1,6 @@
-﻿using SQLite.Net.Attributes;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using SQLite.Net.Attributes;
 
 namespace StudentDriver.Models
 {
