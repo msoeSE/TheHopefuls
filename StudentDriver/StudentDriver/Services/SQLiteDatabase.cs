@@ -105,8 +105,6 @@ namespace StudentDriver
             return await _database.UpdateAsync(userStats);
         }
 
-
-
         public async Task<int> StartAsyncDrive()
         {
             var unsyncDrive = new UnsyncDrive
@@ -116,6 +114,14 @@ namespace StudentDriver
             };
             return await _database.InsertAsync(unsyncDrive);
         }
+
+        public async Task<int> StopCurrentAsyncDrive()
+        {
+            var unsyncDrive = _database.Table<UnsyncDrive>().OrderByDescending(u => u.Id).FirstOrDefaultAsync().Result;
+            unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
+            return await _database.UpdateAsync(unsyncDrive);
+        }
+
 
         public async Task<int> AddDrivePoint(DrivePoint drivePoint)
         {
@@ -131,12 +137,7 @@ namespace StudentDriver
         {
             return await _database.InsertAsync(driveWeatherData);
         }
-        public async Task<int> StopAsyncDrive(int unsyncDriveId)
-        {
-            var unsyncDrive = _database.Table<UnsyncDrive>().Where(x => x.Id == unsyncDriveId).FirstAsync().Result;
-            unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
-            return await _database.UpdateAsync(unsyncDrive);
-        }
+
 
         public async Task<List<DriveSession>> GetUnsyncDriveSessions()
         {

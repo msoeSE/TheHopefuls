@@ -96,6 +96,26 @@ namespace StudentDriver.Services
             return response.StatusCode == HttpStatusCode.OK;
         }
 
+        public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
+        {
+            var weather = await GetWeather(latitude, longitude);
+            return await _databaseController.StartNewUnsyncDrive(weather);
+        }
+
+        private async Task<string> GetWeather(double latitude, double longitude)
+        {
+            var parameters = new Dictionary<string,string>
+                             {
+                                {"longitude", longitude.ToString()},
+                                {"latitude", latitude.ToString()},
+                             };
+            var response = await _oAuthController.MakeGetRequest(Settings.WeatherUrl,parameters);
+            var responseText = response.GetResponseText();
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            return responseText;
+
+        }
+
         private async Task<string> VerifyAccount(Account account)
         {
             return await _oAuthController.VerifyAccount(Settings.OAuthUrl, account);
