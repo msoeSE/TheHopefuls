@@ -7,6 +7,8 @@ using Plugin.Geolocator.Abstractions;
 using Xamarin.Forms;
 using StudentDriver.Services;
 using StudentDriver.Models;
+using Plugin.Permissions;
+using Plugin.Permissions.Abstractions;
 
 namespace StudentDriver
 {
@@ -16,8 +18,10 @@ namespace StudentDriver
 		//speed and distance in miles (imperial)
 		private double currentAverageSpeed = 0.0;
 		private TimeSpan currentTime;
+		private DrivePoint firstPoint;
 		private List<DrivePoint> positions = new List<DrivePoint>();
 		private IGeolocator locator;
+		private UnsyncDrive drive;
 
 		protected override void OnAppearing()
 		{
@@ -37,6 +41,7 @@ namespace StudentDriver
 						drivePoint.Longitude = currentPosition.Longitude;
 						drivePoint.PointDateTime = currentPosition.Timestamp.DateTime;
 						drivePoint.Speed = (float)currentPosition.Speed;
+						if (firstPoint == null) firstPoint = drivePoint;
 						positions.Add(drivePoint);
 						currentAverageSpeed = currentAverageSpeed == 0.0 ? ConvertSpeeds(eventArg.Position.Speed) : (0.95 * currentAverageSpeed) + (0.05 * ConvertSpeeds(eventArg.Position.Speed));
 					}
@@ -45,6 +50,14 @@ namespace StudentDriver
 						Task.Factory.StartNew(async () =>
 						{
 							var database = SQLiteDatabase.GetInstance();
+							//TODO Create Unsync Drive, with UserID, then send to database.
+							if (drive == null)
+							{
+								drive = new UnsyncDrive();
+								drive.StartDateTime = firstPoint.PointDateTime;
+								//TODO Best way to get UserId?
+							}
+
 							await database.AddDrivePoints(positions);
 							positions.Clear();
 						});
@@ -66,6 +79,31 @@ namespace StudentDriver
 
 			drivingButton.Clicked += async (object sender, EventArgs e) =>
 			{
+
+				try
+				{
+					var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
+					if (status != Plugin.Permissions.Abstractions.PermissionStatus.Granted)
+					{
+						if (await CrossPermissions.Current.ShouldShowRequestPermissionRationaleAsync(Plugin.Permissions.Abstractions.Permission.Location))
+						{
+							await DisplayAlert("Please Allow Location", "Allow location services for this application.", "Ok");
+						}
+						var results = await CrossPermissions.Current.RequestPermissionsAsync(new[] { Plugin.Permissions.Abstractions.Permission.Location });
+						status = results[Permission.Location];
+					}
+					if (status != PermissionStatus.Granted)
+					{
+						Acr.UserDialogs.UserDialogs.Instance.ShowError("Cannot use GPS, no location permissions given.");
+						return;
+					}
+				}
+				catch (Exception exception)
+				{
+					Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to check permissions");
+					return;
+
+				}
 				Device.StartTimer(new TimeSpan(0, 0, 1), () =>
 				{
 					if (isStudentDriving)
