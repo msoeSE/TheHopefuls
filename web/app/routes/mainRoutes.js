@@ -18,114 +18,114 @@ var linkSchoolCtrl = require("../controllers/linkSchoolCtrl");
 
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
-		userCtrl.getStudent(req.params.userId, (user) => {
-				res.json(user);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	userCtrl.getStudent(req.params.userId, (user) => {
+		res.json(user);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // Create a new student, return the JSON representation for the new student
 router.post("/students", function(req, res) {
-		userCtrl.createStudent(req.body, (student) => {
-				res.status(statusCodes.CREATED);
-				res.json(student);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	userCtrl.createStudent(req.body, (student) => {
+		res.status(statusCodes.CREATED);
+		res.json(student);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // Get all existing driving sessions for a student
 router.get("/students/:userId/drivingsessions", function(req, res) {
-		drivingSessionCtrl.listDrivingSessions(req.params.userId, (drivingSessions) => {
-				res.json(drivingSessions);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	drivingSessionCtrl.listDrivingSessions(req.params.userId, (drivingSessions) => {
+		res.json(drivingSessions);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // Allow a new driving session to be added, return the JSON of the session
 router.post("/students/:userId/drivingsessions", function(req, res) {
-		drivingSessionCtrl.createDrivingSessions(req.params.userId, req.body, (results) => {
-				res.status(statusCodes.CREATED);
-				res.json(results);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	drivingSessionCtrl.createDrivingSessions(req.params.userId, req.body, (results) => {
+		res.status(statusCodes.CREATED);
+		res.json(results);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // TODO: add later
 // Get all existing driving schools in the system
 router.get("/drivingschools", function(req, res) {
-		res.status(statusCodes.NOT_IMPLEMENTED);
-		res.json({});
+	res.status(statusCodes.NOT_IMPLEMENTED);
+	res.json({});
 });
 
 // Create a new driving school to be added, return the school added
 router.post("/drivingschools", function(req, res) {
-		drivingSchoolCtrl.createSchool(req.body, (newSchool) => {
-				res.status(statusCodes.CREATED);
-				res.json(newSchool);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	drivingSchoolCtrl.createSchool(req.body, (newSchool) => {
+		res.status(statusCodes.CREATED);
+		res.json(newSchool);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 router.get("/drivingschools/:schoolId", function(req, res) {
-		drivingSchoolCtrl.getSchool(req.params.schoolId, (school) => {
-				res.json(school);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	drivingSchoolCtrl.getSchool(req.params.schoolId, (school) => {
+		res.json(school);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // TODO: add later
 router.get("/drivingschools/:schoolId/students", function(req, res) {
-		res.status(statusCodes.NOT_IMPLEMENTED);
-		res.json({});
+	res.status(statusCodes.NOT_IMPLEMENTED);
+	res.json({});
 });
 
 // TODO: add later
 // Remove a student from a driving school
 router.delete("/drivingschools/:schoolId/students/:userId", function(req, res) {
-		res.status(statusCodes.NOT_IMPLEMENTED);
-		res.json({});
+	res.status(statusCodes.NOT_IMPLEMENTED);
+	res.json({});
 });
 
 // TODO: add later
 router.get("/drivingschools/:schoolId/instructors", function(req, res) {
-		res.status(statusCodes.NOT_IMPLEMENTED);
-		res.json({});
+	res.status(statusCodes.NOT_IMPLEMENTED);
+	res.json({});
 });
 
 // TODO: add later
 // allow a new instructor to be added, return the data added
 router.post("/drivingschools/:schoolId/instructors", function(req, res) {
-		res.status(statusCodes.NOT_IMPLEMENTED);
-		res.json({});
+	res.status(statusCodes.NOT_IMPLEMENTED);
+	res.json({});
 });
 
 // TODO: add later
 // Remove an instructor from a driving school
 router.delete("/drivingschools/:schoolId/instructors/:userId", function(req, res) {
-		res.status(statusCodes.NOT_IMPLEMENTED);
-		res.json({});
+	res.status(statusCodes.NOT_IMPLEMENTED);
+	res.json({});
 });
 
 // GET the driving regulations for a specified state
 router.get("/stateregulations/:state", function(req, res) {
-		stateRegsCtrl.getStateRegs(req.params.state, (stateRegs) => {
-				res.json(stateRegs);
-		}, (err) => {
-				res.status(statusCodes.BAD_REQUEST);
-				res.json(err);
-		});
+	stateRegsCtrl.getStateRegs(req.params.state, (stateRegs) => {
+		res.json(stateRegs);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
 });
 
 // POST to link an account to a driving school
