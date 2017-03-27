@@ -18,7 +18,6 @@ namespace StudentDriver.Services
 {
     public class ServiceController
     {
-        private static HttpClient _client;
         private static ServiceController _instance;
         private readonly OAuthController _oAuthController;
         private readonly DatabaseController _databaseController;
@@ -29,7 +28,6 @@ namespace StudentDriver.Services
 
         private ServiceController()
         {
-            _client = new HttpClient();
             _oAuthController = new OAuthController();
             _databaseController = new DatabaseController();
         }
@@ -62,16 +60,6 @@ namespace StudentDriver.Services
         //    return stateReqs;
         //}
 
-        // TODO still need to define the WeatherData Object
-        public async Task<Object> GetWeatherData(double latitude, double longitude)
-        {
-            var requestUri = GenerateDarkSkyWeatherRequestUri("", latitude, longitude);
-            var response = await _client.GetAsync(requestUri);
-            var json = response.Content.ReadAsStringAsync().Result;
-            var weatherData = JsonConvert.DeserializeObject(json);
-            return weatherData;
-        }
-
         public async Task<bool> UserLoggedIn()
         {
             var responseText = await _oAuthController.VerifySavedAccount(Settings.OAuthUrl);
@@ -88,12 +76,15 @@ namespace StudentDriver.Services
 
         public async Task<bool> ConnectSchool(string schoolId)
         {
-            var parameters = new Dictionary<string,string>
+            var jObject = new JObject
                 {
-                    { "schoolId",schoolId}
+                    new JProperty("schoolId", schoolId)
                 };
-            var response = await _oAuthController.MakeGetRequest(Settings.SchoolIdUrl, parameters);
-            return response.StatusCode == HttpStatusCode.OK;
+            var response = await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, jObject);
+            if (response.StatusCode != HttpStatusCode.OK) return false;
+            var responseText = response.GetResponseText();
+            if (string.IsNullOrEmpty(responseText)) return false;
+            return await _databaseController.ConnectStudentToDrivingSchool(responseText);
         }
 
         public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
@@ -125,11 +116,6 @@ namespace StudentDriver.Services
         public void Logout ()
         {
             _oAuthController.DeAuthenticateSavedAccount();
-		}
-
-		private string GenerateDarkSkyWeatherRequestUri (string apiKey, double latitude, double longitude)
-		{
-			return string.Join (",", string.Join ("/", "https://api.darksky.net", "forecast", apiKey), latitude, longitude);
 		}
 	}
 }

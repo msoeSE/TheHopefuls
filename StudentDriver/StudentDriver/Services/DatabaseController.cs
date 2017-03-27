@@ -47,5 +47,14 @@ namespace StudentDriver.Services
                           };
             return (await SQLiteDatabase.GetInstance().AddDriveWeatherData(weather) != -1);
         }
+
+        public async Task<bool> ConnectStudentToDrivingSchool(string userJson)
+        {
+            var userObj = JObject.Parse(userJson);
+            var schoolId = userObj["schoolId"].ToString();
+            var user = await SQLiteDatabase.GetInstance().GetUser();
+            user.DrivingSchoolId = schoolId;
+            return (await SQLiteDatabase.GetInstance().UpdateUser(user) != -1);
+        }
     }
 }
