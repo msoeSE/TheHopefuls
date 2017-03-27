@@ -32,7 +32,6 @@ exports.createSchool = function(info, callback, error) {
 	});
 };
 
-
 exports.getSchool = function(schoolId, callback, error) {
 	DrivingSchool.findOne({
 		schoolId: schoolId
@@ -40,6 +39,23 @@ exports.getSchool = function(schoolId, callback, error) {
 		if (err) {
 			error({
 				"message": "Error finding school",
+				"error": err
+			});
+			return;
+		}
+		callback(doc);
+	});
+};
+
+// TODO: Add update method to add a student to be added to the school
+exports.addStudentToSchool = function(schoolId, student, callback, error) {
+	DrivingSchool.findOneAndUpdate({
+		schoolId: schoolId
+  }, {$push: {students: student}},
+	function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error adding student to driving school",
 				"error": err
 			});
 			return;
