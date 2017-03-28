@@ -1,4 +1,4 @@
-angular.module("StudentListCtrl", ["StatsCtrl"])
+angular.module("StudentListCtrl", ["StudentListService"])
 .controller("StudentListController", function($log, $location, students) {
 	var vm = this;
 	vm.tagline = "List of Students for your school!";
