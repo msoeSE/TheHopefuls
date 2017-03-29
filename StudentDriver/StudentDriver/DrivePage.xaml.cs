@@ -16,7 +16,7 @@ namespace StudentDriver
 	{
 		private bool isStudentDriving = false;
 		//speed and distance in miles (imperial)
-		private double currentAverageSpeed = 0.0;
+		private double currentSpeed = 0.0;
 		private TimeSpan currentTime;
 		private DrivePoint firstPoint;
 		private List<DrivePoint> positions = new List<DrivePoint>();
@@ -40,10 +40,10 @@ namespace StudentDriver
 						drivePoint.Latitude = currentPosition.Latitude;
 						drivePoint.Longitude = currentPosition.Longitude;
 						drivePoint.PointDateTime = currentPosition.Timestamp.DateTime;
-						drivePoint.Speed = (float)currentPosition.Speed;
+						drivePoint.Speed = currentPosition.Speed;
 						if (firstPoint == null) firstPoint = drivePoint;
 						positions.Add(drivePoint);
-						currentAverageSpeed = currentAverageSpeed == 0.0 ? ConvertSpeeds(eventArg.Position.Speed) : (0.95 * currentAverageSpeed) + (0.05 * ConvertSpeeds(eventArg.Position.Speed));
+						currentSpeed = ConvertSpeeds(eventArg.Position.Speed);
 					}
 					else
 					{
@@ -62,7 +62,11 @@ namespace StudentDriver
 							positions.Clear();
 						});
 					}
-					avgSpeedLabel.Text = string.Format("{0} MPH", currentAverageSpeed.ToString("F1"));
+					Device.BeginInvokeOnMainThread(() =>
+					{
+						avgSpeedLabel.Text = string.Format("{0} MPH", currentSpeed.ToString("F"));
+					});
+
 				};
 			}
 			catch (Exception ex)
@@ -166,7 +170,7 @@ namespace StudentDriver
 			{
 				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
-				currentAverageSpeed = 0.0;
+				currentSpeed = 0.0;
 			}
 			drivingButton.Text = isStudentDriving ? "Stop" : "Start";
 		}
