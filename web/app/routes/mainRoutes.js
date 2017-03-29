@@ -14,7 +14,7 @@ var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 var linkSchoolCtrl = require("../controllers/linkSchoolCtrl");
-
+var drivingDataCtrl = require("../controllers/drivingDataCtrl");
 
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
@@ -131,6 +131,17 @@ router.get("/stateregulations/:state", function(req, res) {
 // POST to link an account to a driving school
 router.post("/linkacctoschool", function(req, res) {
 	linkSchoolCtrl.linkAccToSchool(req.user.id, req.body.schoolId, (results) => {
+		res.status(statusCodes.OK);
+		res.json(results);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
+});
+
+// GET current aggregate driving data (as a student)
+router.post("/totalDrivingData", function(req, res) {
+	drivingDataCtrl.getStudentData(req.user.id, (results) => {
 		res.status(statusCodes.OK);
 		res.json(results);
 	}, (err) => {
