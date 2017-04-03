@@ -47,13 +47,16 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 		});
 		return;
 	}
-
+	var startTime = new Date(driveSession.UnsyncDrive.startTime);
+	var endTime = new Date(driveSession.UnsyncDrive.endTime);
 	var distance = calculateDistance(driveSession.DrivePoints);
 	var duration = calculateDuration(driveSession.UnsyncDrive.startTime,
 		driveSession.UnsyncDrive.endTime);
 	DrivingSession.create({
-		startTime: new Date(driveSession.UnsyncDrive.startTime),
-		endTime: new Date(driveSession.UnsyncDrive.endTime),
+		startTime: startTime,
+		endTime: endTime,
+		dayDriveTimeTot: calcDayDriveTimeTot(startTime, endTime),
+		nightDriveTimeTot: calcNightDriveTimeTot(startTime, endTime),
 		distance: distance,
 		duration: duration,
 		weatherData: {
@@ -71,6 +74,30 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 		updateUser(userId, session, callback, error);
 	});
 };
+
+var dayHourStart = 9;
+var dayHourEnd = 17;
+let nineAM = moment().hour(dayHourStart);
+let fivePM = moment().hour(dayHourEnd);
+
+//TODO: Need to account for if a session spans night and day hours
+function calcDayDriveTimeTot(startTime, endTime) {
+	// Day Hours: 9am (9:00)-5pm (17:00)
+	var dayTot;
+	if (moment(startTime).after(nineAM) && moment(endTime).after(fivePM)) {
+		dayTot = moment.diff(startTime, endTime).format("HH:mm");
+	}
+	return dayTot;
+}
+
+function calcNightDriveTimeTot(startTime, endTime) {
+	// Night Hours: Before 9:00, After 17:00
+	var nightTot;
+	if (moment(startTime).before(nineAM) && moment(endTime).before(nineAM)) {
+		nightTot = moment.diff(startTime, endTime).format("HH:mm");
+	}
+	return nightTot;
+}
 
 function closureArray(sizeToRunFunction, fun){
 	var a = [];
