@@ -210,6 +210,8 @@
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon%402x.png" />
     <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%403x.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iphone_1x.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iphone_2x.png" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>

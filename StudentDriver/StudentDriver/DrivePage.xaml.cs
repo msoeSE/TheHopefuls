@@ -16,12 +16,13 @@ namespace StudentDriver
 	{
 		private bool isStudentDriving = false;
 		//speed and distance in miles (imperial)
-		private double currentSpeed = 0.0;
+		private double averageSpeed;
 		private TimeSpan currentTime;
 		private DrivePoint firstPoint;
 		private List<DrivePoint> positions = new List<DrivePoint>();
 		private IGeolocator locator;
 		private UnsyncDrive drive;
+		private int unsyncDriveId = -1;
 
 		protected override void OnAppearing()
 		{
@@ -37,25 +38,23 @@ namespace StudentDriver
 					if (positions.Count < 100) // every 100 points, we will add to the database.
 					{
 						var drivePoint = new DrivePoint();
+						drivePoint.UnsyncDriveId = unsyncDriveId;
 						drivePoint.Latitude = currentPosition.Latitude;
 						drivePoint.Longitude = currentPosition.Longitude;
 						drivePoint.PointDateTime = currentPosition.Timestamp.DateTime;
 						drivePoint.Speed = currentPosition.Speed;
 						if (firstPoint == null) firstPoint = drivePoint;
 						positions.Add(drivePoint);
-						currentSpeed = ConvertSpeeds(eventArg.Position.Speed);
+						averageSpeed = Math.Abs(averageSpeed - new double()) < 0.0001 ? ConvertSpeeds(eventArg.Position.Speed) : (0.8 * averageSpeed) + (0.2 * ConvertSpeeds(eventArg.Position.Speed));
 					}
 					else
 					{
 						Task.Factory.StartNew(async () =>
 						{
 							var database = SQLiteDatabase.GetInstance();
-							//TODO Create Unsync Drive, with UserID, then send to database.
 							if (drive == null)
 							{
-								drive = new UnsyncDrive();
 								drive.StartDateTime = firstPoint.PointDateTime;
-								//TODO Best way to get UserId?
 							}
 
 							await database.AddDrivePoints(positions);
@@ -64,7 +63,7 @@ namespace StudentDriver
 					}
 					Device.BeginInvokeOnMainThread(() =>
 					{
-						avgSpeedLabel.Text = string.Format("{0} MPH", currentSpeed.ToString("F"));
+						avgSpeedLabel.Text = string.Format("{0} MPH", averageSpeed.ToString("F"));
 					});
 
 				};
@@ -80,10 +79,8 @@ namespace StudentDriver
 		{
 			InitializeComponent();
 			NavigationPage.SetHasNavigationBar(this, false);
-
 			drivingButton.Clicked += async (object sender, EventArgs e) =>
 			{
-
 				try
 				{
 					var status = await CrossPermissions.Current.CheckPermissionStatusAsync(Permission.Location);
@@ -130,12 +127,22 @@ namespace StudentDriver
 				{
 					//IMPORTANT distances and speeds coming from the geolocator are in meters, so we 
 					//need to do our conversions.
-					Debug.WriteLine(locator.IsGeolocationEnabled);
 					if (!isStudentDriving)
 					{
 						await locator.StopListeningAsync();
-						//TODO Send information via webservice and empty DB table?
-
+						var database = SQLiteDatabase.GetInstance();
+						var loading = Acr.UserDialogs.UserDialogs.Instance.Loading("Syncing Drives...");
+						loading.Show();
+						//TODO Check if we have positions to add, then add them.
+						if (positions.Count != 0)
+						{
+							positions.Clear();
+						}
+						//TODO get all of the drive sessions, and drivepoints (all unsync drives and sessions, not just the current)
+						//TODO Setup the drives to push to web backend
+						//TODO push to web
+						//TODO on success, clear database locally. 
+						//TODO on failure, notify the user, do not clear database.
 
 					}
 					else
@@ -158,7 +165,6 @@ namespace StudentDriver
 					UpdateDrivingButton();
 				}
 
-
 			};
 		}
 
@@ -168,9 +174,18 @@ namespace StudentDriver
 			isStudentDriving = !isStudentDriving;
 			if (isStudentDriving)
 			{
+				var database = SQLiteDatabase.GetInstance();
 				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
-				currentSpeed = 0.0;
+				averageSpeed = 0.0;
+				unsyncDriveId = database.StartAsyncDrive().Result;
+
+			}
+			else
+			{
+				var database = SQLiteDatabase.GetInstance();
+				database.StopAsyncDrive(unsyncDriveId).RunSynchronously();
+				unsyncDriveId = -1;
 			}
 			drivingButton.Text = isStudentDriving ? "Stop" : "Start";
 		}

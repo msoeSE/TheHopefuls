@@ -58,7 +58,7 @@
 						Grid.Row="1"
 						Grid.Column="1"
 						FontSize="Medium"
-						Text="0.0 MPH"
+						Text="0.00 MPH"
 						HorizontalOptions="EndAndExpand">
 					</Label>
 					<Label

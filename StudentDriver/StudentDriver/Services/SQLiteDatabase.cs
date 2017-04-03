@@ -138,6 +138,12 @@ namespace StudentDriver
             return await _database.UpdateAsync(unsyncDrive);
         }
 
+		public async Task<UnsyncDrive> GetUnsyncDriveById(int id)
+		{
+			return await _database.Table<UnsyncDrive>().Where(x => x.Id == id).FirstAsync();
+
+		}
+
         public async Task<List<DriveSession>> GetUnsyncDriveSessions()
         {
             var driveSessions = new List<DriveSession>();
