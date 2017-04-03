@@ -77,12 +77,9 @@ function getOrCreateUser(profile) {
 			};
 
 			userCtrl.createUser(json, "student", function(user) {
-				profile.mongoID = user._id;
 			}, function(error) {
 				$log.log(error);
 			});
-		} else{
-			profile.mongoID = doc._id;
 		}
 
 	}, function(error){
@@ -126,6 +123,7 @@ app.get("/auth/facebook/callback",
 	function(req, res) {// Rudimentary way of updating req.user
 		userCtrl.getUser(req.user.id, function(doc){
 			req.user.userType = doc.userType;
+			req.user.mongoID = doc._id;
 			res.redirect("/");
 		}, function (err){
 			$log.log(err);
@@ -154,6 +152,7 @@ app.post("/auth/facebook/token",
 	function (req, res) {// Rudimentary way of updating req.user
 		userCtrl.getUser(req.user.id, function(doc){
 			req.user.userType = doc.userType;
+			req.user.mongoID = user._id;
 			res.send(req.user);
 		}, function (err){
 			$log.log(err);

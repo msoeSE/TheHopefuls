@@ -2,10 +2,31 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 	var vm = this;
 	vm.tagline = "User Stats!";
 
-	// TODO right now we arent loading the users data, by we can get the
-	// query string for it. Change this to use database data loaded from
-	// the users ID
-	$log.log($location.search().id);
+	var userID = $location.search().id;
+	if(userID != null){
+		Stats.getDriveData(userID).then(function(response){
+			$log.log(response);
+		});
+	} else {
+		Stats.getMongoID().then(function(currentUserID){
+			Stats.getDriveData(currentUserID).then(function(response){
+				$log.log(response);
+			});
+		});
+	}
+
+	$(".student-stats-table").DataTable({
+		ajax: "/api/students/" + userID +  "/drivingSessions",
+		columns: [
+			{ title: "Date", data: "drivingSessions.startTime" },
+			{ title: "Start Time", data: "drivingSessions.startTime" },
+			{ title: "End Time", data: "drivingSessions.endTime" },
+			{ title: "Duration", data: "drivingSessions.duration" },
+			{ title: "Distance", data: "drivingSessions.distance" },
+			{ title: "Temperature", data: "drivingSessions.weatherData.temperature" },
+			{ title: "Weather Summary", data: "drivingSessions.weatherData.summary" }
+		]
+	});
 
 	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],
@@ -30,7 +51,7 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 	$log.log(vm);
 
 
-	$(".student-stats-table").DataTable({
+	$(".mock-table").DataTable({
 		data: vm.mockUserData,
 		columns: [
 			{ title: "Date" },
