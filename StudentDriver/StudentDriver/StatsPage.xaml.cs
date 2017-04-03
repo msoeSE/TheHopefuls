@@ -3,77 +3,109 @@ using System.Collections.Generic;
 
 using Xamarin.Forms;
 using System.Threading.Tasks;
+using StudentDriver.Helpers;
+using StudentDriver.Services;
 
 namespace StudentDriver
 {
 	public partial class StatsPage : ContentPage
 	{
-		private string daytimeDistanceText = "";
-		private string nighttimeDistnaceText = "";
-		private string totalDistanceText = "";
-		private string totalTimeText = "";
+		private string daytimeHoursText = "";
+		private string nighttimeHoursText = "";
+		private string totalHoursText = "";
+	    private string inclementHoursText = "";
 
 		protected override async void OnAppearing ()
 		{
 			base.OnAppearing ();
-			await Task.Run (() => {
-				totalDistanceProgress.ProgressTo (0.6, 1500, Easing.Linear);
-				daytimeDistanceProgress.ProgressTo (0.333, 1500, Easing.Linear);
-				nighttimeDistanceProgress.ProgressTo (1.0, 1500, Easing.Linear);
-			});
+
+		    int defaultIndex = 48;
+            var stateSelected = statePicker.Items[defaultIndex];
+            await UpdateDrivingData(stateSelected);
 
 
+		    daytimeHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(daytimeHoursLabelPressed));
+		    nighttimeHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(nighttimeHoursLabelPressed));
+		    totalHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(totalHoursLabelPressed));
+		    inclementHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(inclementHoursPressed));
+            statePicker.SelectedIndexChanged += StatePicker_SelectedIndexChanged;
 		}
-		public StatsPage ()
+
+	    private async Task UpdateDrivingData(string stateSelected)
+	    {
+            var viewModel = await ServiceController.Instance.GetAggregatedDrivingData(stateSelected);
+            if (viewModel != null)
+            {
+                await UpdateView(viewModel);
+            }
+        }
+
+	    private async Task UpdateView(DrivingDataViewModel viewModel)
+	    {
+            await Task.Run(() => {
+                totalHoursProgress.ProgressTo(viewModel.Total.PercentCompletedDouble, 1500, Easing.Linear);
+                daytimeHoursProgress.ProgressTo(viewModel.TotalDayTime.PercentCompletedDouble, 1500, Easing.Linear);
+                nighttimeHoursProgress.ProgressTo(viewModel.TotalNightTime.PercentCompletedDouble, 1500, Easing.Linear);
+                inclementHoursProgress.ProgressTo(viewModel.TotalInclement.PercentCompletedDouble, 1500, Easing.Linear);
+            });
+            daytimeHoursText = viewModel.TotalDayTime.PercentCompletedString;
+            nighttimeHoursText = viewModel.TotalNightTime.PercentCompletedString;
+            totalHoursText = viewModel.Total.PercentCompletedString;
+            inclementHoursText = viewModel.TotalInclement.PercentCompletedString;
+
+        }
+
+        private async void StatePicker_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            var stateSelected = statePicker.Items[statePicker.SelectedIndex];
+            await UpdateDrivingData(stateSelected);
+        }
+
+        public StatsPage ()
 		{
 			InitializeComponent ();
 			NavigationPage.SetHasNavigationBar (this, false);
-			daytimeDistanceText = daytimeDistanceLabel.Text;
-			nighttimeDistnaceText = nighttimeDistanceLabel.Text;
-			totalDistanceText = totalDistanceLabel.Text;
-			totalTimeText = totalTimeLabel.Text;
-			daytimeDistanceLabel.GestureRecognizers.Add (new TapGestureRecognizer (daytimeDistanceLabelPressed));
-			nighttimeDistanceLabel.GestureRecognizers.Add (new TapGestureRecognizer (nighttimeDistanceLabelPressed));
-			totalDistanceLabel.GestureRecognizers.Add (new TapGestureRecognizer (totalDistanceLabelPressed));
-			totalTimeLabel.GestureRecognizers.Add (new TapGestureRecognizer (timeLabelPressed));
 		}
 
-		void daytimeDistanceLabelPressed (View pressedLabel, object arg2)
+		void daytimeHoursLabelPressed (View pressedLabel, object arg2)
 		{
-			if (daytimeDistanceLabel.Text.Equals (daytimeDistanceText)) {
-				daytimeDistanceLabel.Text = "33%";
+			if (daytimeHoursLabel.Text.Equals (daytimeHoursText)) {
+				daytimeHoursLabel.Text = "33%";
 			} else {
-				daytimeDistanceLabel.Text = daytimeDistanceText;
+				daytimeHoursLabel.Text = daytimeHoursText;
 			}
 
 		}
 
-		void nighttimeDistanceLabelPressed (View pressedLabel, object arg2)
+		void nighttimeHoursLabelPressed (View pressedLabel, object arg2)
 		{
-			if (nighttimeDistanceLabel.Text.Equals (nighttimeDistnaceText))
-				nighttimeDistanceLabel.Text = "100%";
+			if (nighttimeHoursLabel.Text.Equals (nighttimeHoursText))
+				nighttimeHoursLabel.Text = "100%";
 			else {
-				nighttimeDistanceLabel.Text = nighttimeDistnaceText;
+				nighttimeHoursLabel.Text = nighttimeHoursText;
 			}
 		}
 
-		void totalDistanceLabelPressed (View pressedLabel, object arg2)
+		void totalHoursLabelPressed (View pressedLabel, object arg2)
 		{
 			Label label = (Label)pressedLabel;
-			if (label.Text.Equals (totalDistanceText))
+			if (label.Text.Equals (totalHoursText))
 				label.Text = "60%";
 			else {
-				label.Text = totalDistanceText;
+				label.Text = totalHoursText;
 			}
 		}
 
-		void timeLabelPressed (View arg1, object arg2)
-		{
-			if (totalTimeLabel.Text.Equals (totalTimeText))
-				totalTimeLabel.Text = "Flut shots are fake.";
-			else {
-				totalTimeLabel.Text = totalTimeText;
-			}
-		}
-	}
+        void inclementHoursPressed(View pressedLabel, object arg2)
+        {
+            Label label = (Label)pressedLabel;
+            if (label.Text.Equals(totalHoursText))
+                label.Text = "60%";
+            else
+            {
+                label.Text = totalHoursText;
+            }
+        }
+
+    }
 }

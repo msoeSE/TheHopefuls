@@ -34,7 +34,7 @@ namespace StudentDriver.Services
 
         //public async Task<UserStats> GetStudentStats(int id)
         //{
-        //    var requestUri = GenerateRequestUri(_apiBaseUrl, "students", new Dictionary<string, string>() {{"userId", id.ToString()}});
+        //    var requestUri = GenerateRequestUri(_apiBaseUrl, "students", new Dictionary<string, string>() { { "userId", id.ToString() } });
         //    var response = await _client.GetAsync(requestUri);
         //    var json = response.Content.ReadAsStringAsync().Result;
         //    var userStats = JsonConvert.DeserializeObject<UserStats>(json);
@@ -64,7 +64,8 @@ namespace StudentDriver.Services
         {
             var responseText = await _oAuthController.VerifySavedAccount(Settings.OAuthUrl);
             if (string.IsNullOrEmpty(responseText)) return false;
-            return await _databaseController.SaveUser(responseText);
+            var loggedIn = await _databaseController.SaveUser(responseText);
+            return loggedIn;
         }
 
         public async Task<bool> SaveAccount (AccountDummy dummyAccount)
@@ -76,14 +77,13 @@ namespace StudentDriver.Services
 
         public async Task<bool> ConnectSchool(string schoolId)
         {
-            var jObject = new JObject
+            var parameters = new Dictionary<string,string>
                 {
-                    new JProperty("schoolId", schoolId)
+                    {"schoolId", schoolId}
                 };
-            var response = await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, jObject);
-            if (response.StatusCode != HttpStatusCode.OK) return false;
+            var response =  await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, parameters);
             var responseText = response.GetResponseText();
-            if (string.IsNullOrEmpty(responseText)) return false;
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return false;
             return await _databaseController.ConnectStudentToDrivingSchool(responseText);
         }
 
@@ -93,19 +93,62 @@ namespace StudentDriver.Services
             return await _databaseController.StartNewUnsyncDrive(weather);
         }
 
+        public async Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId = null)
+        {
+            Dictionary<string, string> parameters = null;
+            if (!string.IsNullOrEmpty(userId))
+            {
+                parameters = new Dictionary<string, string>
+                {
+                    { "userId", userId}
+                };
+            }
+            var response = await _oAuthController.MakeGetRequest(Settings.AggregateDrivingUrl, parameters);
+            var responseText = response.GetResponseText();
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+
+            var aggData = JsonConvert.DeserializeObject<DrivingAggregateData>(responseText);
+            var stateReq = await GetStateRequirements(state);
+            return new DrivingDataViewModel(stateReq, aggData);
+        }
+
         private async Task<string> GetWeather(double latitude, double longitude)
         {
-            var parameters = new Dictionary<string,string>
+            var parameters = new Dictionary<string, string>
                              {
                                 {"longitude", longitude.ToString()},
                                 {"latitude", latitude.ToString()},
                              };
-            var response = await _oAuthController.MakeGetRequest(Settings.WeatherUrl,parameters);
+            var response = await _oAuthController.MakeGetRequest(Settings.WeatherUrl, parameters);
             var responseText = response.GetResponseText();
             if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
             return responseText;
 
         }
+
+        private async Task<StateReqs> GetStateRequirements(string state)
+        {
+            var stateReq = await _databaseController.GetStateRequirements(state);
+            if (stateReq != null) return stateReq;
+            var statReqJson = await GetRequestStateRequirements(state);
+            var storeSuccessful = await _databaseController.StoreStateRequirements(statReqJson);
+            if (!storeSuccessful) return null;
+            return await _databaseController.GetStateRequirements(state);
+        }
+
+        private async Task<string> GetRequestStateRequirements(string state)
+        {
+            var parameters = new Dictionary<string, string>
+            {
+                { "state",state}
+            };
+            var response = await _oAuthController.MakeGetRequest(Settings.StateReqUrl, parameters);
+            var responseText = response.GetResponseText();
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            return responseText;
+        }
+
+
 
         private async Task<string> VerifyAccount(Account account)
         {

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using OAuth.StudentDriver;
@@ -15,9 +16,9 @@ namespace OAuth
             return await MakeOAuthRequest(OAuthRequest.Get, url, AccountHandler.GetSavedFacebookAccount(), parameters);
         }
 
-        public async Task<Response> MakePostRequest(string url, JObject jsonJObject)
+        public async Task<Response> MakePostRequest(string url, IDictionary<string, string> parameters = null)
         {
-            return await MakeOAuthRequest(OAuthRequest.Post, url, AccountHandler.GetSavedFacebookAccount(), null, jsonJObject.ToString());
+            return await MakeOAuthRequest(OAuthRequest.Post, url, AccountHandler.GetSavedFacebookAccount(),parameters);
         }
 
         public async Task<string> VerifyAccount(string url, Account account)
@@ -42,10 +43,11 @@ namespace OAuth
             AccountHandler.DeAuthenticateAccount();
         }
 
-        private static async Task<Response> MakeOAuthRequest(string method,string url, Account account,IDictionary<string, string> parameters = null, string jsonBody = null)
+        private static async Task<Response> MakeOAuthRequest(string method,string url, Account account,IDictionary<string, string> parameters = null)
         {
             if (account == null) return null;
-            return await new OAuthRequest(method, new Uri(url), parameters, account,jsonBody).GetResponseAsync();
+            var request = new OAuthRequest(method, new Uri(url), parameters, account);
+            return await request.GetResponseAsync(CancellationToken.None);
         }
     }
 

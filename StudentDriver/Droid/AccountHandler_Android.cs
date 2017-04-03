@@ -26,7 +26,9 @@ namespace StudentDriver.Droid
 
         public void DeAuthenticateAccount()
         {
-            AccountStore.Create(Forms.Context).Delete(AccountStore.Create(Forms.Context).FindAccountsForService(ServiceId).FirstOrDefault(), ServiceId);
+            var account = AccountStore.Create(Forms.Context).FindAccountsForService(ServiceId).FirstOrDefault();
+            if (account == null) return;
+            AccountStore.Create(Forms.Context).Delete(account, ServiceId);
         }
     }
 

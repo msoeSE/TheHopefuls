@@ -20,7 +20,11 @@ namespace StudentDriver
 
 		protected override async void OnStart()
 		{
-		    if (!await ServiceController.Instance.UserLoggedIn()) LoginAction();
+            //ServiceController.Instance.Logout();
+		    if (!await ServiceController.Instance.UserLoggedIn())
+		    {
+		        LoginAction();
+		    }
 		    // Handle when your app starts
 		}
 

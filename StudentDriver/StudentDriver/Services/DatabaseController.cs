@@ -1,4 +1,5 @@
 ﻿using System.Threading.Tasks;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Models;
 
@@ -55,6 +56,17 @@ namespace StudentDriver.Services
             var user = await SQLiteDatabase.GetInstance().GetUser();
             user.DrivingSchoolId = schoolId;
             return (await SQLiteDatabase.GetInstance().UpdateUser(user) != -1);
+        }
+
+        public async Task<StateReqs> GetStateRequirements(string state)
+        {
+            return await SQLiteDatabase.GetInstance().GetStateReqs(state);
+        }
+
+        public async Task<bool> StoreStateRequirements(string stateReqJson)
+        {
+            var stateReq = JsonConvert.DeserializeObject<StateReqs>(stateReqJson);
+            return (await SQLiteDatabase.GetInstance().AddStateReqs(stateReq) != -1);
         }
     }
 }

@@ -68,7 +68,7 @@ namespace StudentDriver
             User user = null;
             try
             {
-                user = await _database.Table<User>().FirstOrDefaultAsync();
+                user = _database.Table<User>().FirstOrDefaultAsync().Result;
                 if (user == null)
                 {
                     user = await AddUser(new User());
@@ -76,7 +76,7 @@ namespace StudentDriver
             }
             catch (Exception ex)
             {
-                throw;
+                var d = ex;
             }
             return user;
         }
@@ -86,7 +86,7 @@ namespace StudentDriver
             int result = -1;
             try
             {
-                result =  await _database.UpdateAsync(user);
+                result = await _database.UpdateAsync(user).ConfigureAwait(false);
             }
             catch (Exception e)
             {
@@ -94,6 +94,16 @@ namespace StudentDriver
             }
             return result;
         }
+
+	    public async Task<int> AddStateReqs(StateReqs stateReqs)
+	    {
+	        return await _database.InsertAsync(stateReqs);
+	    }
+
+	    public async Task<StateReqs> GetStateReqs(string state)
+	    {
+	        return await _database.Table<StateReqs>().Where(x => x.State == state).FirstOrDefaultAsync();
+	    }
 
         public async Task<int> UpdateStateReqs(IEnumerable<StateReqs> stateReqs)
         {
