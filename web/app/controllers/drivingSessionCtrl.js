@@ -79,6 +79,7 @@ var dayHourStart = 9;
 var dayHourEnd = 17;
 let nineAM = moment().hour(dayHourStart);
 let fivePM = moment().hour(dayHourEnd);
+let minPerHour = 60;
 
 //TODO: Figure out conversion of Time to Number (double), i.e. 7:15 = 7.25
 // Need to account for if a session spans night and day hours
@@ -86,9 +87,9 @@ function calcDayDriveTimeTot(startTime, endTime) {
 	// Day Hours: 9am (9:00)-5pm (17:00)
 	var dayTot;
 	if (moment(startTime).after(nineAM) && moment(endTime).before(fivePM)) {
-		dayTot = moment.diff(startTime, endTime).format("HH:mm");
+		dayTot = startTime.diff(endTime).asMinues() / minPerHour;
 	} else if (moment(startTime).after(nineAM) && moment(endTime).after(fivePM)) {
-		dayTot = moment.diff(startTime, fivePM).format("HH:mm");
+		dayTot = startTime.diff(fivePM).asMinues() / minPerHour;
 	}
 	return dayTot;
 }
@@ -97,9 +98,9 @@ function calcNightDriveTimeTot(startTime, endTime) {
 	// Night Hours: Before 9:00, After 17:00
 	var nightTot;
 	if (moment(startTime).before(nineAM) || moment(endTime).after(fivePM)) {
-		nightTot = Math.abs(moment.diff(startTime, endTime)).format("HH:mm");
+		nightTot = Math.abs(startTime.diff(endTime).asMinues() / minPerHour);
 	} else if (moment(startTime).after(nineAM) && moment(endTime).after(fivePM)) {
-		dayTot = moment.diff(fivePM, endTime).format("HH:mm");
+		dayTot = fivePM.diff(endTime).asMinues / minPerHour;
 	}
 	return nightTot;
 }
