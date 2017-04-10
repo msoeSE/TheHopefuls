@@ -4,29 +4,49 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 
 	var userID = $location.search().id;
 	if(userID != null){
-		Stats.getDriveData(userID).then(function(response){
-			$log.log(response);
-		});
+		renderTable(userID);
 	} else {
 		Stats.getMongoID().then(function(currentUserID){
-			Stats.getDriveData(currentUserID).then(function(response){
-				$log.log(response);
-			});
+			renderTable(currentUserID);
 		});
 	}
 
-	$(".student-stats-table").DataTable({
-		ajax: "/api/students/" + userID +  "/drivingSessions",
-		columns: [
-			{ title: "Date", data: "drivingSessions.startTime" },
-			{ title: "Start Time", data: "drivingSessions.startTime" },
-			{ title: "End Time", data: "drivingSessions.endTime" },
-			{ title: "Duration", data: "drivingSessions.duration" },
-			{ title: "Distance", data: "drivingSessions.distance" },
-			{ title: "Temperature", data: "drivingSessions.weatherData.temperature" },
-			{ title: "Weather Summary", data: "drivingSessions.weatherData.summary" }
-		]
-	});
+	function renderTable(id){
+		$(".student-stats-table").DataTable({
+			ajax: {url: "/api/students/" + id +  "/drivingSessions",
+				dataSrc: "drivingSessions" },
+			columns: [
+				{ title: "Date", data: "startTime",
+					render: function(data, type, full, meta) {
+						return moment(full.startTime).format("MM/DD/YYYY");
+					}
+				},
+				{ title: "Start Time",
+					render: function(data, type, full, meta) {
+						return moment(full.startTime).format("h:mm:ss a");
+					}
+				},
+				{ title: "End Time",
+					render: function(data, type, full, meta) {
+						return moment(full.endTime).format("h:mm:ss a");
+					}
+				},
+				{ title: "Duration",
+					render: function(data, type, full, meta) {
+						var date = moment.duration(full.duration);
+						var output = " ";
+						if(date.hours() !== 0) output += date.hours() + " hours ";//eslint-disable-line
+						if(date.minutes() !== 0) output += date.minutes() + " minutes ";//eslint-disable-line
+						output += date.seconds() + " seconds ";
+						return output;
+					}
+				},
+				{ title: "Distance", data: "distance" },
+				{ title: "Temperature", data: "weatherData.temperature" },
+				{ title: "Weather Summary", data: "weatherData.summary" }
+			]
+		});
+	}
 
 	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],
@@ -47,8 +67,6 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 		["06/30/2016", "5:00am", "6:00am", "1 Hr", "88 Miles", "Sunny"],
 		["07/04/2016", "6:00am", "7:00am", "1 Hr", "11 Miles", "Hurricane"]
 	];
-
-	$log.log(vm);
 
 
 	$(".mock-table").DataTable({
