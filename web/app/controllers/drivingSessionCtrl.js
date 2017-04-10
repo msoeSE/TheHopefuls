@@ -23,7 +23,7 @@ function calculateDuration(start, end) {
 
 function updateUser(userId, session, callback, error){
 	User.findOneAndUpdate({
-		_id: userId
+		loginDetails: { userId: userId }
 	}, {$push: {drivingSessions: session}},
 	function(err, doc) {
 		if (err) {
@@ -81,26 +81,26 @@ let nineAM = moment().hour(dayHourStart);
 let fivePM = moment().hour(dayHourEnd);
 let minPerHour = 60;
 
-//TODO: Figure out conversion of Time to Number (double), i.e. 7:15 = 7.25
-// Need to account for if a session spans night and day hours
+//TODO: correct calculations based on night/date ranges
+// currently nightHours is being saved as dayHours
 function calcDayDriveTimeTot(startTime, endTime) {
 	// Day Hours: 9am (9:00)-5pm (17:00)
-	var dayTot;
-	if (moment(startTime).after(nineAM) && moment(endTime).before(fivePM)) {
-		dayTot = startTime.diff(endTime).asMinues() / minPerHour;
-	} else if (moment(startTime).after(nineAM) && moment(endTime).after(fivePM)) {
-		dayTot = startTime.diff(fivePM).asMinues() / minPerHour;
+	var dayTot = 0;
+	if (moment(startTime, "HH:mm:ss").isAfter(nineAM) && moment(endTime, "HH:mm:ss").isBefore(fivePM)) {
+		dayTot = moment(startTime, "HH:mm:ss").diff(endTime, "minutes") / minPerHour;
+	} else if (moment(startTime, "HH:mm:ss").isBefore(fivePM) && moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
+		dayTot = moment(startTime, "HH:mm:ss").diff(fivePM, "minutes") / minPerHour;
 	}
 	return dayTot;
 }
 
 function calcNightDriveTimeTot(startTime, endTime) {
 	// Night Hours: Before 9:00, After 17:00
-	var nightTot;
-	if (moment(startTime).before(nineAM) || moment(endTime).after(fivePM)) {
-		nightTot = Math.abs(startTime.diff(endTime).asMinues() / minPerHour);
-	} else if (moment(startTime).after(nineAM) && moment(endTime).after(fivePM)) {
-		dayTot = fivePM.diff(endTime).asMinues / minPerHour;
+	var nightTot = 0;
+	if (moment(startTime, "HH:mm:ss").isBefore(nineAM) && moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
+		nightTot = Math.abs(moment(startTime, "HH:mm:ss").diff(endTime, "minutes") / minPerHour);
+	} else if (moment(startTime, "HH:mm:ss").isAfter(nineAM) && moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
+		nightTot = fivePM.diff(endTime, "minutes") / minPerHour;
 	}
 	return nightTot;
 }

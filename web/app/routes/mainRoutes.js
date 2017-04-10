@@ -140,7 +140,7 @@ router.post("/linkacctoschool", function(req, res) {
 });
 
 // GET current aggregate driving data (as a student)
-router.post("/totalDrivingData", function(req, res) {
+router.get("/totalDrivingData", function(req, res) {
 	drivingDataCtrl.getStudentData(req.user.id, (results) => {
 		res.status(statusCodes.OK);
 		res.json(results);
