@@ -72,6 +72,39 @@ namespace StudentDriver.Services
 			return weatherData;
 		}
 
+		public async Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives)
+		{
+			
+			//TODO Return true/false if the session completed and posted successfully
+
+
+		}
+
+		public async Task<int> CreateUnsyncDrive()
+		{
+			return await _databaseController.CreateUnsyncDrive();
+		}
+
+		public async Task<int> StopUnsyncDrive(int driveId)
+		{
+			return await _databaseController.StopUnsyncDrive(driveId);
+		}
+
+		public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> list)
+		{
+			return await _databaseController.AddDrivePoints(list);
+		}
+
+		public async Task<List<DrivePoint>> GetAllDrivePoints()
+		{
+			return await _databaseController.GetDrivePoints();
+		}
+
+		public async Task<List<UnsyncDrive>> GetAllUnsyncedDrives()
+		{
+			return await _databaseController.GetUnsyncedDrives();
+		}
+
 		public async Task<bool> UserLoggedIn()
 		{
 			var responseText = await _oAuthController.VerifySavedAccount(Settings.OAuthUrl);

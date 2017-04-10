@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
+using StudentDriver.Models;
 
 namespace StudentDriver.Services
 {
@@ -21,5 +22,31 @@ namespace StudentDriver.Services
             user.ImageUrl = imgUrl;
             return await SQLiteDatabase.GetInstance().UpdateUser(user) != -1;
         }
+
+		public async Task<int> CreateUnsyncDrive()
+		{
+			return await SQLiteDatabase.GetInstance().StartUnsyncDrive();
+		}
+
+		public async Task<int> StopUnsyncDrive(int driveId)
+		{
+			return await SQLiteDatabase.GetInstance().StopUnsyncDrive(driveId);
+		}
+
+		public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> list)
+		{
+			return await SQLiteDatabase.GetInstance().AddDrivePoints(list);
+		}
+
+		public async Task<List<UnsyncDrive>> GetUnsyncedDrives()
+		{
+			return await SQLiteDatabase.GetInstance().GetAllUnsyncedDrives();
+		}
+
+		public async Task<List<DrivePoint>> GetDrivePoints()
+		{
+			return await SQLiteDatabase.GetInstance().GetAllDrivePoints();
+		}
+
     }
 }
