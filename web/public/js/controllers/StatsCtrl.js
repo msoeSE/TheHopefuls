@@ -1,6 +1,11 @@
-angular.module("StatsCtrl", []).controller("StatsController", function($log) {
+angular.module("StatsCtrl", []).controller("StatsController", function($log, $location) {
 	var vm = this;
 	vm.tagline = "User Stats!";
+
+	// TODO right now we arent loading the users data, by we can get the
+	// query string for it. Change this to use database data loaded from
+	// the users ID
+	$log.log($location.search().id);
 
 	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],

@@ -40,5 +40,13 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\iOS\StudentDriver.iOS.csproj">
+      <Project>{8C61008F-DB52-42DF-8AC4-1CDD69AFD7D5}</Project>
+      <Name>StudentDriver.iOS</Name>
+      <ReferenceOutputAssembly>False</ReferenceOutputAssembly>
+      <Private>False</Private>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>
