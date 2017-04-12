@@ -152,7 +152,7 @@ app.post("/auth/facebook/token",
 	function (req, res) {// Rudimentary way of updating req.user
 		userCtrl.getUser(req.user.id, function(doc){
 			req.user.userType = doc.userType;
-			req.user.mongoID = user._id;
+			req.user.mongoID = doc._id;
 			res.send(req.user);
 		}, function (err){
 			$log.log(err);
