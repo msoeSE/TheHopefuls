@@ -16,23 +16,21 @@ using Xamarin.Auth.Presenters;
 
 namespace StudentDriver.Services
 {
-	public class ServiceController
-	{
-		private static HttpClient _client;
-		private static ServiceController _instance;
-		private readonly OAuthController _oAuthController;
-		private readonly DatabaseController _databaseController;
+    public class ServiceController
+    {
+        private static ServiceController _instance;
+        private readonly OAuthController _oAuthController;
+        private readonly DatabaseController _databaseController;
 
 
 		public static ServiceController Instance => _instance ?? (_instance = new ServiceController());
 
 
-		private ServiceController()
-		{
-			_client = new HttpClient();
-			_oAuthController = new OAuthController();
-			_databaseController = new DatabaseController();
-		}
+        private ServiceController()
+        {
+            _oAuthController = new OAuthController();
+            _databaseController = new DatabaseController();
+        }
 
 		//public async Task<UserStats> GetStudentStats(int id)
 		//{
@@ -62,6 +60,12 @@ namespace StudentDriver.Services
 		//    return stateReqs;
 		//}
 
+        public async Task<bool> UserLoggedIn()
+        {
+            var responseText = await _oAuthController.VerifySavedAccount(Settings.OAuthUrl);
+            if (string.IsNullOrEmpty(responseText)) return false;
+            return await _databaseController.SaveUser(responseText);
+        }
 		// TODO still need to define the WeatherData Object
 		public async Task<Object> GetWeatherData(double latitude, double longitude)
 		{
@@ -78,8 +82,44 @@ namespace StudentDriver.Services
 			//TODO Return true/false if the session completed and posted successfully
 
 
+        public async Task<bool> ConnectSchool(string schoolId)
+        {
+            var jObject = new JObject
+                {
+                    new JProperty("schoolId", schoolId)
+                };
+            var response = await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, jObject);
+            if (response.StatusCode != HttpStatusCode.OK) return false;
+            var responseText = response.GetResponseText();
+            if (string.IsNullOrEmpty(responseText)) return false;
+            return await _databaseController.ConnectStudentToDrivingSchool(responseText);
+        }
 		}
 
+        public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
+        {
+            var weather = await GetWeather(latitude, longitude);
+            return await _databaseController.StartNewUnsyncDrive(weather);
+        }
+
+        private async Task<string> GetWeather(double latitude, double longitude)
+        {
+            var parameters = new Dictionary<string,string>
+                             {
+                                {"longitude", longitude.ToString()},
+                                {"latitude", latitude.ToString()},
+                             };
+            var response = await _oAuthController.MakeGetRequest(Settings.WeatherUrl,parameters);
+            var responseText = response.GetResponseText();
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            return responseText;
+
+        }
+
+        private async Task<string> VerifyAccount(Account account)
+        {
+            return await _oAuthController.VerifyAccount(Settings.OAuthUrl, account);
+        }
 		public async Task<int> CreateUnsyncDrive()
 		{
 			return await _databaseController.CreateUnsyncDrive();
@@ -93,56 +133,6 @@ namespace StudentDriver.Services
 		public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> list)
 		{
 			return await _databaseController.AddDrivePoints(list);
-		}
-
-		public async Task<List<DrivePoint>> GetAllDrivePoints()
-		{
-			return await _databaseController.GetDrivePoints();
-		}
-
-		public async Task<List<UnsyncDrive>> GetAllUnsyncedDrives()
-		{
-			return await _databaseController.GetUnsyncedDrives();
-		}
-
-		public async Task<bool> UserLoggedIn()
-		{
-			var responseText = await _oAuthController.VerifySavedAccount(Settings.OAuthUrl);
-			if (string.IsNullOrEmpty(responseText)) return false;
-			return await _databaseController.SaveUser(responseText);
-		}
-
-		public async Task<bool> SaveAccount(AccountDummy dummyAccount)
-		{
-			var account = new Account(dummyAccount.Username, dummyAccount.Properties, dummyAccount.Cookies);
-			var responseText = await VerifyAccount(account);
-			return await _databaseController.SaveUser(responseText);
-		}
-
-		public async Task<bool> ConnectSchool(string schoolId)
-		{
-			var parameters = new Dictionary<string, string>
-				{
-					{ "schoolId",schoolId}
-				};
-			var response = await _oAuthController.MakeGetRequest(Settings.SchoolIdUrl, parameters);
-			return response.StatusCode == HttpStatusCode.OK;
-		}
-
-		private async Task<string> VerifyAccount(Account account)
-		{
-			return await _oAuthController.VerifyAccount(Settings.OAuthUrl, account);
-		}
-
-
-		public void Logout()
-		{
-			_oAuthController.DeAuthenticateSavedAccount();
-		}
-
-		private string GenerateDarkSkyWeatherRequestUri(string apiKey, double latitude, double longitude)
-		{
-			return string.Join(",", string.Join("/", "https://api.darksky.net", "forecast", apiKey), latitude, longitude);
 		}
 	}
 }
