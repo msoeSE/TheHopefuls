@@ -22,6 +22,8 @@ namespace StudentDriver.Helpers
 
         public const string OAuthUrl = "https://dev.drivinglog.online/auth/facebook/token";
 	    public const string SchoolIdUrl = "https://dev.drivinglog.online/api/linkacctoschool";
+	    public const string WeatherUrl = "https://dev.drivinglog.online/api/weather";
+
 
 	}
 }

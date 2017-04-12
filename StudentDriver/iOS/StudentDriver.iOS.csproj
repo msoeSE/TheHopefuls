@@ -193,17 +193,39 @@
     <ImageAsset Include="Assets.xcassets\Contents.json">
       <InProject>false</InProject>
     </ImageAsset>
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iphone1.png" />
-    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iphone2.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40%403x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon%402x.png" />
-    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%403x.png" />
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\Contents.json">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iphone1.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\LaunchImage.launchimage\iphone2.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-Small-40%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon%402x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
+    <ImageAsset Include="Assets.xcassets\AppIcon.appiconset\Icon-60%403x.png">
+      <InProject>false</InProject>
+    </ImageAsset>
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
