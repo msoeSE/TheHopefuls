@@ -122,8 +122,10 @@ app.get("/auth/facebook/callback",
 	passport.authenticate("facebook", { failureRedirect: "/login" }),
 	function(req, res) {// Rudimentary way of updating req.user
 		userCtrl.getUser(req.user.id, function(doc){
-			req.user.userType = doc.userType;
-			req.user.mongoID = doc._id;
+			if(doc){
+				req.user.userType = doc.userType;
+				req.user.mongoID = doc._id;
+			}
 			res.redirect("/");
 		}, function (err){
 			$log.log(err);
@@ -151,8 +153,10 @@ app.post("/auth/facebook/token",
 	passport.authenticate("facebook-token"),
 	function (req, res) {// Rudimentary way of updating req.user
 		userCtrl.getUser(req.user.id, function(doc){
-			req.user.userType = doc.userType;
-			req.user.mongoID = doc._id;
+			if(doc){
+				req.user.userType = doc.userType;
+				req.user.mongoID = doc._id;
+			}
 			res.send(req.user);
 		}, function (err){
 			$log.log(err);
