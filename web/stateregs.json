@@ -1,0 +1,522 @@
+[
+    {
+        "state": "state",
+        "stateAbbreviation": "stateAbbreviation",
+        "noHoursWithDriversEdHours": "noHoursWithDriversEdHours",
+        "dayHours": "dayHours",
+        "nightHours": "nightHours",
+        "inclementWeather": "inclementWeather",
+        "nightOrInclement": "nightOrInclement",
+        "notes": "notes"
+    },
+    {
+        "state": "Alabama",
+        "stateAbbreviation": "AL",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Alaska",
+        "stateAbbreviation": "AK",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "40",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "1",
+        "notes": ""
+    },
+    {
+        "state": "Arizona",
+        "stateAbbreviation": "AZ",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "30",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Arkansas",
+        "stateAbbreviation": "AR",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "0",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "California",
+        "stateAbbreviation": "CA",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Colorado",
+        "stateAbbreviation": "CO",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Connecticut",
+        "stateAbbreviation": "CT",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "40",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Delaware",
+        "stateAbbreviation": "DE",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Washington",
+        "stateAbbreviation": " DC",
+        "noHoursWithDriversEdHours": "DC",
+        "dayHours": "0",
+        "nightHours": "40",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": "0"
+    },
+    {
+        "state": "Florida",
+        "stateAbbreviation": "FL",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Georgia",
+        "stateAbbreviation": "GA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "6",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Hawaii",
+        "stateAbbreviation": "HI",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Idaho",
+        "stateAbbreviation": "ID",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Illinois",
+        "stateAbbreviation": "IL",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Indiana",
+        "stateAbbreviation": "IN",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Iowa",
+        "stateAbbreviation": "IA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "20",
+        "nightHours": "2",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Kansas",
+        "stateAbbreviation": "KS",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Kentucky",
+        "stateAbbreviation": "KY",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "60",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Louisiana",
+        "stateAbbreviation": "LA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "15",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Maine",
+        "stateAbbreviation": "ME",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "70",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Maryland",
+        "stateAbbreviation": "MD",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "60",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Massachusetts",
+        "stateAbbreviation": "MA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Michigan",
+        "stateAbbreviation": "MI",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Minnesota",
+        "stateAbbreviation": "MN",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "15",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Mississippi",
+        "stateAbbreviation": "MS",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "0",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Missouri",
+        "stateAbbreviation": "MO",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Montana",
+        "stateAbbreviation": "MT",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Nebraska",
+        "stateAbbreviation": "NE",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Nevada",
+        "stateAbbreviation": "NV",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "New Hampshire",
+        "stateAbbreviation": "NH",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "New Jersey",
+        "stateAbbreviation": "NJ",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "0",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "New Mexico",
+        "stateAbbreviation": "NM",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "New York",
+        "stateAbbreviation": "NY",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "15",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "North Carolina",
+        "stateAbbreviation": "NC",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "60",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "North Dakota",
+        "stateAbbreviation": "ND",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "0",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": "Under 16 is 50 hours, otherwise none"
+    },
+    {
+        "state": "Ohio",
+        "stateAbbreviation": "OH",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Oklahoma",
+        "stateAbbreviation": "OK",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Oregon",
+        "stateAbbreviation": "OR",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Pennsylvania",
+        "stateAbbreviation": "PA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "65",
+        "nightHours": "10",
+        "inclementWeather": "5",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Rhode Island",
+        "stateAbbreviation": "RI",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "South Carolina",
+        "stateAbbreviation": "SC",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "South Dakota",
+        "stateAbbreviation": "SD",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "0",
+        "nightHours": "0",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Tennessee",
+        "stateAbbreviation": "TN",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Texas",
+        "stateAbbreviation": "TX",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "30",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Utah",
+        "stateAbbreviation": "UT",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Vermont",
+        "stateAbbreviation": "VT",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "40",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Virginia",
+        "stateAbbreviation": "VA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "45",
+        "nightHours": "15",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Washington",
+        "stateAbbreviation": "WA",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "West Virginia",
+        "stateAbbreviation": "WV",
+        "noHoursWithDriversEdHours": "1",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Wisconsin",
+        "stateAbbreviation": "WI",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "30",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    },
+    {
+        "state": "Wyoming",
+        "stateAbbreviation": "WY",
+        "noHoursWithDriversEdHours": "0",
+        "dayHours": "50",
+        "nightHours": "10",
+        "inclementWeather": "0",
+        "nightOrInclement": "0",
+        "notes": ""
+    }
+]
