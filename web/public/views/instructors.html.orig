@@ -34,6 +34,21 @@
 		</tfoot>
 	</table>
 
+<<<<<<< HEAD
+	<div class = "row">
+		<div class="input-field col s6">
+			<i class="material-icons prefix">account_circle</i>
+			<input id="name" type="text" class="validate">
+			<label for="name">Instructor Name</label>
+		</div>
+		<div class="col s2">
+			<button class="waves-effect waves-light btn" id="addBtn" type="button">
+				Add
+				<i class="material-icons left">add_circle</i>
+			</button>
+		</div>
+	</div>
+=======
 	<!-- <table class="mock-table">
 		<thead>
 			<tr>
@@ -50,5 +65,6 @@
 			</tr>
 		</tfoot>
 	</table> -->
+>>>>>>> 70w-useMongoDB
 
 </div>

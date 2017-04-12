@@ -69,7 +69,11 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 	];
 
 
+<<<<<<< HEAD
+	$(".student-stats-table").DataTable({
+=======
 	$(".mock-table").DataTable({
+>>>>>>> 70w-useMongoDB
 		data: vm.mockUserData,
 		columns: [
 			{ title: "Date" },

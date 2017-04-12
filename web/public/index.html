@@ -11,6 +11,7 @@
 	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
 	<link rel="stylesheet" href="css/style.css">
+	<link rel="stylesheet" href="css/back.css">
 	<!-- custom styles -->
 
 	<!-- JS -->
@@ -44,6 +45,7 @@
 
 <body ng-app="mainApp" ng-controller="MainController">
 	<div class="container">
+		<panel>
 		<nav>
 			<div class="nav-wrapper">
 				<a href="/" class="brand-logo">Home</a>
@@ -58,7 +60,7 @@
 
 		<!-- ANGULAR DYNAMIC CONTENT -->
 		<div ng-view></div>
-
+		</panel>
 	</div>
 </body>
 
