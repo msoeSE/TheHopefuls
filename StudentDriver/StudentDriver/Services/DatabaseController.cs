@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Models;
 
@@ -22,7 +23,7 @@ namespace StudentDriver.Services
         public async Task<bool> StartNewUnsyncDrive(string weatherJson)
         {
             if (string.IsNullOrEmpty(weatherJson)) return false;
-            var newDriveId = await SQLiteDatabase.GetInstance().StartAsyncDrive();
+            var newDriveId = await SQLiteDatabase.GetInstance().StartUnsyncDrive();
             if (newDriveId == -1) return false;
             return await AddWeatherToDrive(weatherJson, newDriveId);
         }

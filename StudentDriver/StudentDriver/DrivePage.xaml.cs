@@ -128,7 +128,7 @@ namespace StudentDriver
 								return;
 							}
 							this.unsyncDriveId = driveId;
-							await locator.StartListeningAsync(1, 5.0, true)
+							await locator.StartListeningAsync(1, 5.0, true);
 
 						}
 						else

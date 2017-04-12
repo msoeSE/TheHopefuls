@@ -66,27 +66,28 @@ namespace StudentDriver.Services
             if (string.IsNullOrEmpty(responseText)) return false;
             return await _databaseController.SaveUser(responseText);
         }
-		// TODO still need to define the WeatherData Object
-		public async Task<Object> GetWeatherData(double latitude, double longitude)
-		{
-			var requestUri = GenerateDarkSkyWeatherRequestUri("", latitude, longitude);
-			var response = await _client.GetAsync(requestUri);
-			var json = response.Content.ReadAsStringAsync().Result;
-			var weatherData = JsonConvert.DeserializeObject(json);
-			return weatherData;
-		}
 
 		public async Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives)
 		{
-			
+
 			//TODO Return true/false if the session completed and posted successfully
 
+		}
+
+		public async Task<List<DrivePoint>> GetAllDrivePoints()
+		{
+			return await _databaseController.GetDrivePoints();
+		}
+		public async Task<List<UnsyncDrive>> GetAllUnsyncedDrives()
+		{
+			return await _databaseController.GetUnsyncedDrives();
+		}
 
         public async Task<bool> ConnectSchool(string schoolId)
         {
             var jObject = new JObject
                 {
-                    new JProperty("schoolId", schoolId)
+                    new JProperty("schoolId", schoolId),
                 };
             var response = await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, jObject);
             if (response.StatusCode != HttpStatusCode.OK) return false;
@@ -94,9 +95,8 @@ namespace StudentDriver.Services
             if (string.IsNullOrEmpty(responseText)) return false;
             return await _databaseController.ConnectStudentToDrivingSchool(responseText);
         }
-		}
 
-        public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
+		public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
         {
             var weather = await GetWeather(latitude, longitude);
             return await _databaseController.StartNewUnsyncDrive(weather);
