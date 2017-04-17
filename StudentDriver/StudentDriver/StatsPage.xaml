@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ContentPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:StudentDriver"
+	x:Class="StudentDriver.StatsPage"
+	xmlns:color="StudentDriver.Config"
+	BackgroundColor="{x:Static local:AppColors.PageBackground}">
+	<ContentPage.Content>
+		<ScrollView>
+			<StackLayout
+				Padding="5, 20, 5, 5">
+				<Frame
+					OutlineColor="{x:Static local:AppColors.Second}"
+					Margin="1"
+					HasShadow="false">
+					<StackLayout>
+						<Picker
+							x:Name="statePicker"
+							Title="Select a State">
+							<Picker.Items>
+								<x:String>Alabama</x:String>
+								<x:String>Alaska</x:String>
+								<x:String>Arizona</x:String>
+								<x:String>Arkansas</x:String>
+								<x:String>California</x:String>
+								<x:String>Colorado</x:String>
+								<x:String>Connecticut</x:String>
+								<x:String>Delaware</x:String>
+								<x:String>Florida</x:String>
+								<x:String>Georgia</x:String>
+								<x:String>Hawaii</x:String>
+								<x:String>Idaho</x:String>
+								<x:String>Illinois</x:String>
+								<x:String>Indiana</x:String>
+								<x:String>Iowa</x:String>
+								<x:String>Kansas</x:String>
+								<x:String>Kentucky</x:String>
+								<x:String>Louisiana</x:String>
+								<x:String>Maine</x:String>
+								<x:String>Maryland</x:String>
+								<x:String>Massachusetts</x:String>
+								<x:String>Michigan</x:String>
+								<x:String>Minnesota</x:String>
+								<x:String>Mississippi</x:String>
+								<x:String>Missouri</x:String>
+								<x:String>Montana</x:String>
+								<x:String>Nebraska</x:String>
+								<x:String>Nevada</x:String>
+								<x:String>New Hampshire</x:String>
+								<x:String>New Jersey</x:String>
+								<x:String>New Mexico</x:String>
+								<x:String>New York</x:String>
+								<x:String>North Carolina</x:String>
+								<x:String>North Dakota</x:String>
+								<x:String>Ohio</x:String>
+								<x:String>Oklahoma</x:String>
+								<x:String>Oregon</x:String>
+								<x:String>Pennsylvania</x:String>
+								<x:String>Rhode Island</x:String>
+								<x:String>South Carolina</x:String>
+								<x:String>South Dakota</x:String>
+								<x:String>Tennessee</x:String>
+								<x:String>Texas</x:String>
+								<x:String>Utah</x:String>
+								<x:String>Vermont</x:String>
+								<x:String>Virginia</x:String>
+								<x:String>Washington</x:String>
+								<x:String>West Virginia</x:String>
+								<x:String>Wisconsin</x:String>
+								<x:String>Wyoming</x:String>
+								<!--TODO Add More States. -->
+							</Picker.Items>
+						</Picker>
+					</StackLayout>
+				</Frame>
+				<Frame
+					OutlineColor="{x:Static local:AppColors.Second}"
+					Margin="1"
+					HasShadow="false">
+					<StackLayout
+						Orientation="Vertical"
+						Padding="0, 10, 0, 10"
+						HorizontalOptions="FillAndExpand"
+						VerticalOptions="StartAndExpand">
+						<StackLayout
+							Orientation="Horizontal"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="CenterAndExpand">
+							<local:TitleLabel
+								Text="Total Hours"
+								HorizontalOptions="StartAndExpand">
+							</local:TitleLabel>
+							<Label
+								x:Name="totalHoursLabel"
+								VerticalOptions="End"
+								HorizontalOptions="EndAndExpand">
+							</Label>
+						</StackLayout>
+						<ProgressBar
+							x:Name="totalHoursProgress"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="FillAndExpand">
+						</ProgressBar>
+					</StackLayout>
+				</Frame>
+				<Frame
+					OutlineColor="{x:Static local:AppColors.Second}"
+					Margin="1"
+					HasShadow="false">
+					<StackLayout
+						Orientation="Vertical"
+						Padding="0, 10, 0, 10"
+						HorizontalOptions="FillAndExpand"
+						VerticalOptions="StartAndExpand">
+						<StackLayout
+							Orientation="Horizontal"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="CenterAndExpand">
+							<local:TitleLabel
+								Text="Daytime Hours"
+								HorizontalOptions="StartAndExpand">
+							</local:TitleLabel>
+							<Label
+								x:Name="daytimeHoursLabel"
+								VerticalOptions="End"
+								HorizontalOptions="EndAndExpand">
+							</Label>
+						</StackLayout>
+						<ProgressBar
+							x:Name="daytimeHoursProgress"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="FillAndExpand"
+							MinimumHeightRequest="6">
+						</ProgressBar>
+					</StackLayout>
+				</Frame>
+				<Frame
+					OutlineColor="{x:Static local:AppColors.Second}"
+					Margin="1"
+					HasShadow="false">
+					<StackLayout
+						Orientation="Vertical"
+						Padding="0, 10, 0, 10"
+						HorizontalOptions="FillAndExpand"
+						VerticalOptions="StartAndExpand">
+						<StackLayout
+							Orientation="Horizontal"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="CenterAndExpand">
+							<local:TitleLabel
+								Text="Night time Hours"
+								HorizontalOptions="StartAndExpand">
+							</local:TitleLabel>
+							<Label
+								x:Name="nighttimeHoursLabel"
+								VerticalOptions="End"
+								HorizontalOptions="EndAndExpand">
+							</Label>
+						</StackLayout>
+						<ProgressBar
+							x:Name="nighttimeHoursProgress"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="FillAndExpand">
+						</ProgressBar>
+					</StackLayout>
+				</Frame>
+        <Frame
+					OutlineColor="{x:Static local:AppColors.Second}"
+					Margin="1"
+					HasShadow="false">
+          <StackLayout
+						Orientation="Vertical"
+						Padding="0, 10, 0, 10"
+						HorizontalOptions="FillAndExpand"
+						VerticalOptions="StartAndExpand">
+            <StackLayout
+							Orientation="Horizontal"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="CenterAndExpand">
+              <local:TitleLabel
+								Text="Inclement Hours"
+								HorizontalOptions="StartAndExpand">
+              </local:TitleLabel>
+              <Label
+								x:Name= "inclementHoursLabel"
+								VerticalOptions="End"
+								HorizontalOptions="EndAndExpand">
+              </Label>
+            </StackLayout>
+            <ProgressBar
+							x:Name="inclementHoursProgress"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="FillAndExpand">
+            </ProgressBar>
+          </StackLayout>
+        </Frame>
+			</StackLayout>
+		</ScrollView>
+	</ContentPage.Content>
+</ContentPage>

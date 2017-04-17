@@ -8,7 +8,7 @@ using Xamarin.UITest.Queries;
 namespace StudentDriverUITesting
 {
 	[TestFixture (Platform.Android)]
-	[TestFixture (Platform.iOS)]
+	//[TestFixture (Platform.iOS)]
 	public class Tests
 	{
 		IApp app;
@@ -26,9 +26,14 @@ namespace StudentDriverUITesting
 		}
 
 		[Test]
-		public void AppLaunches ()
+		public void LogInWithFacebook_CorrectCredentials_CanSeeNameAndProfilePic ()
 		{
-			app.Screenshot ("First screen.");
-		}
+            app.Tap(x => x.Class("FrameRenderer"));
+            app.Tap(x => x.Css("input"));
+            app.EnterText("email");
+            app.EnterText("\t");
+            app.EnterText("password");
+            app.Tap(x => x.Css("button"));
+        }
 	}
 }
