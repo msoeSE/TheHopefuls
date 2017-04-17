@@ -1,41 +1,43 @@
 ﻿using System;
+using System.Net;
 using System.Collections.Generic;
+using System.IO;
+using System.Threading.Tasks;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using Xamarin.Auth;
+using Xamarin.Utilities;
 
 namespace OAuth
 {
-    public class OAuthRequest : Request
+    public class OAuthRequest: Request
     {
         public static string Get = "GET";
         public static string Post = "POST";
-        private const string AccessTokenKey = "access_token";
+        private const string AuthtenticationHeaderKey = "access_token";
+        
 
-        public OAuthRequest(string method, Uri url, IDictionary<string, string> parameters = null, Account account = null)
+        public OAuthRequest(string method, Uri url, Account account, IDictionary<string, string> parameters = null)
             : base(method, url, parameters, account)
         {
         }
-        public override Task<Response> GetResponseAsync(CancellationToken cancellationToken)
+
+        protected new HttpWebRequest GetPreparedWebRequest()
         {
-            if (Account == null)
-            {
-                throw new InvalidOperationException("You must specify an Account for this request to proceed");
-            }
-
-            var req = GetPreparedWebRequest();
-
-            var tmp = GetAuthorizationHeader(Account);
-            req.Headers.Add(AccessTokenKey, tmp);
-            return base.GetResponseAsync(cancellationToken);
+            var request = (HttpWebRequest)WebRequest.Create(GetPreparedUrl());
+            request.Method = Method;
+            request.CookieContainer = Account.Cookies;
+            request.Headers[AuthtenticationHeaderKey] = GetAuthentcationHeader(Account);
+            return request;
         }
-        public static string GetAuthorizationHeader(Account account)
+
+        public static string GetAuthentcationHeader(Account account)
         {
             if (account == null)
             {
-                throw new ArgumentNullException("account");
+                throw new ArgumentNullException(nameof(account));
             }
             if (!account.Properties.ContainsKey("access_token"))
             {
@@ -44,5 +46,6 @@ namespace OAuth
 
             return account.Properties["access_token"];
         }
+
     }
 }

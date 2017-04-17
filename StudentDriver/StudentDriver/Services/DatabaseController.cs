@@ -10,13 +10,24 @@ namespace StudentDriver.Services
         public async Task<bool> SaveUser(string profileJson)
         {
             var jsonObj = JObject.Parse(profileJson);
+            var mongoId = jsonObj["mongoID"].ToString();
             var firstName = jsonObj["_json"]["first_name"].ToString();
             var lastName = jsonObj["_json"]["last_name"].ToString();
             var imgUrl = jsonObj["photos"].First["value"].ToString();
+            //TODO: FOR TESTING (REMOVE)
+            var userTypeStr = jsonObj["userType"].ToString();
+            //var userTypeStr = "instructor";
+            var userType = User.UserType.Student;
+            if (userTypeStr.Equals("instructor"))
+            {
+                userType = User.UserType.Instructor;
+            }
             var user = await SQLiteDatabase.GetInstance().GetUser();
             user.FirstName = firstName;
             user.LastName = lastName;
             user.ImageUrl = imgUrl;
+            user.UType = userType;
+            user.ServerId = mongoId;
             return await SQLiteDatabase.GetInstance().UpdateUser(user) != -1;
         }
 
@@ -67,6 +78,12 @@ namespace StudentDriver.Services
         {
             var stateReq = JsonConvert.DeserializeObject<StateReqs>(stateReqJson);
             return (await SQLiteDatabase.GetInstance().AddStateReqs(stateReq) != -1);
+        }
+
+        public async Task<User.UserType> GetUserType()
+        {
+            var user = await SQLiteDatabase.GetInstance().GetUser();
+            return user.UType;
         }
     }
 }

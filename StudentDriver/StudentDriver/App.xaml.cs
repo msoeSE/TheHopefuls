@@ -2,6 +2,7 @@
 using System.Linq;
 using OAuth.StudentDriver;
 using StudentDriver.Helpers;
+using StudentDriver.Models;
 using StudentDriver.Services;
 using Xamarin.Auth;
 using Xamarin.Forms;
@@ -20,11 +21,13 @@ namespace StudentDriver
 
 		protected override async void OnStart()
 		{
-            //ServiceController.Instance.Logout();
-		    if (!await ServiceController.Instance.UserLoggedIn())
-		    {
-		        LoginAction();
-		    }
+            if (!await ServiceController.Instance.UserLoggedIn())
+            {
+                LoginAction();
+            }
+            //var userType = User.UserType.Instructor;
+		    var userType = await ServiceController.Instance.GetUserType();
+            SuccessfulLoginAction(userType).Invoke();
 		    // Handle when your app starts
 		}
 
@@ -38,16 +41,28 @@ namespace StudentDriver
 			// Handle when your app resumes
 		}
 
-		public static Action SuccessfulLoginAction
-		{
-			get
-			{
-				return () =>
-				{
-					Current.MainPage = new StudentDriverPage();
-				};
-			}
-		}
+	    public static Action SuccessfulLoginAction(User.UserType userType)
+	    {
+	        var page = Current.MainPage;
+	        if (userType == User.UserType.Instructor)
+	        {
+	            page = new InstructorPage();
+	        }
+
+	        return () =>
+	               {
+	                   Current.MainPage = page;
+	               };
+	    }
+
+	    public static Action StatsPageAction(string userid)
+	    {
+            var page = new StatsPage(userid);
+            return () =>
+            {
+                Current.MainPage = page;
+            };
+        }
 
 		public static Action LoginAction
 		{

@@ -104,9 +104,8 @@ namespace StudentDriver.Services
                 };
             }
             var response = await _oAuthController.MakeGetRequest(Settings.AggregateDrivingUrl, parameters);
-            var responseText = response.GetResponseText();
-            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
-
+            var responseText = response?.GetResponseText();
+            if (response?.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
             var aggData = JsonConvert.DeserializeObject<DrivingAggregateData>(responseText);
             var stateReq = await GetStateRequirements(state);
             return new DrivingDataViewModel(stateReq, aggData);
@@ -160,5 +159,10 @@ namespace StudentDriver.Services
         {
             _oAuthController.DeAuthenticateSavedAccount();
 		}
+
+        public async Task<User.UserType> GetUserType()
+        {
+           return await _databaseController.GetUserType();
+        }
 	}
 }

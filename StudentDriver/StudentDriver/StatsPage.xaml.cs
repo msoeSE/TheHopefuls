@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Xamarin.Forms;
 using System.Threading.Tasks;
 using StudentDriver.Helpers;
+using StudentDriver.Models;
 using StudentDriver.Services;
 
 namespace StudentDriver
@@ -14,8 +15,20 @@ namespace StudentDriver
 		private string nighttimeHoursText = "";
 		private string totalHoursText = "";
 	    private string inclementHoursText = "";
+	    private readonly string userId;
 
-		protected override async void OnAppearing ()
+	    public StatsPage(string userId)
+	    {
+	        this.userId = userId;
+	    }
+
+        public StatsPage()
+        {
+            InitializeComponent();
+            NavigationPage.SetHasNavigationBar(this, false);
+        }
+
+        protected override async void OnAppearing ()
 		{
 			base.OnAppearing ();
 
@@ -33,7 +46,7 @@ namespace StudentDriver
 
 	    private async Task UpdateDrivingData(string stateSelected)
 	    {
-            var viewModel = await ServiceController.Instance.GetAggregatedDrivingData(stateSelected);
+            var viewModel = await ServiceController.Instance.GetAggregatedDrivingData(stateSelected,userId);
             if (viewModel != null)
             {
                 await UpdateView(viewModel);
@@ -60,12 +73,6 @@ namespace StudentDriver
             var stateSelected = statePicker.Items[statePicker.SelectedIndex];
             await UpdateDrivingData(stateSelected);
         }
-
-        public StatsPage ()
-		{
-			InitializeComponent ();
-			NavigationPage.SetHasNavigationBar (this, false);
-		}
 
 		void daytimeHoursLabelPressed (View pressedLabel, object arg2)
 		{

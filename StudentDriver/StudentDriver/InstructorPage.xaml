@@ -1,0 +1,19 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TabbedPage
+	xmlns="http://xamarin.com/schemas/2014/forms"
+	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+	xmlns:local="clr-namespace:StudentDriver"
+	x:Class="StudentDriver.InstructorPage">
+  <NavigationPage
+		Title="Students" Icon="wheel.png">
+    <x:Arguments>
+      <local:InstructorStudentsPage />
+    </x:Arguments>
+  </NavigationPage>
+  <NavigationPage
+		Title="Settings" Icon="settings.png">
+    <x:Arguments>
+      <local:SettingsPage />
+    </x:Arguments>
+  </NavigationPage>
+</TabbedPage>
