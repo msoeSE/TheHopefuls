@@ -10,7 +10,7 @@ using Xamarin.Auth;
 
 namespace OAuth
 {
-    public class OAuthController
+    public class OAuthController : IOAuthController
     {
         public async Task<DummyResponse> MakeGetRequest(string url, IDictionary<string, string> parameters = null)
         {

@@ -83,8 +83,8 @@ namespace OAuth
                 facebook_seceret_id = fbDevNode.Attribute("secret").Value;
 #else
 			var fbProdNode = facebookDescendants.ToArray()[1];
-			FACEBOOK_APP_ID = fbProdNode.Attribute ("id").Value;
-			FACEBOOK_SECRET_ID = fbProdNode.Attribute ("secret").Value;
+			facebook_app_id = fbProdNode.Attribute ("id").Value;
+			facebook_seceret_id = fbProdNode.Attribute ("secret").Value;
 #endif
             }
         }

@@ -12,14 +12,8 @@ namespace StudentDriver
 	public class SQLiteDatabase
 	{
 		private static SQLiteAsyncConnection _database;
-	    private static SQLiteDatabase _sqLiteDatabaseInstance;
 
-        public static SQLiteDatabase GetInstance()
-	    {
-	        return _sqLiteDatabaseInstance ?? (_sqLiteDatabaseInstance = new SQLiteDatabase());
-	    }
-
-        private SQLiteDatabase()
+        public SQLiteDatabase()
         { 
             _database = DependencyService.Get<ISQLite>().GetAsyncConnection();
             _database.CreateTableAsync<StateReqs>().Wait();

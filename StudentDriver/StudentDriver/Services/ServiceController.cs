@@ -1,64 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
-using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using StudentDriver.Models;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using OAuth;
 using OAuthAccess;
 using StudentDriver.Helpers;
 using Xamarin.Auth;
-using Xamarin.Auth.Presenters;
 
 namespace StudentDriver.Services
 {
-    public class ServiceController
+    public class ServiceController : IServiceController
     {
-        private static ServiceController _instance;
-        private readonly OAuthController _oAuthController;
-        private readonly DatabaseController _databaseController;
+        private readonly IOAuthController _oAuthController;
+        private readonly IDatabaseController _databaseController;
 
-
-        public static ServiceController Instance => _instance ?? (_instance = new ServiceController());
-
-
-        private ServiceController()
+        public ServiceController(IOAuthController oAuthController, IDatabaseController databaseController)
         {
-            _oAuthController = new OAuthController();
-            _databaseController = new DatabaseController();
+            _oAuthController = oAuthController;
+            _databaseController = databaseController;
         }
-
-        //public async Task<UserStats> GetStudentStats(int id)
-        //{
-        //    var requestUri = GenerateRequestUri(_apiBaseUrl, "students", new Dictionary<string, string>() { { "userId", id.ToString() } });
-        //    var response = await _client.GetAsync(requestUri);
-        //    var json = response.Content.ReadAsStringAsync().Result;
-        //    var userStats = JsonConvert.DeserializeObject<UserStats>(json);
-        //    return userStats;
-        //}
-
-        //public async Task<bool> PostUnsyncDrivingSessions(List<UnsyncDrive> unsyncDrives)
-        //{
-        //    var json = new JObject(new JProperty("unsyncDrives", unsyncDrives));
-
-        //    var content = new StringContent(json.ToString(), Encoding.UTF8, "application/json");
-        //    var requestUri = GenerateRequestUri(_apiBaseUrl, "drivingsessions");
-        //    var response = await _client.PostAsync(requestUri, content);
-        //    return response.IsSuccessStatusCode;
-        //}
-
-        //public async Task<List<StateReqs>> GetStateReqs()
-        //{
-        //    var requestUri = GenerateRequestUri(_apiBaseUrl, "statereqs");
-        //    var response = await _client.GetAsync(requestUri);
-        //    var json = response.Content.ReadAsStringAsync().Result;
-        //    var stateReqs = JsonConvert.DeserializeObject<List<StateReqs>>(json);
-        //    return stateReqs;
-        //}
 
         public async Task<bool> UserLoggedIn()
         {
@@ -160,9 +121,18 @@ namespace StudentDriver.Services
             _oAuthController.DeAuthenticateSavedAccount();
 		}
 
-        public async Task<User.UserType> GetUserType()
+        public async Task<User> GetUser()
         {
-           return await _databaseController.GetUserType();
+           return await _databaseController.GetUser();
         }
-	}
+
+        public async Task<IEnumerable<User>> GetStudents()
+        {
+            var response = await _oAuthController.MakeGetRequest(Settings.InstructorStudentsUrl);
+            var responseText = response.GetResponseText();
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            var students = JsonConvert.DeserializeObject<IEnumerable<User>>(responseText);
+            return students;
+        }
+    }
 }

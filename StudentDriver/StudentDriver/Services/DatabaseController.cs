@@ -5,8 +5,15 @@ using StudentDriver.Models;
 
 namespace StudentDriver.Services
 {
-    public class DatabaseController
+    public class DatabaseController : IDatabaseController
     {
+        private readonly SQLiteDatabase _database;
+
+        public DatabaseController()
+        {
+            _database = new SQLiteDatabase();
+        }
+
         public async Task<bool> SaveUser(string profileJson)
         {
             var jsonObj = JObject.Parse(profileJson);
@@ -14,7 +21,6 @@ namespace StudentDriver.Services
             var firstName = jsonObj["_json"]["first_name"].ToString();
             var lastName = jsonObj["_json"]["last_name"].ToString();
             var imgUrl = jsonObj["photos"].First["value"].ToString();
-            //TODO: FOR TESTING (REMOVE)
             var userTypeStr = jsonObj["userType"].ToString();
             //var userTypeStr = "instructor";
             var userType = User.UserType.Student;
@@ -22,26 +28,26 @@ namespace StudentDriver.Services
             {
                 userType = User.UserType.Instructor;
             }
-            var user = await SQLiteDatabase.GetInstance().GetUser();
+            var user = await _database.GetUser();
             user.FirstName = firstName;
             user.LastName = lastName;
             user.ImageUrl = imgUrl;
             user.UType = userType;
             user.ServerId = mongoId;
-            return await SQLiteDatabase.GetInstance().UpdateUser(user) != -1;
+            return await _database.UpdateUser(user) != -1;
         }
 
         public async Task<bool> StartNewUnsyncDrive(string weatherJson)
         {
             if (string.IsNullOrEmpty(weatherJson)) return false;
-            var newDriveId = await SQLiteDatabase.GetInstance().StartAsyncDrive();
+            var newDriveId = await _database.StartAsyncDrive();
             if (newDriveId == -1) return false;
             return await AddWeatherToDrive(weatherJson, newDriveId);
         }
 
         public async Task<bool> StopCurrentAsyncDrive()
         {
-            var stoppedDrive = await SQLiteDatabase.GetInstance().StopCurrentAsyncDrive();
+            var stoppedDrive = await _database.StopCurrentAsyncDrive();
             return (stoppedDrive != -1);
         }
 
@@ -57,33 +63,33 @@ namespace StudentDriver.Services
                               WeatherType = weatherType,
                               TimeOfDay = timeOfDay
                           };
-            return (await SQLiteDatabase.GetInstance().AddDriveWeatherData(weather) != -1);
+            return (await _database.AddDriveWeatherData(weather) != -1);
         }
 
         public async Task<bool> ConnectStudentToDrivingSchool(string userJson)
         {
             var userObj = JObject.Parse(userJson);
             var schoolId = userObj["schoolId"].ToString();
-            var user = await SQLiteDatabase.GetInstance().GetUser();
+            var user = await _database.GetUser();
             user.DrivingSchoolId = schoolId;
-            return (await SQLiteDatabase.GetInstance().UpdateUser(user) != -1);
+            return (await _database.UpdateUser(user) != -1);
         }
 
         public async Task<StateReqs> GetStateRequirements(string state)
         {
-            return await SQLiteDatabase.GetInstance().GetStateReqs(state);
+            return await _database.GetStateReqs(state);
         }
 
         public async Task<bool> StoreStateRequirements(string stateReqJson)
         {
             var stateReq = JsonConvert.DeserializeObject<StateReqs>(stateReqJson);
-            return (await SQLiteDatabase.GetInstance().AddStateReqs(stateReq) != -1);
+            return (await _database.AddStateReqs(stateReq) != -1);
         }
 
-        public async Task<User.UserType> GetUserType()
+        public async Task<User> GetUser()
         {
-            var user = await SQLiteDatabase.GetInstance().GetUser();
-            return user.UType;
+            var user = await _database.GetUser();
+            return user;
         }
     }
 }

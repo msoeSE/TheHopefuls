@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Linq;
+using Autofac;
 using OAuth.StudentDriver;
+using StudentDriver.Autofac;
 using StudentDriver.Helpers;
 using StudentDriver.Models;
 using StudentDriver.Services;
@@ -13,21 +15,24 @@ namespace StudentDriver
 {
 	public partial class App : Application
 	{
-		public App()
+	    private static ServiceController _sc;
+		public App(AppSetup setup)
 		{
-			InitializeComponent();
+		    InitializeComponent();
+		    var container = setup.CreateContainer();
+		    _sc = container.Resolve<IServiceController>() as ServiceController;
 			MainPage = new StudentDriverPage();
 		}
 
 		protected override async void OnStart()
 		{
-            if (!await ServiceController.Instance.UserLoggedIn())
+            if (!await _sc.UserLoggedIn())
             {
                 LoginAction();
             }
             //var userType = User.UserType.Instructor;
-		    var userType = await ServiceController.Instance.GetUserType();
-            SuccessfulLoginAction(userType).Invoke();
+		    var userType = await _sc.GetUser();
+            SuccessfulLoginAction(userType.UType).Invoke();
 		    // Handle when your app starts
 		}
 
@@ -40,6 +45,8 @@ namespace StudentDriver
 		{
 			// Handle when your app resumes
 		}
+
+	    public static IServiceController ServiceController => _sc;
 
 	    public static Action SuccessfulLoginAction(User.UserType userType)
 	    {

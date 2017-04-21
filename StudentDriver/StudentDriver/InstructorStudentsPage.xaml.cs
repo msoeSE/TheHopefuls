@@ -15,7 +15,8 @@ namespace StudentDriver
         {
             InitializeComponent();
             var students = new ObservableCollection<User>();
-            var users = new List<User> {new User {FirstName = "Fuck", LastName = "Face"}, new User { FirstName = "Ur", LastName = "Mom" } };
+            var users = new List<User> { new User { FirstName = "Fuck", LastName = "Face" }, new User { FirstName = "Ur", LastName = "Mom" } };
+            //var users = App.ServiceController.GetStudents();
             foreach (var user in users) { students.Add(user); }
             StudentsListView.ItemsSource = students;
             StudentsListView.ItemTapped += StudentTapped;

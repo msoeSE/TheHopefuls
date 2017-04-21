@@ -8,9 +8,12 @@ namespace StudentDriver.Models
     public class User
     {
         [PrimaryKey, AutoIncrement]
+        [JsonProperty(PropertyName = "_id")]
         public int Id { get; set; }
         public string Email { get; set; }
+        [JsonProperty(PropertyName = "firstName")]
         public string FirstName { get; set; }
+        [JsonProperty(PropertyName = "lastName")]
         public string LastName { get; set; }
         public string ServerId { get; set; }
         public string DrivingSchoolId { get; set; }

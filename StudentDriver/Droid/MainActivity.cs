@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Acr.UserDialogs;
+using StudentDriver.Autofac;
 
 namespace StudentDriver.Droid
 {
@@ -24,7 +25,7 @@ namespace StudentDriver.Droid
 			global::Xamarin.Forms.Forms.Init(this, bundle);
 			UserDialogs.Init(this);
 
-			LoadApplication(new App());
+			LoadApplication(new App(new AppSetup()));
 		}
 	}
 }

@@ -43,7 +43,7 @@ namespace StudentDriver.Droid
 				} else {
 					UserDialogs.Instance.Loading ("Logging In...");
                     var account = ev.Account;
-                    if (!await ServiceController.Instance.SaveAccount(new AccountDummy(account.Username, account.Properties, account.Cookies)))
+                    if (!await App.ServiceController.SaveAccount(new AccountDummy(account.Username, account.Properties, account.Cookies)))
                     {
                         App.LoginAction.Invoke();
                         UserDialogs.Instance.Alert("Unable to Login, Please Try Again", "Error", "Okay");

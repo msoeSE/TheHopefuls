@@ -46,7 +46,7 @@ namespace StudentDriver
 
 	    private async Task UpdateDrivingData(string stateSelected)
 	    {
-            var viewModel = await ServiceController.Instance.GetAggregatedDrivingData(stateSelected,userId);
+            var viewModel = await App.ServiceController.GetAggregatedDrivingData(stateSelected,userId);
             if (viewModel != null)
             {
                 await UpdateView(viewModel);
