@@ -248,6 +248,16 @@
     <BundleResource Include="Resources\DLO.png" />
     <BundleResource Include="Resources\DLO512.png" />
     <BundleResource Include="Resources\DLO1024.png" />
+    <BundleResource Include="Resources\clear-day.png" />
+    <BundleResource Include="Resources\clear-night.png" />
+    <BundleResource Include="Resources\cloudy.png" />
+    <BundleResource Include="Resources\fog.png" />
+    <BundleResource Include="Resources\partly-cloud-night.png" />
+    <BundleResource Include="Resources\party-cloudy-day.png" />
+    <BundleResource Include="Resources\rain.png" />
+    <BundleResource Include="Resources\sleet.png" />
+    <BundleResource Include="Resources\snow.png" />
+    <BundleResource Include="Resources\wind.png" />
   </ItemGroup>
   <ItemGroup>
     <XamarinComponentReference Include="xamarin.auth">

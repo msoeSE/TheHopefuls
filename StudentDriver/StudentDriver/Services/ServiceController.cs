@@ -116,6 +116,20 @@ namespace StudentDriver.Services
 
         }
 
+		public async Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId)
+		{
+			var responseString = await GetWeather(latitude, longitude);
+			var jsonObject = JsonConvert.DeserializeObject(responseString);
+			//TODO add drive weather data from web server
+			return false;
+
+		}
+
+		public async Task<bool> DeleteUnsyncDrive(int driveId)
+		{
+			return await _databaseController.DeleteUnsyncDrive(driveId);
+		}
+
         private async Task<string> VerifyAccount(Account account)
         {
             return await _oAuthController.VerifyAccount(Settings.OAuthUrl, account);
@@ -123,6 +137,11 @@ namespace StudentDriver.Services
 		public async Task<int> CreateUnsyncDrive()
 		{
 			return await _databaseController.CreateUnsyncDrive();
+		}
+
+		public async Task<UnsyncDrive> GetUnsyncedDriveById(int id)
+		{
+			return await _databaseController.GetUnsyncDriveById(id);
 		}
 
 		public async Task<int> StopUnsyncDrive(int driveId)

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
@@ -141,6 +141,22 @@ namespace StudentDriver
 		public async Task<List<UnsyncDrive>> GetAllUnsyncedDrives()
 		{
 			return await _database.Table<UnsyncDrive>().ToListAsync();
+		}
+
+		public async Task<UnsyncDrive> GetUnsyncDriveById(int id)
+		{
+			return await _database.Table<UnsyncDrive>().Where(x => x.Id == id).FirstAsync();
+		}
+
+		public async Task<bool> DeleteUnsyncDriveById(int id)
+		{
+			var drive = await _database.Table<UnsyncDrive>().Where(x => x.Id == id).FirstAsync();
+			if (drive != null)
+			{
+				await _database.DeleteAsync(drive);
+				return true;
+			}
+			return false;
 		}
 
         public async Task<int> AddDriveWeatherData(DriveWeatherData driveWeatherData)

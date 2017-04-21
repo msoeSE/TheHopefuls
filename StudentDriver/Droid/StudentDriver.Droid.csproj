@@ -250,6 +250,16 @@
     <AndroidResource Include="Resources\drawable-hdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xhdpi\icon.png" />
     <AndroidResource Include="Resources\drawable-xxhdpi\icon.png" />
+    <AndroidResource Include="Resources\drawable\clear-day.png" />
+    <AndroidResource Include="Resources\drawable\clear-night.png" />
+    <AndroidResource Include="Resources\drawable\cloudy.png" />
+    <AndroidResource Include="Resources\drawable\fog.png" />
+    <AndroidResource Include="Resources\drawable\partly-cloud-night.png" />
+    <AndroidResource Include="Resources\drawable\party-cloudy-day.png" />
+    <AndroidResource Include="Resources\drawable\rain.png" />
+    <AndroidResource Include="Resources\drawable\sleet.png" />
+    <AndroidResource Include="Resources\drawable\snow.png" />
+    <AndroidResource Include="Resources\drawable\wind.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\StudentDriver\StudentDriver.csproj">

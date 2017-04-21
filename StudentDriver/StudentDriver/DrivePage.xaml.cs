@@ -94,17 +94,24 @@ namespace StudentDriver
 					{
 						await locator.StopListeningAsync();
 						var loading = Acr.UserDialogs.UserDialogs.Instance.Loading("Syncing Drives...");
+						loading.PercentComplete = 0;
 						loading.Show();
 						if (positions.Count != 0)
 						{
 							await ServiceController.Instance.AddDrivePoints(positions);
 							positions.Clear();
 						}
-						loading.PercentComplete = 20;
+						loading.PercentComplete = 40;
 						var didComplete = await ServiceController.Instance.PostDrivePoints(
 							await ServiceController.Instance.GetAllDrivePoints(), 
 							await ServiceController.Instance.GetAllUnsyncedDrives());
-						loading.PercentComplete = 40;
+						if (!didComplete)
+						{
+							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to send drivepoints to web service.");
+							loading.Hide();
+							return;
+						}
+						loading.PercentComplete = 80;
 						//TODO get all of the drive sessions, and drivepoints (all unsync drives and sessions, not just the current)
 						//TODO Setup the drives to push to web backend
 						//TODO push to web
@@ -119,8 +126,8 @@ namespace StudentDriver
 						if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
 						{
 
-							//TODO create new unsync drive in DB
 							var driveId = await ServiceController.Instance.CreateUnsyncDrive();
+							var currentLocation = await locator.GetPositionAsync();
 							if (driveId == -1)
 							{
 								Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to create drive, please try again");
@@ -128,6 +135,16 @@ namespace StudentDriver
 								return;
 							}
 							this.unsyncDriveId = driveId;
+							var weatherCreated = await ServiceController.Instance.CreateDriveWeatherData(
+								currentLocation.Latitude, currentLocation.Longitude, unsyncDriveId);
+							if (!weatherCreated)
+							{
+								await ServiceController.Instance.StopUnsyncDrive(unsyncDriveId);
+								unsyncDriveId = -1;
+								Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to create weather data, stopping drive.");
+								UpdateDrivingButton();
+								return;
+							}
 							await locator.StartListeningAsync(1, 5.0, true);
 
 						}

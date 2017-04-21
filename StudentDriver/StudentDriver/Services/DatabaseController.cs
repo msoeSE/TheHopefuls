@@ -58,6 +58,11 @@ namespace StudentDriver.Services
             return (await SQLiteDatabase.GetInstance().UpdateUser(user) != -1);
         }
 
+		public async Task<bool> DeleteUnsyncDrive(int driveId)
+		{
+			return await SQLiteDatabase.GetInstance().DeleteUnsyncDriveById(driveId);
+		}
+
 		public async Task<int> CreateUnsyncDrive()
 		{
 			return await SQLiteDatabase.GetInstance().StartUnsyncDrive();
@@ -71,6 +76,11 @@ namespace StudentDriver.Services
 		public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> list)
 		{
 			return await SQLiteDatabase.GetInstance().AddDrivePoints(list);
+		}
+
+		public async Task<UnsyncDrive> GetUnsyncDriveById(int id)
+		{
+			return await SQLiteDatabase.GetInstance().GetUnsyncDriveById(id);
 		}
 
 		public async Task<List<UnsyncDrive>> GetUnsyncedDrives()
