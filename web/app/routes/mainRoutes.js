@@ -1,6 +1,8 @@
 var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
+var config = require("../../config.json");
+var request = require("request");
 
 // For listing of supported status codes in this package
 // https://www.npmjs.com/package/http-status-codes
@@ -167,6 +169,26 @@ router.post("/linkacctoschool", function(req, res) {
 	}, (err) => {
 		res.status(statusCodes.BAD_REQUEST);
 		res.json(err);
+	});
+});
+
+router.get("/weather/:lat/:long", function(req, res) {
+	request({
+		url: "https://api.darksky.net/forecast/" + config.DarkSykApiKey.Secret + "/" + req.params.lat + "," + req.params.long,
+		json: true
+	},
+	function(error, response, body){
+		if(!error && response.statusCode === 200){ //eslint-disable-line
+			var weather = {
+				summary: body.currently.temperature,
+				temperature: body.currently.summary,
+				icon: body.currently.icon
+			};
+			res.json(weather);
+		} else {
+			res.status(statusCodes.INTERNAL_SERVER_ERROR);
+			res.json(error);
+		}
 	});
 });
 
