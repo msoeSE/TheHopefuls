@@ -181,7 +181,8 @@ router.get("/weather/:lat/:long", function(req, res) {
 		if(!error && response.statusCode === 200){ //eslint-disable-line
 			var weather = {
 				summary: body.currently.temperature,
-				temperature: body.currently.summary
+				temperature: body.currently.summary.
+				icon: body.currently.icon
 			};
 			res.json(weather);
 		} else {
