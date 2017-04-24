@@ -273,3 +273,7 @@ __pycache__/
 
 ### VisualStudio Patch ###
 build/
+
+# Ignore FTP config
+.ftpconfig
+.orig

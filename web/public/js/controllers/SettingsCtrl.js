@@ -2,8 +2,9 @@ angular.module("SettingsCtrl", ["SettingsService"]).controller("SettingsControll
 	var vm = this;
 
 	SettingsOb.getProfile().then(function(settings){
-		vm.username = settings.first_name + " " + settings.last_name;
-		vm.profilePicture = settings.picture.data.url;
+		vm.username = settings._json.first_name + " " + settings._json.last_name;
+		vm.profilePicture = settings._json.picture.data.url;
+		vm.instructorID = settings.mongoID;
 	});
 
 

@@ -3,6 +3,20 @@
 
 	<p>{{ vm.tagline }}</p>
 
+	<div class = "row">
+		<div class="input-field col s6">
+			<i class="material-icons prefix">account_circle</i>
+			<input id="instructorID" type="text" class="validate">
+			<label for="instructorID">Instructor ID</label>
+		</div>
+		<div class="col s2">
+			<button class = 'waves-effect waves-light btn' id="addBtn" type="button">
+				Add
+				<i class="material-icons left">add_circle</i>
+			</button>
+		</div>
+	</div>
+
 	<table class="instructor-list-table">
 		<thead>
 			<tr>
@@ -20,18 +34,21 @@
 		</tfoot>
 	</table>
 
-	<div class = "row">
-		<div class="input-field col s6">
-			<i class="material-icons prefix">account_circle</i>
-			<input id="name" type="text" class="validate">
-			<label for="name">Instructor Name</label>
-		</div>
-		<div class="col s2">
-			<button class="waves-effect waves-light btn" id="addBtn" type="button">
-				Add
-				<i class="material-icons left">add_circle</i>
-			</button>
-		</div>
-	</div>
+	<!-- <table class="mock-table">
+		<thead>
+			<tr>
+				<th>Instructor ID</th>
+				<th>Instructor Name</th>
+				<th>Action</th>
+			</tr>
+		</thead>
+		<tfoot>
+			<tr>
+				<th>Instructor ID</th>
+				<th>Instructor Name</th>
+				<th>Action</th>
+			</tr>
+		</tfoot>
+	</table> -->
 
 </div>

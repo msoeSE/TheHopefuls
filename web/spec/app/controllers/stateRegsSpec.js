@@ -1,13 +1,12 @@
 var StateRegulations = require(`${process.env.PWD}/app/models/StateRegulations`);
 var toTest = require(`${process.env.PWD}/app/controllers/stateRegsCtrl`);
 
-
 describe("State Regulations Endpoint Tests", function() {
 	var success;
 	var failure;
 	var shouldErr;
 	var stateRegsMockObject = {
-		"Object": "MockedSchool"
+		"Object": "MockedStateRegs"
 	};
 	beforeEach(function() {
 		shouldErr = undefined;
@@ -40,5 +39,5 @@ describe("State Regulations Endpoint Tests", function() {
 				"error": "error"
 			});
 		});
-	})
+	});
 });

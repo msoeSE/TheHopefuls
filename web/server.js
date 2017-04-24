@@ -1,3 +1,6 @@
+// Mongo files
+var userCtrl = require("./app/controllers/userCtrl");
+
 // modules =================================================
 var express		= require("express");
 var app			= express();
@@ -76,12 +79,31 @@ passport.use(
 		callbackURL: `${config.Auth.CallbackURLBase}/auth/facebook/callback`,
 		profileFields: ["id", "email", "gender", "name", "picture.type(large)"]
 	}, function(accessToken, refreshToken, profile, done) {
-		// User.findOrCreate({ facebookId: profile.id }, function (err, user) {
-		// 	return cb(err, user);
-		// });
+		getOrCreateUser(profile);
 		return done(null, profile);
 	}
 ));
+
+function getOrCreateUser(profile) {
+	userCtrl.getUser(profile.id, function(doc){
+		if(!doc){
+			var json = {
+				firstName: profile._json.first_name,
+				lastName: profile._json.last_name,
+				userId: profile.id,
+				service: "facebook"
+			};
+
+			userCtrl.createUser(json, "student", function(user) {
+			}, function(error) {
+				$log.log(error);
+			});
+		}
+
+	}, function(error){
+		$log.log(error);
+	});
+}
 
 passport.use(
 	new GoogleTokenStrategy({
@@ -100,9 +122,7 @@ passport.use(
 		clientID: config.Auth.FacebookAuth.ID,
 		clientSecret: config.Auth.FacebookAuth.Secret
 	}, function(accessToken, refreshToken, profile, done) {
-		// User.findOrCreate({facebookId: profile.id}, function (error, user) {
-		// 	return done(error, user);
-		// });
+		getOrCreateUser(profile);
 		return done(null, profile);
 	}
 ));
@@ -120,8 +140,17 @@ app.use("/favicon.ico", express.static(staticFilesDir + "/favicon.ico"));
 app.get("/auth/facebook", passport.authenticate("facebook"));
 app.get("/auth/facebook/callback",
 	passport.authenticate("facebook", { failureRedirect: "/login" }),
-	function(req, res) {
-		res.redirect("/");
+	function(req, res) {// Rudimentary way of updating req.user
+		userCtrl.getUser(req.user.id, function(doc){
+			if(doc){
+				req.user.userType = doc.userType;
+				req.user.mongoID = doc._id;
+			}
+			res.redirect("/");
+		}, function (err){
+			$log.log(err);
+			res.redirect("/");
+		});
 	}
 );
 app.get("/auth/google", passport.authenticate("google", { scope:
@@ -142,9 +171,17 @@ app.post("/auth/google/token",
 
 app.post("/auth/facebook/token",
 	passport.authenticate("facebook-token"),
-	function (req, res) {
-		// do something with req.user
-		res.send(req.user);
+	function (req, res) {// Rudimentary way of updating req.user
+		userCtrl.getUser(req.user.id, function(doc){
+			if(doc){
+				req.user.userType = doc.userType;
+				req.user.mongoID = doc._id;
+			}
+			res.send(req.user);
+		}, function (err){
+			$log.log(err);
+			res.send(req.user);
+		});
 	}
 );
 

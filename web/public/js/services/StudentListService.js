@@ -1,9 +1,12 @@
 angular.module("StudentListService", []).factory("students", function($log, $http) {
-	var vm = this;
+	var students = {};
 
-	// TODO write this request when the api has it
-	$http.get("")
-	.then(function(response) {
-		vm.studentsData = response;
-	});
+	students.getAllUsers = function () {
+		return $http.get("/api/allStudents")
+		.then(function (response){
+			return response;
+		});
+	};
+
+	return students;
 });
