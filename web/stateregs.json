@@ -1,15 +1,5 @@
 [
     {
-        "state": "state",
-        "stateAbbreviation": "stateAbbreviation",
-        "noHoursWithDriversEdHours": "noHoursWithDriversEdHours",
-        "dayHours": "dayHours",
-        "nightHours": "nightHours",
-        "inclementWeather": "inclementWeather",
-        "nightOrInclement": "nightOrInclement",
-        "notes": "notes"
-    },
-    {
         "state": "Alabama",
         "stateAbbreviation": "AL",
         "noHoursWithDriversEdHours": "0",
