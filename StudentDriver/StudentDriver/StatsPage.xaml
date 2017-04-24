@@ -5,13 +5,13 @@
 	xmlns:local="clr-namespace:StudentDriver"
 	x:Class="StudentDriver.StatsPage"
 	xmlns:color="StudentDriver.Config"
-	BackgroundColor="{x:Static color:AppColors.PageBackground}">
+	BackgroundColor="{x:Static local:AppColors.PageBackground}">
 	<ContentPage.Content>
 		<ScrollView>
 			<StackLayout
 				Padding="5, 20, 5, 5">
 				<Frame
-					OutlineColor="{x:Static color:AppColors.Second}"
+					OutlineColor="{x:Static local:AppColors.Second}"
 					Margin="1"
 					HasShadow="false">
 					<StackLayout>
@@ -75,7 +75,7 @@
 					</StackLayout>
 				</Frame>
 				<Frame
-					OutlineColor="{x:Static color:AppColors.Second}"
+					OutlineColor="{x:Static local:AppColors.Second}"
 					Margin="1"
 					HasShadow="false">
 					<StackLayout
@@ -88,25 +88,24 @@
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="CenterAndExpand">
 							<local:TitleLabel
-								Text="Total Distance"
+								Text="Total Hours"
 								HorizontalOptions="StartAndExpand">
 							</local:TitleLabel>
 							<Label
-								x:Name="totalDistanceLabel"
+								x:Name="totalHoursLabel"
 								VerticalOptions="End"
-								HorizontalOptions="EndAndExpand"
-								Text="30/50 mi">
+								HorizontalOptions="EndAndExpand">
 							</Label>
 						</StackLayout>
 						<ProgressBar
-							x:Name="totalDistanceProgress"
+							x:Name="totalHoursProgress"
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="FillAndExpand">
 						</ProgressBar>
 					</StackLayout>
 				</Frame>
 				<Frame
-					OutlineColor="{x:Static color:AppColors.Second}"
+					OutlineColor="{x:Static local:AppColors.Second}"
 					Margin="1"
 					HasShadow="false">
 					<StackLayout
@@ -119,18 +118,17 @@
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="CenterAndExpand">
 							<local:TitleLabel
-								Text="Daytime Distance"
+								Text="Daytime Hours"
 								HorizontalOptions="StartAndExpand">
 							</local:TitleLabel>
 							<Label
-								x:Name="daytimeDistanceLabel"
+								x:Name="daytimeHoursLabel"
 								VerticalOptions="End"
-								HorizontalOptions="EndAndExpand"
-								Text="10/30 mi">
+								HorizontalOptions="EndAndExpand">
 							</Label>
 						</StackLayout>
 						<ProgressBar
-							x:Name="daytimeDistanceProgress"
+							x:Name="daytimeHoursProgress"
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="FillAndExpand"
 							MinimumHeightRequest="6">
@@ -138,7 +136,7 @@
 					</StackLayout>
 				</Frame>
 				<Frame
-					OutlineColor="{x:Static color:AppColors.Second}"
+					OutlineColor="{x:Static local:AppColors.Second}"
 					Margin="1"
 					HasShadow="false">
 					<StackLayout
@@ -151,49 +149,52 @@
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="CenterAndExpand">
 							<local:TitleLabel
-								Text="Night time Distance"
+								Text="Night time Hours"
 								HorizontalOptions="StartAndExpand">
 							</local:TitleLabel>
 							<Label
-								x:Name="nighttimeDistanceLabel"
+								x:Name="nighttimeHoursLabel"
 								VerticalOptions="End"
-								HorizontalOptions="EndAndExpand"
-								Text="20/20 mi">
+								HorizontalOptions="EndAndExpand">
 							</Label>
 						</StackLayout>
 						<ProgressBar
-							x:Name="nighttimeDistanceProgress"
+							x:Name="nighttimeHoursProgress"
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="FillAndExpand">
 						</ProgressBar>
 					</StackLayout>
 				</Frame>
-				<Frame
-					OutlineColor="{x:Static color:AppColors.Second}"
+        <Frame
+					OutlineColor="{x:Static local:AppColors.Second}"
 					Margin="1"
 					HasShadow="false">
-					<StackLayout
+          <StackLayout
 						Orientation="Vertical"
 						Padding="0, 10, 0, 10"
 						HorizontalOptions="FillAndExpand"
 						VerticalOptions="StartAndExpand">
-						<StackLayout
+            <StackLayout
 							Orientation="Horizontal"
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="CenterAndExpand">
-							<local:TitleLabel
-								Text="Total Time"
+              <local:TitleLabel
+								Text="Inclement Hours"
 								HorizontalOptions="StartAndExpand">
-							</local:TitleLabel>
-							<Label
-								x:Name="totalTimeLabel"
+              </local:TitleLabel>
+              <Label
+								x:Name= "inclementHoursLabel"
 								VerticalOptions="End"
-								HorizontalOptions="EndAndExpand"
-								Text="4h 15m">
-							</Label>
-						</StackLayout>
-					</StackLayout>
-				</Frame>
+								HorizontalOptions="EndAndExpand">
+              </Label>
+            </StackLayout>
+            <ProgressBar
+							x:Name="inclementHoursProgress"
+							HorizontalOptions="FillAndExpand"
+							VerticalOptions="FillAndExpand">
+            </ProgressBar>
+          </StackLayout>
+        </Frame>
 			</StackLayout>
 		</ScrollView>
 	</ContentPage.Content>

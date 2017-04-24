@@ -1,29 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using OAuth.StudentDriver;
+using StudentDriver.Helpers;
 using Xamarin.Auth;
 
 namespace OAuth
 {
-    public class OAuthController
+    public class OAuthController : IOAuthController
     {
-        public async Task<Response> MakeGetRequest(string url, IDictionary<string, string> parameters = null)
+        public async Task<DummyResponse> MakeGetRequest(string url, IDictionary<string, string> parameters = null)
         {
-            return await MakeOAuthRequest(OAuthRequest.Get, url, AccountHandler.GetSavedFacebookAccount(), parameters);
+            return await MakeOAuthRequest(DummyRequest.Get, url, AccountHandler.GetSavedFacebookAccount(), parameters);
         }
 
-        public async Task<Response> MakePostRequest(string url, JObject jsonJObject)
+        public async Task<DummyResponse> MakePostRequest(string url, IDictionary<string, string> parameters = null)
         {
-            return await MakeOAuthRequest(OAuthRequest.Post, url, AccountHandler.GetSavedFacebookAccount(), null, jsonJObject.ToString());
+            return await MakeOAuthRequest(DummyRequest.Post, url, AccountHandler.GetSavedFacebookAccount(),parameters);
         }
 
         public async Task<string> VerifyAccount(string url, Account account)
         {
             if (account == null) return null;
-            var response = await MakeOAuthRequest(OAuthRequest.Post, url, account);
+            var response = await MakeOAuthRequest(DummyRequest.Post, url, account);
             if (response?.StatusCode != HttpStatusCode.OK) return null;
             var responseText = response.GetResponseText();
             if (string.IsNullOrEmpty(responseText)) return null;
@@ -33,7 +35,6 @@ namespace OAuth
 
         public async Task<string> VerifySavedAccount(string url)
         {
-
             return await VerifyAccount(url, AccountHandler.GetSavedFacebookAccount());
         }
 
@@ -42,10 +43,11 @@ namespace OAuth
             AccountHandler.DeAuthenticateAccount();
         }
 
-        private static async Task<Response> MakeOAuthRequest(string method,string url, Account account,IDictionary<string, string> parameters = null, string jsonBody = null)
+        private static async Task<DummyResponse> MakeOAuthRequest(string method,string url, Account account,IDictionary<string, string> parameters = null)
         {
             if (account == null) return null;
-            return await new OAuthRequest(method, new Uri(url), parameters, account,jsonBody).GetResponseAsync();
+            var request = new DummyRequest(method,new Uri(url),account,parameters);
+            return await request.GetResponseAsync(CancellationToken.None);
         }
     }
 
