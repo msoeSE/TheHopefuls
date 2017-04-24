@@ -10,14 +10,14 @@ var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 
-// router.all("*", function(req, res, next){
-// 	if(req.isAuthenticated()) {
-// 		next();
-// 	} else {
-// 		res.status(statusCodes.UNAUTHORIZED);
-// 		res.json({error: "Unauthorized"});
-// 	}
-// });
+router.all("*", function(req, res, next){
+	if(req.isAuthenticated()) {
+		next();
+	} else {
+		res.status(statusCodes.UNAUTHORIZED);
+		res.json({error: "Unauthorized"});
+	}
+});
 
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
