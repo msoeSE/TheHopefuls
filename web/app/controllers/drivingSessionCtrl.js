@@ -75,10 +75,8 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 	});
 };
 
-var dayHourStart = 9;
-var dayHourEnd = 17;
-let nineAM = moment().hour(dayHourStart);
-let fivePM = moment().hour(dayHourEnd);
+let nineAM = moment("09:00:00", "HH:mm:ss Z");
+let fivePM = moment("17:00:00", "HH:mm:ss Z");
 let minPerHour = 60;
 
 //TODO: correct calculations based on night/date ranges
@@ -86,9 +84,15 @@ let minPerHour = 60;
 function calcDayDriveTimeTot(startTime, endTime) {
 	// Day Hours: 9am (9:00)-5pm (17:00)
 	var dayTot = 0;
-	if (moment(startTime, "HH:mm:ss").isAfter(nineAM) && moment(endTime, "HH:mm:ss").isBefore(fivePM)) {
+	console.log("startTime: " + moment(startTime).format("HH:mm:ss"));
+	console.log("nineAM: " + nineAM.format("HH:mm:ss"));
+	console.log("fivePM: " + fivePM.format("HH:mm:ss"));
+	console.log("endTime: " + moment(endTime).format("HH:mm:ss"));
+	console.log("is startTime after 9am?" + moment(startTime).format("HH:mm:ss") > nineAM.format("HH:mm:ss")); // returns false, this is wrong
+	console.log("is endTime before 5pm? " + moment(endTime).format("HH:mm:ss") < fivePM.format("HH:mm:ss"));
+	if (moment(startTime, "HH:mm:ss") > nineAM.format("HH:mm:ss") && moment(endTime, "HH:mm:ss") < fivePM.format("HH:mm:ss")) {
 		dayTot = moment(startTime, "HH:mm:ss").diff(endTime, "minutes") / minPerHour;
-	} else if (moment(startTime, "HH:mm:ss").isBefore(fivePM) && moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
+	} else if (moment(startTime, "HH:mm:ss") > nineAM.format("HH:mm:ss") && moment(endTime, "HH:mm:ss") > fivePM.format("HH:mm:ss")) {
 		dayTot = moment(startTime, "HH:mm:ss").diff(fivePM, "minutes") / minPerHour;
 	}
 	return dayTot;
@@ -97,7 +101,7 @@ function calcDayDriveTimeTot(startTime, endTime) {
 function calcNightDriveTimeTot(startTime, endTime) {
 	// Night Hours: Before 9:00, After 17:00
 	var nightTot = 0;
-	if (moment(startTime, "HH:mm:ss").isBefore(nineAM) && moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
+	if (moment(startTime, "HH:mm:ss").isBefore(nineAM) || moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
 		nightTot = Math.abs(moment(startTime, "HH:mm:ss").diff(endTime, "minutes") / minPerHour);
 	} else if (moment(startTime, "HH:mm:ss").isAfter(nineAM) && moment(endTime, "HH:mm:ss").isAfter(fivePM)) {
 		nightTot = fivePM.diff(endTime, "minutes") / minPerHour;
