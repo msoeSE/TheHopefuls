@@ -4,8 +4,9 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
 	xmlns:local="StudentDriver.Config"
 	xmlns:controls="clr-namespace:ImageCircle.Forms.Plugin.Abstractions;assembly=ImageCircle.Forms.Plugin.Abstractions"
+	xmlns:studentDriver="clr-namespace:StudentDriver;assembly=StudentDriver"
 	x:Class="StudentDriver.DrivePage"
-	BackgroundColor="{x:Static local:AppColors.PageBackground}">
+	BackgroundColor="{x:Static studentDriver:AppColors.PageBackground}">
 	<ContentPage.Content>
 		<StackLayout
 			HorizontalOptions="FillAndExpand"
@@ -22,7 +23,7 @@
 				HorizontalOptions="FillAndExpand"
 				VerticalOptions="CenterAndExpand"
 				HasShadow="false"
-				OutlineColor="{x:Static local:AppColors.Second}">
+				OutlineColor="{x:Static studentDriver:AppColors.Second}">
 				<Grid
 					HorizontalOptions="FillAndExpand"
 					VerticalOptions="FillAndExpand">
@@ -90,7 +91,7 @@
 				HorizontalOptions="FillAndExpand"
 				VerticalOptions="FillAndExpand"
 				HasShadow="false"
-				OutlineColor="{x:Static local:AppColors.Second}">
+				OutlineColor="{x:Static studentDriver:AppColors.Second}">
 				<Grid
 					HorizontalOptions="FillAndExpand"
 					VerticalOptions="FillAndExpand">
@@ -152,7 +153,7 @@
 				x:Name="drivingButton"
 				Text="Start"
 				TextColor="White"
-				BackgroundColor="{x:Static local:AppColors.Third}">
+				BackgroundColor="{x:Static studentDriver:AppColors.Third}">
 			</Button>
 		</StackLayout>
 	</ContentPage.Content>
