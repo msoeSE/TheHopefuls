@@ -16,5 +16,12 @@ namespace StudentDriver.Services
         Task<bool> StartUnsyncDrive(double latitude, double longitude);
         Task<bool> UserLoggedIn();
         Task<IEnumerable<User>> GetStudents();
+		Task<int> AddDrivePoints(IEnumerable<DrivePoint> list);
+		Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives);
+		Task<List<DrivePoint>> GetAllDrivePoints();
+		Task<List<UnsyncDrive>> GetAllUnsyncedDrives();
+		Task<int> CreateUnsyncDrive();
+		Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId);
+		Task<int> StopUnsyncDrive(int driveId);
     }
 }

@@ -98,13 +98,13 @@ namespace StudentDriver
 						loading.Show();
 						if (positions.Count != 0)
 						{
-							await ServiceController.Instance.AddDrivePoints(positions);
+							await App.ServiceController.AddDrivePoints(positions);
 							positions.Clear();
 						}
 						loading.PercentComplete = 40;
-						var didComplete = await ServiceController.Instance.PostDrivePoints(
-							await ServiceController.Instance.GetAllDrivePoints(), 
-							await ServiceController.Instance.GetAllUnsyncedDrives());
+						var didComplete = await App.ServiceController.PostDrivePoints(
+							await App.ServiceController.GetAllDrivePoints(), 
+							await App.ServiceController.GetAllUnsyncedDrives());
 						if (!didComplete)
 						{
 							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to send drivepoints to web service.");
@@ -112,6 +112,7 @@ namespace StudentDriver
 							return;
 						}
 						loading.PercentComplete = 80;
+
 						//TODO get all of the drive sessions, and drivepoints (all unsync drives and sessions, not just the current)
 						//TODO Setup the drives to push to web backend
 						//TODO push to web
@@ -126,7 +127,7 @@ namespace StudentDriver
 						if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
 						{
 
-							var driveId = await ServiceController.Instance.CreateUnsyncDrive();
+							var driveId = await App.ServiceController.CreateUnsyncDrive();
 							var currentLocation = await locator.GetPositionAsync();
 							if (driveId == -1)
 							{
@@ -135,11 +136,11 @@ namespace StudentDriver
 								return;
 							}
 							this.unsyncDriveId = driveId;
-							var weatherCreated = await ServiceController.Instance.CreateDriveWeatherData(
+							var weatherCreated = await App.ServiceController.CreateDriveWeatherData(
 								currentLocation.Latitude, currentLocation.Longitude, unsyncDriveId);
 							if (!weatherCreated)
 							{
-								await ServiceController.Instance.StopUnsyncDrive(unsyncDriveId);
+								await App.ServiceController.StopUnsyncDrive(unsyncDriveId);
 								unsyncDriveId = -1;
 								Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to create weather data, stopping drive.");
 								UpdateDrivingButton();
@@ -186,11 +187,11 @@ namespace StudentDriver
 			{
 				if (unsyncDriveId == -1)
 				{
-					unsyncDriveId = ServiceController.Instance.CreateUnsyncDrive().Result;
+					unsyncDriveId = App.ServiceController.CreateUnsyncDrive().Result;
 				}
 				Task.Factory.StartNew(async () =>
 				{
-					await ServiceController.Instance.AddDrivePoints(positions);
+					await App.ServiceController.AddDrivePoints(positions);
 					positions.Clear();
 				});
 			}
@@ -211,12 +212,12 @@ namespace StudentDriver
 				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
 				averageSpeed = 0.0;
-				unsyncDriveId = ServiceController.Instance.CreateUnsyncDrive().Result;
+				unsyncDriveId = App.ServiceController.CreateUnsyncDrive().Result;
 
 			}
 			else
 			{
-				ServiceController.Instance.StopUnsyncDrive(unsyncDriveId).RunSynchronously();
+				App.ServiceController.StopUnsyncDrive(unsyncDriveId).RunSynchronously();
 				unsyncDriveId = -1;
 			}
 			drivingButton.Text = isStudentDriving ? "Stop" : "Start";

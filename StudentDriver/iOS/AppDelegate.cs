@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-
+using StudentDriver.Autofac;
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
 using UIKit;
@@ -15,7 +15,7 @@ namespace StudentDriver.iOS
 		{
 			global::Xamarin.Forms.Forms.Init ();
 			ImageCircleRenderer.Init();
-			LoadApplication (new App ());
+			LoadApplication (new App (new AppSetup()));
 
 			return base.FinishedLaunching (app, options);
 		}
