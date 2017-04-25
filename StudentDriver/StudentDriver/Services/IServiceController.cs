@@ -6,16 +6,16 @@ using StudentDriver.Models;
 
 namespace StudentDriver.Services
 {
-    public interface IServiceController
-    {
-        Task<bool> ConnectSchool(string schoolId);
-        Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId = null);
-        Task<User> GetUser();
-        void Logout();
-        Task<bool> SaveAccount(AccountDummy dummyAccount);
-        Task<bool> StartUnsyncDrive(double latitude, double longitude);
-        Task<bool> UserLoggedIn();
-        Task<IEnumerable<User>> GetStudents();
+	public interface IServiceController
+	{
+		Task<bool> ConnectSchool(string schoolId);
+		Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId = null);
+		Task<User> GetUser();
+		void Logout();
+		Task<bool> SaveAccount(AccountDummy dummyAccount);
+		Task<bool> StartUnsyncDrive(double latitude, double longitude);
+		Task<bool> UserLoggedIn();
+		Task<IEnumerable<User>> GetStudents();
 		Task<int> AddDrivePoints(IEnumerable<DrivePoint> list);
 		Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives);
 		Task<List<DrivePoint>> GetAllDrivePoints();
@@ -23,5 +23,7 @@ namespace StudentDriver.Services
 		Task<int> CreateUnsyncDrive();
 		Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId);
 		Task<int> StopUnsyncDrive(int driveId);
-    }
+		Task<string> GetWeather(double latitude, double longitude)
+
+	}
 }

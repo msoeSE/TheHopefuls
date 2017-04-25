@@ -10,6 +10,7 @@ using Xamarin.Auth;
 using System;
 using System.IO;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace StudentDriver.Services
 {
@@ -41,9 +42,11 @@ namespace StudentDriver.Services
 		public async Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives)
 		{
 			var endpoint = string.Format(Settings.FORMATStudentDrivingSessionsUrl, App.ServiceController.GetUser().Result.ServerId);
+			var sb = new StringBuilder();
+			var sw = new StringWriter(sb);
 			try
 			{
-				using (JsonWriter writer = new JsonTextWriter(new StringWriter(new StringBuilder())))
+				using (JsonWriter writer = new JsonTextWriter(sw))
 				{
 					writer.Formatting = Formatting.Indented;
 					writer.WriteStartArray();
@@ -82,10 +85,19 @@ namespace StudentDriver.Services
 						writer.WritePropertyName("DriveWeatherData");
 						writer.WriteStartObject();
 						writer.WritePropertyName("temperature");
-						writer.WriteValue(driveWeather.);
-
+						writer.WriteValue(driveWeather.WeatherTemp);
+						writer.WritePropertyName("summary");
+						writer.WriteValue(driveWeather.WeatherType);
+						writer.WriteEndObject();
+						//End the drivepoint object
+						writer.WriteEndObject();
 					}
+					writer.WriteEndArray();
+					writer.ToString();
 				}
+				var jsonString = sb.ToString();
+				var response = await _oAuthController.MakePostRequest(endpoint); ;
+				return response.StatusCode == HttpStatusCode.OK;
 			}
 			catch (Exception e)
 			{
@@ -139,27 +151,16 @@ namespace StudentDriver.Services
 			var stateReq = await GetStateRequirements(state);
 			return new DrivingDataViewModel(stateReq, aggData);
 		}
-        private async Task<string> GetWeather(double latitude, double longitude)
-        {
-			var urlForRequest = string.Format("{0}/{1}/{2}", Settings.WeatherUrl, latitude, longitude);
-			var response = await _oAuthController.MakeGetRequest(urlForRequest);
-            var responseText = response.GetResponseText();
-            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
-            return responseText;
 
 		private async Task<string> GetWeather(double latitude, double longitude)
 		{
-			var parameters = new Dictionary<string, string>
-							 {
-								{"longitude", longitude.ToString()},
-								{"latitude", latitude.ToString()},
-							 };
-			var response = await _oAuthController.MakeGetRequest(Settings.WeatherUrl, parameters);
+			var urlForRequest = string.Format("{0}/{1}/{2}", Settings.WeatherUrl, latitude, longitude);
+			var response = await _oAuthController.MakeGetRequest(urlForRequest);
 			var responseText = response.GetResponseText();
 			if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
 			return responseText;
-
 		}
+
 
 		private async Task<StateReqs> GetStateRequirements(string state)
 		{
@@ -187,7 +188,7 @@ namespace StudentDriver.Services
 
 		public async Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId)
 		{
-			var responseString = await GetWeather(latitude, longitude);
+			var responseString = await this.GetWeather(latitude, longitude);
 			try
 			{
 				JToken token = JObject.Parse(responseString);

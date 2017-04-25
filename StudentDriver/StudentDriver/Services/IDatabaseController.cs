@@ -1,4 +1,4 @@
-﻿using System.Threading.Tasks;
+using System.Threading.Tasks;
 using StudentDriver.Models;
 using System.Collections.Generic;
 
@@ -21,6 +21,6 @@ namespace StudentDriver.Services
 		Task<bool> DeleteUnsyncDrive(int driveId);
 		Task<int> CreateUnsyncDrive();
 		Task<DriveWeatherData> GetWeatherFromDrive(int unsyncDriveId)
-
+Task AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId);
 	}
 }
