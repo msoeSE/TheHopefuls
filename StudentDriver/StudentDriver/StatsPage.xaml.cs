@@ -31,7 +31,7 @@ namespace StudentDriver
         protected override async void OnAppearing ()
 		{
 			base.OnAppearing ();
-
+		    IsBusy = true;
 		    int defaultIndex = 48;
             var stateSelected = statePicker.Items[defaultIndex];
             await UpdateDrivingData(stateSelected);
@@ -42,9 +42,10 @@ namespace StudentDriver
 		    totalHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(totalHoursLabelPressed));
 		    inclementHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(inclementHoursPressed));
             statePicker.SelectedIndexChanged += StatePicker_SelectedIndexChanged;
+		    IsBusy = false;
 		}
 
-	    private async Task UpdateDrivingData(string stateSelected)
+	    public async Task UpdateDrivingData(string stateSelected)
 	    {
             var viewModel = await App.ServiceController.GetAggregatedDrivingData(stateSelected,userId);
             if (viewModel != null)
@@ -53,7 +54,7 @@ namespace StudentDriver
             }
         }
 
-	    private async Task UpdateView(DrivingDataViewModel viewModel)
+	    public async Task UpdateView(DrivingDataViewModel viewModel)
 	    {
             await Task.Run(() => {
                 totalHoursProgress.ProgressTo(viewModel.Total.PercentCompletedDouble, 1500, Easing.Linear);

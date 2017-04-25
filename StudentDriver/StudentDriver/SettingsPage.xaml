@@ -27,6 +27,7 @@
 				</controls:CircleImage>
 				<Label
 					Text="Jonathon Smith"
+          AutomationId="studentName"
 					x:Name="studentName"
 					FontSize="Large"
 					FontAttributes="Bold"

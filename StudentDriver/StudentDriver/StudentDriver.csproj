@@ -72,6 +72,7 @@
     <Compile Include="Services\DatabaseController.cs" />
     <Compile Include="Services\IDatabaseController.cs" />
     <Compile Include="Services\IServiceController.cs" />
+    <Compile Include="Services\ISQLiteDatabase.cs" />
     <Compile Include="Services\ServiceController.cs" />
     <Compile Include="StudentDriverPage.xaml.cs">
       <DependentUpon>StudentDriverPage.xaml</DependentUpon>

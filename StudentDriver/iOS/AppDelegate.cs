@@ -4,6 +4,7 @@ using System.Linq;
 
 using Foundation;
 using ImageCircle.Forms.Plugin.iOS;
+using StudentDriver.Autofac;
 using UIKit;
 
 namespace StudentDriver.iOS
@@ -15,7 +16,7 @@ namespace StudentDriver.iOS
 		{
 			global::Xamarin.Forms.Forms.Init ();
 			ImageCircleRenderer.Init();
-			LoadApplication (new App ());
+			LoadApplication (new App (new AppSetup()));
 
 			return base.FinishedLaunching (app, options);
 		}

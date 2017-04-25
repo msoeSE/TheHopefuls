@@ -9,8 +9,8 @@ using Xamarin.Forms;
 
 namespace StudentDriver
 {
-	public class SQLiteDatabase
-	{
+	public class SQLiteDatabase : ISQLiteDatabase
+    {
 		private static SQLiteAsyncConnection _database;
 
         public SQLiteDatabase()

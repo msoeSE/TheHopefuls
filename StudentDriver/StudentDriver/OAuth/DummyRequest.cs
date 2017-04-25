@@ -204,23 +204,14 @@ namespace Xamarin.Auth
 
                             return Task.Factory
                                         .FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
-                                            .ContinueWith(resTask => {
-                                                return new DummyResponse((HttpWebResponse)resTask.Result);
-                                            }, cancellationToken);
+                                            .ContinueWith(resTask => !resTask.IsFaulted ? new DummyResponse((HttpWebResponse)resTask.Result) : null, cancellationToken);
                         }, cancellationToken).Unwrap();
             }
             else
             {
                 return Task.Factory
                         .FromAsync<WebResponse>(request.BeginGetResponse, request.EndGetResponse, null)
-                        .ContinueWith(resTask => {
-                                          if (resTask.IsFaulted)
-                                          {
-                                              var stupid = resTask.Exception.Flatten();
-                                              return null;
-                                          }
-                            return new DummyResponse((HttpWebResponse)resTask.Result);
-                        }, cancellationToken);
+                        .ContinueWith(resTask => !resTask.IsFaulted ? new DummyResponse((HttpWebResponse) resTask.Result) : null, cancellationToken);
             }
         }
 

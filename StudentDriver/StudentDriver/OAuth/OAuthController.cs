@@ -12,14 +12,16 @@ namespace OAuth
 {
     public class OAuthController : IOAuthController
     {
-        public async Task<DummyResponse> MakeGetRequest(string url, IDictionary<string, string> parameters = null)
+        public async Task<string> MakeGetRequest(string url, IDictionary<string, string> parameters = null)
         {
-            return await MakeOAuthRequest(DummyRequest.Get, url, AccountHandler.GetSavedFacebookAccount(), parameters);
+            var response = await MakeOAuthRequest(DummyRequest.Get, url, AccountHandler.GetSavedFacebookAccount(), parameters);
+            return response?.GetResponseText();
         }
 
-        public async Task<DummyResponse> MakePostRequest(string url, IDictionary<string, string> parameters = null)
+        public async Task<string> MakePostRequest(string url, IDictionary<string, string> parameters = null)
         {
-            return await MakeOAuthRequest(DummyRequest.Post, url, AccountHandler.GetSavedFacebookAccount(),parameters);
+            var response = await MakeOAuthRequest(DummyRequest.Post, url, AccountHandler.GetSavedFacebookAccount(),parameters);
+            return response?.GetResponseText();
         }
 
         public async Task<string> VerifyAccount(string url, Account account)

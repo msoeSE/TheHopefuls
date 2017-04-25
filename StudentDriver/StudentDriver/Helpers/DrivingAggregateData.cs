@@ -12,11 +12,11 @@ namespace StudentDriver.Helpers
     {
         [JsonProperty(PropertyName = "totalHours")]
         public double TotalHours { get; set; }
-        [JsonProperty(PropertyName = "totalDaytimeHours")]
+        [JsonProperty(PropertyName = "dayHours")]
         public double TotalDaytimeHours { get; set; }
-        [JsonProperty(PropertyName = "totalNighttimeHours")]
+        [JsonProperty(PropertyName = "nightHours")]
         public double TotalNighttimeHours { get; set; }
-        [JsonProperty(PropertyName = "totalInclementHours")]
+        [JsonProperty(PropertyName = "inclementHours")]
         public double TotalInclementHours { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Models;
@@ -7,22 +8,34 @@ namespace StudentDriver.Services
 {
     public class DatabaseController : IDatabaseController
     {
-        private readonly SQLiteDatabase _database;
+        private readonly ISQLiteDatabase _database;
 
-        public DatabaseController()
+        public DatabaseController(ISQLiteDatabase database)
         {
-            _database = new SQLiteDatabase();
+            _database = database;
         }
 
         public async Task<bool> SaveUser(string profileJson)
         {
+            if (string.IsNullOrEmpty(profileJson)) return false;
             var jsonObj = JObject.Parse(profileJson);
-            var mongoId = jsonObj["mongoID"].ToString();
-            var firstName = jsonObj["_json"]["first_name"].ToString();
-            var lastName = jsonObj["_json"]["last_name"].ToString();
-            var imgUrl = jsonObj["photos"].First["value"].ToString();
-            var userTypeStr = jsonObj["userType"].ToString();
-            //var userTypeStr = "instructor";
+            string mongoId;
+            string firstName;
+            string lastName;
+            string imgUrl;
+            string userTypeStr;
+            try
+            {
+                mongoId = jsonObj["mongoID"].ToString();
+                firstName = jsonObj["_json"]["first_name"].ToString();
+                lastName = jsonObj["_json"]["last_name"].ToString();
+                imgUrl = jsonObj["photos"].First["value"].ToString();
+                userTypeStr = jsonObj["userType"].ToString();
+            }
+            catch (NullReferenceException e)
+            {
+                return false;
+            }
             var userType = User.UserType.Student;
             if (userTypeStr.Equals("instructor"))
             {
@@ -68,8 +81,17 @@ namespace StudentDriver.Services
 
         public async Task<bool> ConnectStudentToDrivingSchool(string userJson)
         {
+            if (string.IsNullOrEmpty(userJson)) return false;
             var userObj = JObject.Parse(userJson);
-            var schoolId = userObj["schoolId"].ToString();
+            string schoolId;
+            try
+            {
+                schoolId = userObj["schoolId"].ToString();
+            }
+            catch (NullReferenceException e)
+            {
+                return false;
+            }
             var user = await _database.GetUser();
             user.DrivingSchoolId = schoolId;
             return (await _database.UpdateUser(user) != -1);
@@ -77,11 +99,13 @@ namespace StudentDriver.Services
 
         public async Task<StateReqs> GetStateRequirements(string state)
         {
+            if (string.IsNullOrEmpty(state)) return null;
             return await _database.GetStateReqs(state);
         }
 
         public async Task<bool> StoreStateRequirements(string stateReqJson)
         {
+            if (string.IsNullOrEmpty(stateReqJson)) return false;
             var stateReq = JsonConvert.DeserializeObject<StateReqs>(stateReqJson);
             return (await _database.AddStateReqs(stateReq) != -1);
         }

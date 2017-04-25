@@ -42,9 +42,8 @@ namespace StudentDriver.Services
                 {
                     {"schoolId", schoolId}
                 };
-            var response =  await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, parameters);
-            var responseText = response.GetResponseText();
-            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return false;
+            var responseText =  await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, parameters);
+            if (string.IsNullOrEmpty(responseText)) return false;
             return await _databaseController.ConnectStudentToDrivingSchool(responseText);
         }
 
@@ -56,6 +55,7 @@ namespace StudentDriver.Services
 
         public async Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId = null)
         {
+            if (string.IsNullOrEmpty(state)) return null;
             Dictionary<string, string> parameters = null;
             if (!string.IsNullOrEmpty(userId))
             {
@@ -64,9 +64,8 @@ namespace StudentDriver.Services
                     { "userId", userId}
                 };
             }
-            var response = await _oAuthController.MakeGetRequest(Settings.AggregateDrivingUrl, parameters);
-            var responseText = response?.GetResponseText();
-            if (response?.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            var responseText = await _oAuthController.MakeGetRequest(Settings.AggregateDrivingUrl, parameters);
+            if (string.IsNullOrEmpty(responseText)) return null;
             var aggData = JsonConvert.DeserializeObject<DrivingAggregateData>(responseText);
             var stateReq = await GetStateRequirements(state);
             return new DrivingDataViewModel(stateReq, aggData);
@@ -79,11 +78,8 @@ namespace StudentDriver.Services
                                 {"longitude", longitude.ToString()},
                                 {"latitude", latitude.ToString()},
                              };
-            var response = await _oAuthController.MakeGetRequest(Settings.WeatherUrl, parameters);
-            var responseText = response.GetResponseText();
-            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
-            return responseText;
-
+            var responseText = await _oAuthController.MakeGetRequest(Settings.WeatherUrl, parameters);
+            return string.IsNullOrEmpty(responseText) ? null : responseText;
         }
 
         private async Task<StateReqs> GetStateRequirements(string state)
@@ -102,10 +98,8 @@ namespace StudentDriver.Services
             {
                 { "state",state}
             };
-            var response = await _oAuthController.MakeGetRequest(Settings.StateReqUrl, parameters);
-            var responseText = response.GetResponseText();
-            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
-            return responseText;
+            var responseText = await _oAuthController.MakeGetRequest(Settings.StateReqUrl, parameters);
+            return string.IsNullOrEmpty(responseText) ? null : responseText;
         }
 
 
@@ -128,9 +122,8 @@ namespace StudentDriver.Services
 
         public async Task<IEnumerable<User>> GetStudents()
         {
-            var response = await _oAuthController.MakeGetRequest(Settings.InstructorStudentsUrl);
-            var responseText = response.GetResponseText();
-            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            var responseText = await _oAuthController.MakeGetRequest(Settings.InstructorStudentsUrl);
+            if (string.IsNullOrEmpty(responseText)) return null;
             var students = JsonConvert.DeserializeObject<IEnumerable<User>>(responseText);
             return students;
         }
