@@ -114,6 +114,18 @@ namespace StudentDriver.Services
 			return await _database.StopUnsyncDrive(driveId);
 		}
 
+		public async Task<int> AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId)
+		{
+			var weatherObject = new DriveWeatherData
+			{
+				UnsyncDriveId = unsyncDriveId,
+				WeatherType = weatherType,
+				WeatherTemp = weatherTemp,
+				WeatherIcon = weatherIcon,
+			};
+			return await SQLiteDatabase.GetInstance().AddDriveWeatherData(weatherObject);
+		}
+
 		public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> list)
 		{
 			return await _database.AddDrivePoints(list);

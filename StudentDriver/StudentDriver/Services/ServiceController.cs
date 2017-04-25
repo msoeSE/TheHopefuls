@@ -139,6 +139,13 @@ namespace StudentDriver.Services
 			var stateReq = await GetStateRequirements(state);
 			return new DrivingDataViewModel(stateReq, aggData);
 		}
+        private async Task<string> GetWeather(double latitude, double longitude)
+        {
+			var urlForRequest = string.Format("{0}/{1}/{2}", Settings.WeatherUrl, latitude, longitude);
+			var response = await _oAuthController.MakeGetRequest(urlForRequest);
+            var responseText = response.GetResponseText();
+            if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
+            return responseText;
 
 		private async Task<string> GetWeather(double latitude, double longitude)
 		{
@@ -181,9 +188,20 @@ namespace StudentDriver.Services
 		public async Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId)
 		{
 			var responseString = await GetWeather(latitude, longitude);
-			var jsonObject = JsonConvert.DeserializeObject(responseString);
-			//TODO add drive weather data from web server
-			return false;
+			try
+			{
+				JToken token = JObject.Parse(responseString);
+				var weatherType = (string)token.SelectToken("summary");
+				var weatherIcon = (string)token.SelectToken("icon");
+				var weatherTemp = (string)token.SelectToken("temperature");
+				await _databaseController.AddWeatherData(weatherType, weatherTemp, weatherIcon, unsyncDriveId);
+			}
+			catch (Exception e)
+			{
+				return false;
+			}
+
+			return true;
 
 		}
 

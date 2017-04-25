@@ -8,6 +8,8 @@ namespace StudentDriver.Models
         public int Id { get; set; }
         public int UnsyncDriveId { get; set; }
         public string WeatherType { get; set; }
+		public string WeatherIcon { get; set; }
+		public string WeatherTemp { get; set; }
         public string TimeOfDay { get; set; }
     }
 }
