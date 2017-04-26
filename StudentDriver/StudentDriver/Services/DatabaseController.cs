@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Models;
+using System;
 
 namespace StudentDriver.Services
 {
@@ -18,6 +19,10 @@ namespace StudentDriver.Services
 
 		public async Task<bool> SaveUser(string profileJson)
 		{
+			if (profileJson == null)
+			{
+				return false;
+			}
 			var jsonObj = JObject.Parse(profileJson);
 			var mongoId = jsonObj["mongoID"].ToString();
 			var firstName = jsonObj["_json"]["first_name"].ToString();
@@ -44,16 +49,21 @@ namespace StudentDriver.Services
 			if (string.IsNullOrEmpty(weatherJson)) return false;
 			var newDriveId = await _database.StartUnsyncDrive();
 			if (newDriveId == -1) return false;
-			return await AddWeatherToDrive(weatherJson, newDriveId);
+			if (await AddWeatherToDrive(weatherJson, newDriveId))
+			{
+				return true;
+			}
+			await _database.DeleteUnsyncDriveById(newDriveId);
+			return false;
 		}
 
-		public async Task<bool> StopCurrentAsyncDrive()
+		public async Task<bool> StopCurrentUnsyncDrive()
 		{
 			var stoppedDrive = await _database.StopCurrentAsyncDrive();
 			return (stoppedDrive != -1);
 		}
 
-		private async Task<bool> AddWeatherToDrive(string weatherJson, int unsyncDriveId)
+		public async Task<bool> AddWeatherToDrive(string weatherJson, int unsyncDriveId)
 		{
 			var jsonObj = JObject.Parse(weatherJson);
 			var weatherType = jsonObj["weatherType"].ToString();
@@ -68,7 +78,7 @@ namespace StudentDriver.Services
 			return (await _database.AddDriveWeatherData(weather) != -1);
 		}
 
-		private async Task<DriveWeatherData> GetWeatherFromDrive(int unsyncDriveId)
+		public async Task<DriveWeatherData> GetWeatherFromDrive(int unsyncDriveId)
 		{
 			return await _database.GetDriveWeatherByUnsyncDrive(unsyncDriveId);
 		}
@@ -114,7 +124,7 @@ namespace StudentDriver.Services
 			return await _database.StopUnsyncDrive(driveId);
 		}
 
-		public async Task<int> AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId)
+		public async Task<DriveWeatherData> AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId)
 		{
 			var weatherObject = new DriveWeatherData
 			{
@@ -123,7 +133,11 @@ namespace StudentDriver.Services
 				WeatherTemp = weatherTemp,
 				WeatherIcon = weatherIcon,
 			};
-			return await SQLiteDatabase.GetInstance().AddDriveWeatherData(weatherObject);
+			if (await _database.AddDriveWeatherData(weatherObject) > -1)
+			{
+				return weatherObject;
+			}
+			return null;
 		}
 
 		public async Task<int> AddDrivePoints(IEnumerable<DrivePoint> list)
@@ -145,6 +159,12 @@ namespace StudentDriver.Services
 		{
 			return await _database.GetAllDrivePoints();
 		}
+
+		public async Task<int> DeleteAllDriveData()
+		{
+			return await _database.DeleteAllDriveData();
+		}
+
 
 	}
 }

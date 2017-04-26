@@ -114,15 +114,16 @@ namespace StudentDriver
 			var unsyncDrive = new UnsyncDrive
 			{
 				UserId = GetUser().Id,
-				StartDateTime = new DateTime().ToUniversalTime()
+				StartDateTime = DateTime.Now,
 			};
 			return await _database.InsertAsync(unsyncDrive);
 		}
 
 		public async Task<int> StopCurrentAsyncDrive()
 		{
-			var unsyncDrive = _database.Table<UnsyncDrive>().OrderByDescending(u => u.Id).FirstOrDefaultAsync().Result;
-			unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
+
+			var unsyncDrive = await _database.Table<UnsyncDrive>().OrderByDescending(u => u.Id).FirstOrDefaultAsync();
+			unsyncDrive.EndDateTime = DateTime.Now;
 			return await _database.UpdateAsync(unsyncDrive);
 		}
 
@@ -163,6 +164,14 @@ namespace StudentDriver
 			return false;
 		}
 
+		public async Task<int> DeleteAllDriveData()
+		{
+			int total = await _database.DeleteAllAsync<DrivePoint>();
+			total += await _database.DeleteAllAsync<UnsyncDrive>();
+			total += await _database.DeleteAllAsync<DriveWeatherData>();
+			return total;
+		}
+
 		public async Task<int> AddDriveWeatherData(DriveWeatherData driveWeatherData)
 		{
 			return await _database.InsertAsync(driveWeatherData);
@@ -194,4 +203,5 @@ namespace StudentDriver
 		}
 
 	}
+
 }

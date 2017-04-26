@@ -21,9 +21,10 @@ namespace StudentDriver.Services
 		Task<List<DrivePoint>> GetAllDrivePoints();
 		Task<List<UnsyncDrive>> GetAllUnsyncedDrives();
 		Task<int> CreateUnsyncDrive();
-		Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId);
+		Task<DriveWeatherData> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId);
 		Task<int> StopUnsyncDrive(int driveId);
-		Task<string> GetWeather(double latitude, double longitude)
-
+		Task<string> GetWeather(double latitude, double longitude);
+		Task<bool> DeleteAllDriveData();
+		Task<bool> DeleteUnsyncDrive(int driveId);
 	}
 }

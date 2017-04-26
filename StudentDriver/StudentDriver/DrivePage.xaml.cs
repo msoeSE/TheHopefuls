@@ -70,81 +70,80 @@ namespace StudentDriver
 					return;
 
 				}
-				Device.StartTimer(new TimeSpan(0, 0, 1), () =>
-				{
-					if (isStudentDriving)
-					{
-						currentTime = currentTime.Add(new TimeSpan(0, 0, 1));
-						Device.BeginInvokeOnMainThread(() =>
-						{
-							timeLabel.Text = currentTime.ToString("g");
-						});
-						return true;
-					}
-					else
-					{
-						currentTime = new TimeSpan();
-						return false;
-					}
-				});
 				UpdateDrivingButton();
 				try
 				{
 					if (!isStudentDriving)
 					{
 						await locator.StopListeningAsync();
-						var loading = Acr.UserDialogs.UserDialogs.Instance.Loading("Syncing Drives...");
-						loading.PercentComplete = 0;
-						loading.Show();
+						Acr.UserDialogs.UserDialogs.Instance.Loading("Syncing Drives...").Show();
 						if (positions.Count != 0)
 						{
 							await App.ServiceController.AddDrivePoints(positions);
 							positions.Clear();
 						}
-						loading.PercentComplete = 40;
+						var allDrivePoints = await App.ServiceController.GetAllDrivePoints();
+						var unsyncDrives = await App.ServiceController.GetAllUnsyncedDrives();
+						if (allDrivePoints.Count == 0 && unsyncDrives.Count == 0)
+						{
+							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to find any saved drives");
+							Acr.UserDialogs.UserDialogs.Instance.HideLoading();
+							return;
+						}
 						var didComplete = await App.ServiceController.PostDrivePoints(
-							await App.ServiceController.GetAllDrivePoints(), 
-							await App.ServiceController.GetAllUnsyncedDrives());
+							allDrivePoints,
+							unsyncDrives);
 						if (!didComplete)
 						{
 							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to send drivepoints to web service.");
-							loading.Hide();
+							Acr.UserDialogs.UserDialogs.Instance.HideLoading();
 							return;
 						}
-						loading.PercentComplete = 80;
-
-						//TODO get all of the drive sessions, and drivepoints (all unsync drives and sessions, not just the current)
-						//TODO Setup the drives to push to web backend
-						//TODO push to web
-						//TODO on success, clear database locally. 
-						//TODO on failure, notify the user, do not clear database.
-						loading.PercentComplete = 100;
-						loading.Hide();
-
+						if (!await App.ServiceController.DeleteAllDriveData())
+						{
+							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to delete local drive data after update");
+							Acr.UserDialogs.UserDialogs.Instance.HideLoading();
+							return;
+						}
+						Acr.UserDialogs.UserDialogs.Instance.ShowSuccess("Successfully uploading drive data");
+						Acr.UserDialogs.UserDialogs.Instance.HideLoading();
 					}
 					else
 					{
+						Acr.UserDialogs.UserDialogs.Instance.ShowLoading("Starting Drive...");
 						if (locator.IsGeolocationEnabled && locator.IsGeolocationAvailable)
 						{
 
 							var driveId = await App.ServiceController.CreateUnsyncDrive();
-							var currentLocation = await locator.GetPositionAsync();
 							if (driveId == -1)
 							{
 								Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to create drive, please try again");
-								UpdateDrivingButton();
+								await UpdateDrivingButton();
 								return;
 							}
 							this.unsyncDriveId = driveId;
+							var currentLocation = await locator.GetPositionAsync(timeoutMilliseconds: 5000);
+							if (currentLocation == null)
+							{
+								await App.ServiceController.DeleteUnsyncDrive(unsyncDriveId);
+								unsyncDriveId = -1;
+								Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to get current location, stopping drive");
+								await UpdateDrivingButton();
+								return;
+							}
 							var weatherCreated = await App.ServiceController.CreateDriveWeatherData(
 								currentLocation.Latitude, currentLocation.Longitude, unsyncDriveId);
-							if (!weatherCreated)
+							if (weatherCreated == null)
 							{
-								await App.ServiceController.StopUnsyncDrive(unsyncDriveId);
+								await App.ServiceController.DeleteUnsyncDrive(unsyncDriveId);
 								unsyncDriveId = -1;
 								Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to create weather data, stopping drive.");
-								UpdateDrivingButton();
+								await UpdateDrivingButton();
 								return;
+							}
+							else
+							{
+
 							}
 							await locator.StartListeningAsync(1, 5.0, true);
 
@@ -152,9 +151,29 @@ namespace StudentDriver
 						else
 						{
 							Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to use GPS: GPS is not enabled");
-							UpdateDrivingButton();
+							await UpdateDrivingButton();
 						}
+
+						Acr.UserDialogs.UserDialogs.Instance.HideLoading();
 					}
+					Device.StartTimer(new TimeSpan(0, 0, 1), () =>
+					{
+						if (isStudentDriving)
+						{
+							currentTime = currentTime.Add(new TimeSpan(0, 0, 1));
+							Device.BeginInvokeOnMainThread(() =>
+							{
+								timeLabel.Text = currentTime.ToString("g");
+							});
+							return true;
+						}
+						else
+						{
+							currentTime = new TimeSpan();
+							return false;
+						}
+					});
+
 
 				}
 				catch (Exception exception)
@@ -202,22 +221,23 @@ namespace StudentDriver
 		}
 
 
-		private void UpdateDrivingButton()
+		private async Task UpdateDrivingButton()
 		{
 			drivingButton.BackgroundColor = isStudentDriving ? AppColors.Third : AppColors.Fourth;
 			isStudentDriving = !isStudentDriving;
 			if (isStudentDriving)
 			{
-				
+
 				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
 				averageSpeed = 0.0;
-				unsyncDriveId = App.ServiceController.CreateUnsyncDrive().Result;
+
+				unsyncDriveId = await App.ServiceController.CreateUnsyncDrive();
 
 			}
 			else
 			{
-				App.ServiceController.StopUnsyncDrive(unsyncDriveId).RunSynchronously();
+				await App.ServiceController.StopUnsyncDrive(unsyncDriveId);
 				unsyncDriveId = -1;
 			}
 			drivingButton.Text = isStudentDriving ? "Stop" : "Start";
@@ -228,6 +248,11 @@ namespace StudentDriver
 		{
 			// 2.236936 is the conversion factor from meters per second to miles per hour
 			return speed * 2.236936;
+		}
+
+		private void UpdateWeatherIcons(string iconName)
+		{
+
 		}
 
 

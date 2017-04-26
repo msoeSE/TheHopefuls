@@ -11,7 +11,7 @@ namespace StudentDriver.Services
 		Task<User> GetUser();
 		Task<bool> SaveUser(string profileJson);
 		Task<bool> StartNewUnsyncDrive(string weatherJson);
-		Task<bool> StopCurrentAsyncDrive();
+		Task<bool> StopCurrentUnsyncDrive();
 		Task<bool> StoreStateRequirements(string stateReqJson);
 		Task<List<DrivePoint>> GetDrivePoints();
 		Task<List<UnsyncDrive>> GetUnsyncedDrives();
@@ -20,7 +20,8 @@ namespace StudentDriver.Services
 		Task<int> StopUnsyncDrive(int driveId);
 		Task<bool> DeleteUnsyncDrive(int driveId);
 		Task<int> CreateUnsyncDrive();
-		Task<DriveWeatherData> GetWeatherFromDrive(int unsyncDriveId)
-Task AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId);
+		Task<DriveWeatherData> GetWeatherFromDrive(int unsyncDriveId);
+		Task<int> AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId);
+		Task<int> DeleteAllDriveData();
 	}
 }

@@ -41,7 +41,8 @@ namespace StudentDriver.Services
 
 		public async Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives)
 		{
-			var endpoint = string.Format(Settings.FORMATStudentDrivingSessionsUrl, App.ServiceController.GetUser().Result.ServerId);
+			var user = await App.ServiceController.GetUser();
+			var endpoint = string.Format(Settings.FORMATStudentDrivingSessionsUrl, user.ServerId);
 			var sb = new StringBuilder();
 			var sw = new StringWriter(sb);
 			try
@@ -107,6 +108,11 @@ namespace StudentDriver.Services
 			return false;
 		}
 
+		public async Task<bool> DeleteAllDriveData()
+		{
+			return await _databaseController.DeleteAllDriveData() > 0;
+		}
+
 		public async Task<List<DrivePoint>> GetAllDrivePoints()
 		{
 			return await _databaseController.GetDrivePoints();
@@ -131,6 +137,7 @@ namespace StudentDriver.Services
 		public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
 		{
 			var weather = await GetWeather(latitude, longitude);
+
 			return await _databaseController.StartNewUnsyncDrive(weather);
 		}
 
@@ -152,7 +159,7 @@ namespace StudentDriver.Services
 			return new DrivingDataViewModel(stateReq, aggData);
 		}
 
-		private async Task<string> GetWeather(double latitude, double longitude)
+		public async Task<string> GetWeather(double latitude, double longitude)
 		{
 			var urlForRequest = string.Format("{0}/{1}/{2}", Settings.WeatherUrl, latitude, longitude);
 			var response = await _oAuthController.MakeGetRequest(urlForRequest);
@@ -186,7 +193,7 @@ namespace StudentDriver.Services
 
 
 
-		public async Task<bool> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId)
+		public async Task<DriveWeatherData> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId)
 		{
 			var responseString = await this.GetWeather(latitude, longitude);
 			try
@@ -195,14 +202,14 @@ namespace StudentDriver.Services
 				var weatherType = (string)token.SelectToken("summary");
 				var weatherIcon = (string)token.SelectToken("icon");
 				var weatherTemp = (string)token.SelectToken("temperature");
-				await _databaseController.AddWeatherData(weatherType, weatherTemp, weatherIcon, unsyncDriveId);
+				return await _databaseController.AddWeatherData(weatherType, weatherTemp, weatherIcon, unsyncDriveId);
 			}
 			catch (Exception e)
 			{
-				return false;
+				return null;
 			}
 
-			return true;
+			return null;
 
 		}
 
