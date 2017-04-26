@@ -102,6 +102,9 @@
 						<RowDefinition
 							Height="Auto">
 						</RowDefinition>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition
@@ -129,6 +132,13 @@
 						Source="noImage.png">
 					</controls:CircleImage>
 					<Label
+						x:Name="weatherText"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Center"
+						Grid.Row="2"
+						Grid.Column="0">
+					</Label>
+					<Label
 						Text="Time of Day"
 						HorizontalOptions="CenterAndExpand"
 						VerticalOptions="Center"
@@ -145,6 +155,13 @@
 						Grid.Column="1"
 						Source="noImage.png">
 					</controls:CircleImage>
+					<Label
+						x:Name="timeOfDayText"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Center"
+						Grid.Row="2"
+						Grid.Column="1">
+					</Label>
 				</Grid>
 			</Frame>
 			<Button

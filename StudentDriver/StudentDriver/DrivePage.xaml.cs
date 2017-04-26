@@ -143,7 +143,7 @@ namespace StudentDriver
 							}
 							else
 							{
-								UpdateWeatherIcons(weatherCreated.WeatherIcon);
+								UpdateWeatherIcons(weatherCreated);
 							}
 							await locator.StartListeningAsync(1, 5.0, true);
 
@@ -179,7 +179,7 @@ namespace StudentDriver
 				catch (Exception exception)
 				{
 					Acr.UserDialogs.UserDialogs.Instance.ShowError("Error: Unable to Start GPS");
-					UpdateDrivingButton();
+					await UpdateDrivingButton();
 				}
 
 			};
@@ -250,9 +250,9 @@ namespace StudentDriver
 			return speed * 2.236936;
 		}
 
-		private void UpdateWeatherIcons(string iconName)
+		private void UpdateWeatherIcons(DriveWeatherData driveWeather)
 		{
-			var image = ImageSource.FromFile(string.Format("{0}.png", iconName));
+			var image = ImageSource.FromFile(string.Format("{0}.png", driveWeather.WeatherIcon));
 			//Going to use 6pm as the hour, should be "night time"
 			var currentHour = DateTime.Now.ToLocalTime().Hour;
 			var timeOfDayImage = currentHour > 17 && currentHour <= 6 ? ImageSource.FromFile("night.png") : ImageSource.FromFile("day.png");
@@ -260,6 +260,8 @@ namespace StudentDriver
 			{
 				weatherImage.Source = image;
 				timeImage.Source = timeOfDayImage;
+				weatherText.Text = driveWeather.WeatherType;
+				timeOfDayText.Text = currentHour > 17 && currentHour <= 6 ? "Night" : "Day";
 			}
 
 		}
