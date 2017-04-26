@@ -21,7 +21,7 @@ namespace StudentDriver.Services
 		Task<bool> DeleteUnsyncDrive(int driveId);
 		Task<int> CreateUnsyncDrive();
 		Task<DriveWeatherData> GetWeatherFromDrive(int unsyncDriveId);
-		Task<int> AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId);
+		Task<DriveWeatherData> AddWeatherData(string weatherType, string weatherTemp, string weatherIcon, int unsyncDriveId);
 		Task<int> DeleteAllDriveData();
 	}
 }

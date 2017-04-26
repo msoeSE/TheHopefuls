@@ -143,7 +143,7 @@ namespace StudentDriver
 							}
 							else
 							{
-
+								UpdateWeatherIcons(weatherCreated.WeatherIcon);
 							}
 							await locator.StartListeningAsync(1, 5.0, true);
 
@@ -252,6 +252,13 @@ namespace StudentDriver
 
 		private void UpdateWeatherIcons(string iconName)
 		{
+			var image = ImageSource.FromFile(string.Format("{0}.png", iconName));
+			var timeOfDayImage = DateTime.Now.ToLocalTime().Hour > 18 ? ImageSource.FromFile("day.png") : ImageSource.FromFile("night.png");
+			if (image != null && timeOfDayImage != null)
+			{
+				weatherImage.Source = image;
+				timeImage.Source = timeOfDayImage;
+			}
 
 		}
 
