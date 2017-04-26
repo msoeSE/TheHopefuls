@@ -41,14 +41,17 @@ namespace StudentDriver.iOS
 				}
 				else
 				{
-					UserDialogs.Instance.Loading("Logging In...");
+					UserDialogs.Instance.ShowLoading("Logging In...");
 					var account = e.Account;
 					if (!await App.ServiceController.SaveAccount(new AccountDummy(account.Username, account.Properties, account.Cookies)))
 					{
 						App.LoginAction.Invoke();
 						UserDialogs.Instance.Alert("Unable to Login, Please Try Again", "Error", "Okay");
+						DismissViewController(true, App.LoginAction);
 					}
 					UserDialogs.Instance.HideLoading();
+					DismissViewController(true, App.SuccessfulLoginAction().Result);
+
 				}
 			};
 

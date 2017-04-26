@@ -70,7 +70,7 @@ namespace StudentDriver
 					return;
 
 				}
-				UpdateDrivingButton();
+				await UpdateDrivingButton();
 				try
 				{
 					if (!isStudentDriving)
@@ -254,7 +254,8 @@ namespace StudentDriver
 		{
 			var image = ImageSource.FromFile(string.Format("{0}.png", iconName));
 			//Going to use 6pm as the hour, should be "night time"
-			var timeOfDayImage = DateTime.Now.ToLocalTime().Hour > 18 ? ImageSource.FromFile("day.png") : ImageSource.FromFile("night.png");
+			var currentHour = DateTime.Now.ToLocalTime().Hour;
+			var timeOfDayImage = currentHour > 17 && currentHour <= 6 ? ImageSource.FromFile("night.png") : ImageSource.FromFile("day.png");
 			if (image != null && timeOfDayImage != null)
 			{
 				weatherImage.Source = image;
