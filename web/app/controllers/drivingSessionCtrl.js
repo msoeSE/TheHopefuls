@@ -82,8 +82,8 @@ var dayHourEnd = 17;
 var minPerHour = 60;
 
 function setHourBoundaries(startTime, endTime) {
-	nineAM = moment(startTime).hour(dayHourStart).minute(0).second(0); // eslint-disable-line
-	fivePM = moment(endTime).hour(dayHourEnd).minute(0).second(0); // eslint-disable-line
+	nineAM = moment.utc(startTime).hour(dayHourStart).minute(0).second(0); // eslint-disable-line
+	fivePM = moment.utc(endTime).hour(dayHourEnd).minute(0).second(0); // eslint-disable-line
 }
 
 //TODO: boundary comparisions (i.e <, >, isBefore, isAfter) is being weird
@@ -91,13 +91,15 @@ function calcDayDriveTimeTot(startTime, endTime) {
 	// Day Hours: 9am (9:00)-5pm (17:00)
 	var dayTot = 0;
 	setHourBoundaries(startTime, endTime);
-	console.log("should be true: " + (moment(startTime).isAfter(nineAM) && moment(endTime).isBefore(fivePM)));
-	if (moment(startTime).isAfter(nineAM) && moment(endTime).isBefore(fivePM)) {
-		dayTot = Math.abs(moment(startTime).diff(endTime, "minutes") / minPerHour);
+	//console.log("should be true: " + (moment.utc(startTime).isAfter(nineAM) && moment.utc(endTime).isBefore(fivePM)));
+	if (moment.utc(startTime).isAfter(nineAM) && moment.utc(endTime).isBefore(fivePM)) {
+		dayTot = moment(endTime).diff(startTime, "minutes") / minPerHour;
 		console.log("dayTot cond1: " + dayTot);
-	} else if (moment(startTime).isAfter(nineAM) && moment(endTime).isAfter(fivePM)) {
-		dayTot = moment(startTime).diff(fivePM, "minutes") / minPerHour;
+	} else if (moment.utc(startTime).isBefore(fivePM) && moment.utc(endTime).isAfter(fivePM)) {
+		dayTot = fivePM.diff(moment.utc(startTime), "minutes") / minPerHour;
 		console.log("dayTot cond2: " + dayTot);
+	} else if(moment.utc(startTime).isBefore(nineAM) && moment.utc(endTime).isAfter(nineAM)) {
+		dayTot = moment.utc(endTime).diff(nineAM, "minutes") / minPerHour;
 	}
 	return dayTot;
 }
@@ -105,15 +107,19 @@ function calcDayDriveTimeTot(startTime, endTime) {
 function calcNightDriveTimeTot(startTime, endTime) {
 	// Night Hours: Before 9:00, After 17:00
 	var nightTot = 0;
-	console.log("endTime: " + moment(endTime));
-	console.log("fivePM: " + fivePM);
-	console.log("endTime after 5pm? " + moment(endTime).isAfter(fivePM));
-	if (moment(startTime).isBefore(nineAM) || moment(endTime).isAfter(fivePM)) {
-		nightTot = Math.abs(moment(startTime).diff(endTime, "minutes") / minPerHour);
+	// console.log("endTime: " + moment(endTime));
+	// console.log("fivePM: " + fivePM);
+	// console.log("endTime after 5pm? " + moment.utc(endTime).isAfter(fivePM));
+	if ((moment.utc(startTime).isAfter(fivePM) && moment.utc(endTime).isAfter(fivePM)) ||
+			(moment.utc(startTime).isBefore(nineAM) && moment.utc(endTime).isBefore(nineAM))) {
+		nightTot = moment(endTime).diff(startTime, "minutes") / minPerHour;
 		console.log("nightTot cond1: " + nightTot);
-	} else if (moment(startTime).isAfter(nineAM) && moment(endTime).isAfter(fivePM)) {
-		nightTot = fivePM.diff(endTime, "minutes") / minPerHour;
+	} else if (moment.utc(startTime).isBefore(fivePM) && moment.utc(endTime).isAfter(fivePM)) {
+		nightTot = moment.utc(endTime).diff(fivePM, "minutes") / minPerHour;
 		console.log("nightTot cond2: " + nightTot);
+	} else if (moment.utc(startTime).isBefore(nineAM) && moment.utc(endTime).isAfter(nineAM)) {
+		nightTot = nineAM.diff(moment.utc(startTime), "minutes") / minPerHour;
+		console.log("nightTot cond3: " + nightTot);
 	}
 	return nightTot;
 }
