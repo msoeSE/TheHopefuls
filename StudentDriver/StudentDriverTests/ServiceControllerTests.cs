@@ -186,5 +186,155 @@ namespace StudentDriverTests
             Assert.AreEqual("0.0/0", drivingDataViewModel.TotalInclement.RatioString);
         }
 
+
+        [TestMethod]
+        public async Task GetAggregatedDrivingData_SuccessfulResponse_CompletedRequirementNotIncludingInclement_ReturnCorrctDrivingDataViewModel()
+        {
+            var mockDatabaseController = new Mock<IDatabaseController>();
+            var mockOAuthController = new Mock<IOAuthController>();
+            var response = "{\"dayHours\":10,\"nightHours\":1,\"inclementHours\":1,\"totalHours\":2}\r\n";
+            mockOAuthController.Setup(x => x.MakeGetRequest(Settings.AggregateDrivingUrl, null)).ReturnsAsync(response);
+            var state = "Wisconsin";
+            var stateReqs = new StateReqs
+            {
+                DayHours = 10,
+                NightHours = 10,
+                NightOrInclement = false,
+                State = state
+            };
+            mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
+            var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+
+
+            Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
+            Assert.AreEqual("55.00 %", drivingDataViewModel.Total.PercentCompletedString);
+            Assert.AreEqual("11.0/20", drivingDataViewModel.Total.RatioString);
+
+            Assert.AreEqual(1.0, drivingDataViewModel.TotalDayTime.PercentCompletedDouble);
+            Assert.AreEqual("100.00 %", drivingDataViewModel.TotalDayTime.PercentCompletedString);
+            Assert.AreEqual("10.0/10", drivingDataViewModel.TotalDayTime.RatioString);
+
+            Assert.AreEqual(0.1, drivingDataViewModel.TotalNightTime.PercentCompletedDouble);
+            Assert.AreEqual("10.00 %", drivingDataViewModel.TotalNightTime.PercentCompletedString);
+            Assert.AreEqual("1.0/10", drivingDataViewModel.TotalNightTime.RatioString);
+
+            Assert.AreEqual(0.0, drivingDataViewModel.TotalInclement.PercentCompletedDouble);
+            Assert.AreEqual("0.00 %", drivingDataViewModel.TotalInclement.PercentCompletedString);
+            Assert.AreEqual("0.0/0", drivingDataViewModel.TotalInclement.RatioString);
+        }
+
+        [TestMethod]
+        public async Task GetAggregatedDrivingData_SuccessfulResponse_CompletedRequirementIncludingInclement_ReturnCorrctDrivingDataViewModel()
+        {
+            var mockDatabaseController = new Mock<IDatabaseController>();
+            var mockOAuthController = new Mock<IOAuthController>();
+            var response = "{\"dayHours\":1,\"nightHours\":5,\"inclementHours\":5,\"totalHours\":2}\r\n";
+            mockOAuthController.Setup(x => x.MakeGetRequest(Settings.AggregateDrivingUrl, null)).ReturnsAsync(response);
+            var state = "Wisconsin";
+            var stateReqs = new StateReqs
+            {
+                DayHours = 10,
+                NightHours = 10,
+                NightOrInclement = true,
+                State = state
+            };
+            mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
+            var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+
+
+            Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
+            Assert.AreEqual("55.00 %", drivingDataViewModel.Total.PercentCompletedString);
+            Assert.AreEqual("11.0/20", drivingDataViewModel.Total.RatioString);
+
+            Assert.AreEqual(0.1, drivingDataViewModel.TotalDayTime.PercentCompletedDouble);
+            Assert.AreEqual("10.00 %", drivingDataViewModel.TotalDayTime.PercentCompletedString);
+            Assert.AreEqual("1.0/10", drivingDataViewModel.TotalDayTime.RatioString);
+
+            Assert.AreEqual(1.0, drivingDataViewModel.TotalNightTime.PercentCompletedDouble);
+            Assert.AreEqual("100.00 %", drivingDataViewModel.TotalNightTime.PercentCompletedString);
+            Assert.AreEqual("10.0/10", drivingDataViewModel.TotalNightTime.RatioString);
+
+            Assert.AreEqual(0.0, drivingDataViewModel.TotalInclement.PercentCompletedDouble);
+            Assert.AreEqual("0.00 %", drivingDataViewModel.TotalInclement.PercentCompletedString);
+            Assert.AreEqual("0.0/0", drivingDataViewModel.TotalInclement.RatioString);
+        }
+
+        [TestMethod]
+        public async Task GetAggregatedDrivingData_SuccessfulResponse_ExceededRequirementNotIncludingInclement_ReturnCorrctDrivingDataViewModel()
+        {
+            var mockDatabaseController = new Mock<IDatabaseController>();
+            var mockOAuthController = new Mock<IOAuthController>();
+            var response = "{\"dayHours\":1,\"nightHours\":11,\"inclementHours\":5,\"totalHours\":2}\r\n";
+            mockOAuthController.Setup(x => x.MakeGetRequest(Settings.AggregateDrivingUrl, null)).ReturnsAsync(response);
+            var state = "Wisconsin";
+            var stateReqs = new StateReqs
+            {
+                DayHours = 10,
+                NightHours = 10,
+                NightOrInclement = false,
+                State = state
+            };
+            mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
+            var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+
+
+            Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
+            Assert.AreEqual("55.00 %", drivingDataViewModel.Total.PercentCompletedString);
+            Assert.AreEqual("11.0/20", drivingDataViewModel.Total.RatioString);
+
+            Assert.AreEqual(0.1, drivingDataViewModel.TotalDayTime.PercentCompletedDouble);
+            Assert.AreEqual("10.00 %", drivingDataViewModel.TotalDayTime.PercentCompletedString);
+            Assert.AreEqual("1.0/10", drivingDataViewModel.TotalDayTime.RatioString);
+
+            Assert.AreEqual(1.0, drivingDataViewModel.TotalNightTime.PercentCompletedDouble);
+            Assert.AreEqual("100.00 %", drivingDataViewModel.TotalNightTime.PercentCompletedString);
+            Assert.AreEqual("10.0/10", drivingDataViewModel.TotalNightTime.RatioString);
+
+            Assert.AreEqual(0.0, drivingDataViewModel.TotalInclement.PercentCompletedDouble);
+            Assert.AreEqual("0.00 %", drivingDataViewModel.TotalInclement.PercentCompletedString);
+            Assert.AreEqual("0.0/0", drivingDataViewModel.TotalInclement.RatioString);
+        }
+
+        [TestMethod]
+        public async Task GetAggregatedDrivingData_SuccessfulResponse_ExceededRequirementIncludingInclement_ReturnCorrctDrivingDataViewModel()
+        {
+            var mockDatabaseController = new Mock<IDatabaseController>();
+            var mockOAuthController = new Mock<IOAuthController>();
+            var response = "{\"dayHours\":1,\"nightHours\":5,\"inclementHours\":6,\"totalHours\":2}\r\n";
+            mockOAuthController.Setup(x => x.MakeGetRequest(Settings.AggregateDrivingUrl, null)).ReturnsAsync(response);
+            var state = "Wisconsin";
+            var stateReqs = new StateReqs
+            {
+                DayHours = 10,
+                NightHours = 10,
+                NightOrInclement = true,
+                State = state
+            };
+            mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
+            var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+
+
+            Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
+            Assert.AreEqual("55.00 %", drivingDataViewModel.Total.PercentCompletedString);
+            Assert.AreEqual("11.0/20", drivingDataViewModel.Total.RatioString);
+
+            Assert.AreEqual(0.1, drivingDataViewModel.TotalDayTime.PercentCompletedDouble);
+            Assert.AreEqual("10.00 %", drivingDataViewModel.TotalDayTime.PercentCompletedString);
+            Assert.AreEqual("1.0/10", drivingDataViewModel.TotalDayTime.RatioString);
+
+            Assert.AreEqual(1.0, drivingDataViewModel.TotalNightTime.PercentCompletedDouble);
+            Assert.AreEqual("100.00 %", drivingDataViewModel.TotalNightTime.PercentCompletedString);
+            Assert.AreEqual("10.0/10", drivingDataViewModel.TotalNightTime.RatioString);
+
+            Assert.AreEqual(0.0, drivingDataViewModel.TotalInclement.PercentCompletedDouble);
+            Assert.AreEqual("0.00 %", drivingDataViewModel.TotalInclement.PercentCompletedString);
+            Assert.AreEqual("0.0/0", drivingDataViewModel.TotalInclement.RatioString);
+        }
+
+
     }
 }

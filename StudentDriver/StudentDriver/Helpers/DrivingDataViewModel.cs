@@ -24,7 +24,8 @@ namespace StudentDriver.Helpers
                 completedNightHours += aggregateData.TotalInclementHours;
             }
             TotalNightTime = new DrivingDataItem(stateReqs.NightHours, completedNightHours);
-            var totalHoursCompleted = aggregateData.TotalDaytimeHours + completedNightHours;
+
+            var totalHoursCompleted = TotalDayTime.Hours + TotalNightTime.Hours;
             var totalRequiredHours = stateReqs.DayHours + stateReqs.NightHours;
             Total = new DrivingDataItem(totalRequiredHours, totalHoursCompleted);
 

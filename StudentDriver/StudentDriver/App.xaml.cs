@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using OAuth.StudentDriver;
 using StudentDriver.Autofac;
@@ -26,13 +27,13 @@ namespace StudentDriver
 
 		protected override async void OnStart()
 		{
-            if (!await _sc.UserLoggedIn())
-            {
-                LoginAction();
-            }
+            ServiceController.Logout();
+		    if (!await _sc.UserLoggedIn())
+		    {
+		        LoginAction();
+		    }
             //var userType = User.UserType.Instructor;
-		    var userType = await _sc.GetUser();
-            SuccessfulLoginAction(userType.UType).Invoke();
+
 		    // Handle when your app starts
 		}
 
@@ -48,12 +49,18 @@ namespace StudentDriver
 
 	    public static IServiceController ServiceController => _sc;
 
-	    public static Action SuccessfulLoginAction(User.UserType userType)
+	    public static Action SuccessfulLoginAction()
 	    {
+
 	        var page = Current.MainPage;
-	        if (userType == User.UserType.Instructor)
+            var userType = _sc.GetUser().Result;
+	        if (userType.UType == User.UserType.Instructor)
 	        {
 	            page = new InstructorPage();
+	        }
+	        else
+	        {
+	            page = new StudentDriverPage();
 	        }
 
 	        return () =>

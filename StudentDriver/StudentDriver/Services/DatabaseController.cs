@@ -46,6 +46,7 @@ namespace StudentDriver.Services
             user.LastName = lastName;
             user.ImageUrl = imgUrl;
             user.UType = userType;
+            //user.UType = User.UserType.Instructor;
             user.ServerId = mongoId;
             return await _database.UpdateUser(user) != -1;
         }
