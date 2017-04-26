@@ -36,7 +36,7 @@ namespace StudentDriver
 			catch (Exception ex)
 			{
 				Acr.UserDialogs.UserDialogs.Instance.ShowError("Error: Unable to Start GPS");
-				UpdateDrivingButton();
+				UpdateDrivingButton().RunSynchronously();
 			}
 
 		}
@@ -253,6 +253,7 @@ namespace StudentDriver
 		private void UpdateWeatherIcons(string iconName)
 		{
 			var image = ImageSource.FromFile(string.Format("{0}.png", iconName));
+			//Going to use 6pm as the hour, should be "night time"
 			var timeOfDayImage = DateTime.Now.ToLocalTime().Hour > 18 ? ImageSource.FromFile("day.png") : ImageSource.FromFile("night.png");
 			if (image != null && timeOfDayImage != null)
 			{

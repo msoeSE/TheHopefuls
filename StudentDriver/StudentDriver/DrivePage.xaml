@@ -122,8 +122,8 @@
 					<controls:CircleImage
 						x:Name="weatherImage"
 						Aspect="AspectFit"
-						HeightRequest="40"
-						WidthRequest="40"
+						HeightRequest="70"
+						WidthRequest="70"
 						Grid.Row="1"
 						Grid.Column="0"
 						Source="noImage.png">
@@ -139,8 +139,8 @@
 					<controls:CircleImage
 						x:Name="timeImage"
 						Aspect="AspectFit"
-						HeightRequest="40"
-						WidthRequest="40"
+						HeightRequest="70"
+						WidthRequest="70"
 						Grid.Row="1"
 						Grid.Column="1"
 						Source="noImage.png">
