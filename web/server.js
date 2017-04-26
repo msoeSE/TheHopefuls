@@ -16,11 +16,29 @@ var passportGoogleToken = require("passport-google-token");
 var GoogleTokenStrategy = passportGoogleToken.Strategy;
 var passportFacebookToken = require("passport-facebook-token");
 var FacebookTokenStrategy = passportFacebookToken;
+var mongoose = require("mongoose");
+var stateRegs = require("./app/models/StateRegulations");
+var fs = require("fs");
 
 // configuration ===========================================
 // If you don't have this file, contact Dylan for it.
 var config = require("./config.json");
 var port = config.Port;
+
+// TODO Replace with config
+mongoose.connect("mongodb://localhost/routerdb");
+
+console.log("Attempting to load state regulations");
+fs.access("./stateregs.json", fs.constants.R_OK, (err) => {
+	console.log(err ? "Cannot load state regulations file" : "State regulations file loaded");
+	var regs = require("./stateregs.json");
+	regs.forEach((reg)=>{
+		stateRegs.findOneAndUpdate({state: reg.state}, reg, {upsert: true}, (err, doc)=>{
+			if(err)
+				console.log(err);
+		});
+	});
+});
 
 app.use(bodyParser.json());
 app.use(bodyParser.json({ type: "application/vnd.api+json" }));
@@ -115,6 +133,8 @@ app.use("/images", express.static(staticFilesDir + "/images"));
 app.use("/js", express.static(staticFilesDir + "/js"));
 app.use("/resources", express.static(staticFilesDir + "/resources"));
 app.use("/views", express.static(staticFilesDir + "/views"));
+app.use("/fonts", express.static(staticFilesDir + "/fonts"));
+app.use("/favicon.ico", express.static(staticFilesDir + "/favicon.ico"));
 
 
 app.get("/auth/facebook", passport.authenticate("facebook"));

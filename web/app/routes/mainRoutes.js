@@ -8,8 +8,6 @@ var request = require("request");
 // https://www.npmjs.com/package/http-status-codes
 var statusCodes = require("http-status-codes");
 
-// TODO Replace with config
-mongoose.connect("mongodb://localhost/routerdb");
 
 var userCtrl = require("../controllers/userCtrl");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
