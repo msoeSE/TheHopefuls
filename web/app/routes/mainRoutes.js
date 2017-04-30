@@ -150,4 +150,15 @@ router.get("/totalDrivingData", function(req, res) {
 	});
 });
 
+// POST current aggregate driving data (as instructor)
+router.post("/totalDrivingData", function(req, res) {
+	drivingDataCtrl.getStudentData(req.body.userId, (results) => {
+		res.status(statusCodes.OK);
+		res.json(results);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
+});
+
 module.exports = router;
