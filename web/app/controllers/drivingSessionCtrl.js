@@ -25,7 +25,7 @@ function updateUser(userId, session, callback, error){
 	User.findOneAndUpdate({
 		_id: userId
 	}, {$push: {drivingSessions: session}},
-	function(err, doc) {
+	function(err, user) {
 		if (err) {
 			error({
 				"message": "Error updating user's driving session",
@@ -47,13 +47,16 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 		});
 		return;
 	}
-
+	var startTime = new Date(driveSession.UnsyncDrive.startTime);
+	var endTime = new Date(driveSession.UnsyncDrive.endTime);
 	var distance = calculateDistance(driveSession.DrivePoints);
-	var duration = calculateDuration(driveSession.UnsyncDrive.startTime,
-		driveSession.UnsyncDrive.endTime);
+	var duration = calculateDuration(new Date(driveSession.UnsyncDrive.startTime),
+		new Date(driveSession.UnsyncDrive.endTime));
 	DrivingSession.create({
-		startTime: new Date(driveSession.UnsyncDrive.startTime),
-		endTime: new Date(driveSession.UnsyncDrive.endTime),
+		startTime: startTime,
+		endTime: endTime,
+		dayDriveTimeTot: calcDayDriveTimeTot(startTime, endTime),
+		nightDriveTimeTot: calcNightDriveTimeTot(startTime, endTime),
 		distance: distance,
 		duration: duration,
 		weatherData: {
@@ -72,6 +75,46 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 	});
 };
 
+var nineAM;
+var fivePM;
+var dayHourStart = 9;
+var dayHourEnd = 17;
+var minPerHour = 60;
+
+function setHourBoundaries(startTime, endTime) {
+	nineAM = moment.utc(startTime).hour(dayHourStart).minute(0).second(0); // eslint-disable-line
+	fivePM = moment.utc(endTime).hour(dayHourEnd).minute(0).second(0); // eslint-disable-line
+}
+
+function calcDayDriveTimeTot(startTime, endTime) {
+	// Day Hours: 9am (9:00)-5pm (17:00)
+	var dayTot = 0;
+	setHourBoundaries(startTime, endTime);
+	if (moment.utc(startTime).isAfter(nineAM) && moment.utc(endTime).isBefore(fivePM)) {
+		dayTot = moment(endTime).diff(startTime, "minutes") / minPerHour;
+	} else if (moment.utc(startTime).isBefore(fivePM) && moment.utc(endTime).isAfter(fivePM)) {
+		dayTot = fivePM.diff(moment.utc(startTime), "minutes") / minPerHour;
+	} else if(moment.utc(startTime).isBefore(nineAM) && moment.utc(endTime).isAfter(nineAM)) {
+		dayTot = moment.utc(endTime).diff(nineAM, "minutes") / minPerHour;
+	}
+	return dayTot;
+}
+
+function calcNightDriveTimeTot(startTime, endTime) {
+	// Night Hours: Before 9:00, After 17:00
+	var nightTot = 0;
+
+	if ((moment.utc(startTime).isAfter(fivePM) && moment.utc(endTime).isAfter(fivePM)) ||
+			(moment.utc(startTime).isBefore(nineAM) && moment.utc(endTime).isBefore(nineAM))) {
+		nightTot = moment(endTime).diff(startTime, "minutes") / minPerHour;
+	} else if (moment.utc(startTime).isBefore(fivePM) && moment.utc(endTime).isAfter(fivePM)) {
+		nightTot = moment.utc(endTime).diff(fivePM, "minutes") / minPerHour;
+	} else if (moment.utc(startTime).isBefore(nineAM) && moment.utc(endTime).isAfter(nineAM)) {
+		nightTot = nineAM.diff(moment.utc(startTime), "minutes") / minPerHour;
+	}
+	return nightTot;
+}
+
 function closureArray(sizeToRunFunction, fun){
 	var a = [];
 	return (r) => {
@@ -87,7 +130,6 @@ function closureArray(sizeToRunFunction, fun){
 // seriously tho, I will comeback and clean this up, got all these async calls tho
 // Ever tried to do an array of async calls? Not fun.
 // pinky promise @dylanwalseth
-// TODO
 exports.createDrivingSessions = function(userId, drivingSessions, callback, error){
 	var closure = closureArray(drivingSessions.length, (results)=>{
 		var errorResults = results.filter((result) => result.error !== undefined);  // eslint-disable-line

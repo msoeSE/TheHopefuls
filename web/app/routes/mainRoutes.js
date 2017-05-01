@@ -14,7 +14,7 @@ var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
 var drivingSessionCtrl = require("../controllers/drivingSessionCtrl");
 var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 var linkSchoolCtrl = require("../controllers/linkSchoolCtrl");
-
+var drivingDataCtrl = require("../controllers/drivingDataCtrl");
 
 router.all("*", function(req, res, next){
 	if(req.isAuthenticated()) {
@@ -170,6 +170,17 @@ router.post("/linkacctoschool", function(req, res) {
 	});
 });
 
+// GET current aggregate driving data
+router.get("/totalDrivingData/:userId", function(req, res) {
+	drivingDataCtrl.getStudentData(req.params.userId, (results) => {
+		res.status(statusCodes.OK);
+		res.json(results);
+	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
+});
+
 router.get("/weather/:lat/:long", function(req, res) {
 	request({
 		url: "https://api.darksky.net/forecast/" + config.DarkSykApiKey.Secret + "/" + req.params.lat + "," + req.params.long,
@@ -194,4 +205,5 @@ router.all("*", function(req, res){
 	res.status(statusCodes.NOT_FOUND);
 	res.json({error: "Not Found"});
 });
+
 module.exports = router;
