@@ -2,7 +2,7 @@ var Users = require("../models/User");
 
 exports.getStudentData = function (studentId, callback, error) {
 	Users.findOne({
-		"loginDetails.userId": studentId
+		_id: studentId
 	}, function(err, student) {
 		if (err) {
 			error({

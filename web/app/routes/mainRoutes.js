@@ -170,20 +170,9 @@ router.post("/linkacctoschool", function(req, res) {
 	});
 });
 
-// GET current aggregate driving data (as a student)
-router.get("/totalDrivingData", function(req, res) {
-	drivingDataCtrl.getStudentData(req.user.id, (results) => {
-		res.status(statusCodes.OK);
-		res.json(results);
-	}, (err) => {
-		res.status(statusCodes.BAD_REQUEST);
-		res.json(err);
-	});
-});
-
-// POST current aggregate driving data (as instructor)
-router.post("/totalDrivingData", function(req, res) {
-	drivingDataCtrl.getStudentData(req.body.userId, (results) => {
+// GET current aggregate driving data
+router.get("/totalDrivingData/:userId", function(req, res) {
+	drivingDataCtrl.getStudentData(req.params.userId, (results) => {
 		res.status(statusCodes.OK);
 		res.json(results);
 	}, (err) => {

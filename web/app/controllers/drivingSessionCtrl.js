@@ -23,7 +23,7 @@ function calculateDuration(start, end) {
 
 function updateUser(userId, session, callback, error){
 	User.findOneAndUpdate({
-		"loginDetails.userId": userId
+		_id: userId
 	}, {$push: {drivingSessions: session}},
 	function(err, user) {
 		if (err) {
