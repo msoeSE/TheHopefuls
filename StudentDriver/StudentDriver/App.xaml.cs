@@ -16,12 +16,12 @@ namespace StudentDriver
 {
 	public partial class App : Application
 	{
-	    private static ServiceController _sc;
+		private static ServiceController _sc;
 		public App(AppSetup setup)
 		{
-		    InitializeComponent();
-		    var container = setup.CreateContainer();
-		    _sc = container.Resolve<IServiceController>() as ServiceController;
+			InitializeComponent();
+			var container = setup.CreateContainer();
+			_sc = container.Resolve<IServiceController>() as ServiceController;
 			MainPage = new StudentDriverPage();
 		}
 
@@ -47,36 +47,35 @@ namespace StudentDriver
 			// Handle when your app resumes
 		}
 
-	    public static IServiceController ServiceController => _sc;
+		public static IServiceController ServiceController => _sc;
 
-	    public static Action SuccessfulLoginAction()
-	    {
+		public async static Task<Action> SuccessfulLoginAction()
+		{
+			var userType = await ServiceController.GetUser();
+			var page = Current.MainPage;
+			if (userType.UType == User.UserType.Instructor)
+			{
+				page = new InstructorPage();
+			}
+			else
+			{
+				page = new StudentDriverPage();
+			}
 
-	        var page = Current.MainPage;
-            var userType = _sc.GetUser().Result;
-	        if (userType.UType == User.UserType.Instructor)
-	        {
-	            page = new InstructorPage();
-	        }
-	        else
-	        {
-	            page = new StudentDriverPage();
-	        }
+			return () =>
+				   {
+					   Current.MainPage = page;
+				   };
+		}
 
-	        return () =>
-	               {
-	                   Current.MainPage = page;
-	               };
-	    }
-
-	    public static Action StatsPageAction(string userid)
-	    {
-            var page = new StatsPage(userid);
-            return () =>
-            {
-                Current.MainPage = page;
-            };
-        }
+		public static Action StatsPageAction(string userid)
+		{
+			var page = new StatsPage(userid);
+			return () =>
+			{
+				Current.MainPage = page;
+			};
+		}
 
 		public static Action LoginAction
 		{

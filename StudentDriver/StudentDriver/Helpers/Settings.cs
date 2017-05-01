@@ -25,7 +25,8 @@ namespace StudentDriver.Helpers
 	    public const string WeatherUrl = "https://dev.drivinglog.online/api/weather";
         public const string AggregateDrivingUrl = "https://dev.drivinglog.online/api/totalDrivingData";
 	    public const string StateReqUrl = "https://dev.drivinglog.online/api/statereq";
-	    public static string InstructorStudentsUrl = "https://dev.drivninglog.online/api/allStudents";
+	    public static string InstructorStudentsUrl = "https://dev.drivinglog.online/api/allStudents";
+		public const string FORMATStudentDrivingSessionsUrl = "https://dev.drivinglog.online/api/students/{0}/drivingsessions";
 
 	}
 }
