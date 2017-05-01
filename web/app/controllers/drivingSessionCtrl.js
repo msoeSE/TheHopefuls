@@ -50,8 +50,8 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 	var startTime = new Date(driveSession.UnsyncDrive.startTime);
 	var endTime = new Date(driveSession.UnsyncDrive.endTime);
 	var distance = calculateDistance(driveSession.DrivePoints);
-	var duration = calculateDuration(driveSession.UnsyncDrive.startTime,
-		driveSession.UnsyncDrive.endTime);
+	var duration = calculateDuration(new Date(driveSession.UnsyncDrive.startTime),
+		new Date(driveSession.UnsyncDrive.endTime));
 	DrivingSession.create({
 		startTime: startTime,
 		endTime: endTime,
@@ -130,7 +130,6 @@ function closureArray(sizeToRunFunction, fun){
 // seriously tho, I will comeback and clean this up, got all these async calls tho
 // Ever tried to do an array of async calls? Not fun.
 // pinky promise @dylanwalseth
-// TODO
 exports.createDrivingSessions = function(userId, drivingSessions, callback, error){
 	var closure = closureArray(drivingSessions.length, (results)=>{
 		var errorResults = results.filter((result) => result.error !== undefined);  // eslint-disable-line
