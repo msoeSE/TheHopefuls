@@ -11,6 +11,7 @@ using System;
 using System.IO;
 using System.Text;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace StudentDriver.Services
 {
@@ -50,6 +51,7 @@ namespace StudentDriver.Services
 				using (JsonWriter writer = new JsonTextWriter(sw))
 				{
 					writer.Formatting = Formatting.Indented;
+					writer.WritePropertyName("data");
 					writer.WriteStartArray();
 					foreach (var drive in unsyncDrives)
 					{
@@ -94,18 +96,19 @@ namespace StudentDriver.Services
 						writer.WriteEndObject();
 					}
 					writer.WriteEndArray();
-					writer.ToString();
 				}
 				var jsonString = sb.ToString();
-				var response = await _oAuthController.MakePostRequest(endpoint); ;
-				return response.StatusCode == HttpStatusCode.OK;
+				Debug.WriteLine(jsonString);
+				Dictionary<string, string> values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+				var response = await _oAuthController.MakePostRequest(endpoint, values); ;
+				return response.StatusCode == HttpStatusCode.Created;
 			}
 			catch (Exception e)
 			{
+				Debug.WriteLine(e.Message);
 				return false;
 			}
 
-			return false;
 		}
 
 		public async Task<bool> DeleteAllDriveData()

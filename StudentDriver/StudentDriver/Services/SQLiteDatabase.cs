@@ -179,7 +179,15 @@ namespace StudentDriver
 
 		public async Task<DriveWeatherData> GetDriveWeatherByUnsyncDrive(int unsyncDriveId)
 		{
-			return await _database.Table<DriveWeatherData>().Where(x => x.UnsyncDriveId == unsyncDriveId).FirstAsync();
+			try
+			{
+				return await _database.Table<DriveWeatherData>().Where(x => x.UnsyncDriveId == unsyncDriveId).FirstAsync();
+			}
+			catch (Exception e)
+			{
+				return null;
+			}
+
 		}
 
 		public async Task<int> StopUnsyncDrive(int unsyncDriveId)
