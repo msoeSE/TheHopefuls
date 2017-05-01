@@ -27,13 +27,13 @@ namespace StudentDriver
 
 		protected override async void OnStart()
 		{
-            ServiceController.Logout();
-		    if (!await _sc.UserLoggedIn())
-		    {
-		        LoginAction();
-		    }
+            
+            if (!await _sc.UserLoggedIn())
+            {
+                LoginAction();
+            }
             //var userType = User.UserType.Instructor;
-
+            Current.MainPage = new InstructorPage();
 		    // Handle when your app starts
 		}
 
