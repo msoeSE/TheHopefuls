@@ -5,10 +5,11 @@ var Schema = mongoose.Schema;
 // define our user model
 // module.exports allows us to pass this to other files when it is called
 var UserSchema = new Schema({
-	loginDetails: {
-		userId: String,
-		service: String
+	userId: {
+		type:String,
+		unique: true
 	},
+	service: String,
 	firstName: {
 		type: String,
 		required: true

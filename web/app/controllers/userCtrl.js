@@ -4,7 +4,7 @@ var of = require("../libs/objectFunctions");
 
 
 exports.createUser = function(info, userType, callback, error) {
-	var requiredItems = ["firstName", "lastName", "loginDetails"];
+	var requiredItems = ["firstName", "lastName", "userId", "service"];
 	var missingItems = of.MissingProperties(info, requiredItems);
 
 	if(_.any(missingItems)){
@@ -16,10 +16,8 @@ exports.createUser = function(info, userType, callback, error) {
 	}
 
 	User.create({
-		loginDetails: {
-			userId: info.loginDetails.userId,
-			service: info.loginDetails.service
-		},
+		userId: info.userId,
+		service: info.service,
 		firstName: info.firstName,
 		lastName: info.lastName,
 		userType: userType
@@ -37,7 +35,7 @@ exports.createUser = function(info, userType, callback, error) {
 
 exports.getUser = function(id, callback, error){
 	User.findOne({
-		_id: id
+		userId: id
 	}, function(err, doc) {
 		if (err) {
 			error({
@@ -47,6 +45,19 @@ exports.getUser = function(id, callback, error){
 			return;
 		}
 		callback(doc);
+	});
+};
+
+exports.getAllUsers = function(callback, error){// TODO change to users for school
+	User.find(function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error returning users for school",
+				"error": err
+			});
+			return;
+		}
+		callback({data: doc}); // This is weird. Datatables wouldnt load without the added data: tag
 	});
 };
 

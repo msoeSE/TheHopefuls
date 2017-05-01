@@ -32,6 +32,10 @@ var StateRegulationSchema = new Schema({
 	nightOrInclement: {
 		type: Boolean,
 		required: true
+	},
+	notes: {
+		type: String,
+		required: false
 	}
 });
 

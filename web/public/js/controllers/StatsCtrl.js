@@ -1,11 +1,52 @@
-angular.module("StatsCtrl", []).controller("StatsController", function($log, $location) {
+angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", function($log, $location, Stats) {
 	var vm = this;
 	vm.tagline = "User Stats!";
 
-	// TODO right now we arent loading the users data, by we can get the
-	// query string for it. Change this to use database data loaded from
-	// the users ID
-	$log.log($location.search().id);
+	var userID = $location.search().id;
+	if(userID != null){
+		renderTable(userID);
+	} else {
+		Stats.getMongoID().then(function(currentUserID){
+			renderTable(currentUserID);
+		});
+	}
+
+	function renderTable(id){
+		$(".student-stats-table").DataTable({
+			ajax: {url: "/api/students/" + id +  "/drivingSessions",
+				dataSrc: "drivingSessions" },
+			columns: [
+				{ title: "Date", data: "startTime",
+					render: function(data, type, full, meta) {
+						return moment(full.startTime).format("MM/DD/YYYY");
+					}
+				},
+				{ title: "Start Time",
+					render: function(data, type, full, meta) {
+						return moment(full.startTime).format("h:mm:ss a");
+					}
+				},
+				{ title: "End Time",
+					render: function(data, type, full, meta) {
+						return moment(full.endTime).format("h:mm:ss a");
+					}
+				},
+				{ title: "Duration",
+					render: function(data, type, full, meta) {
+						var date = moment.duration(full.duration);
+						var output = " ";
+						if(date.hours() !== 0) output += date.hours() + " hours ";//eslint-disable-line
+						if(date.minutes() !== 0) output += date.minutes() + " minutes ";//eslint-disable-line
+						output += date.seconds() + " seconds ";
+						return output;
+					}
+				},
+				{ title: "Distance", data: "distance" },
+				{ title: "Temperature", data: "weatherData.temperature" },
+				{ title: "Weather Summary", data: "weatherData.summary" }
+			]
+		});
+	}
 
 	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],
@@ -27,10 +68,8 @@ angular.module("StatsCtrl", []).controller("StatsController", function($log, $lo
 		["07/04/2016", "6:00am", "7:00am", "1 Hr", "11 Miles", "Hurricane"]
 	];
 
-	$log.log(vm);
 
-
-	$(".student-stats-table").DataTable({
+	$(".mock-table").DataTable({
 		data: vm.mockUserData,
 		columns: [
 			{ title: "Date" },

@@ -1,13 +1,13 @@
 var express = require("express");
 var router = express.Router();
 var mongoose = require("mongoose");
+var config = require("../../config.json");
+var request = require("request");
 
 // For listing of supported status codes in this package
 // https://www.npmjs.com/package/http-status-codes
 var statusCodes = require("http-status-codes");
 
-// TODO Replace with config
-mongoose.connect("mongodb://localhost/routerdb");
 
 var userCtrl = require("../controllers/userCtrl");
 var drivingSchoolCtrl = require("../controllers/drivingSchoolCtrl");
@@ -16,11 +16,42 @@ var stateRegsCtrl = require("../controllers/stateRegsCtrl");
 var linkSchoolCtrl = require("../controllers/linkSchoolCtrl");
 var drivingDataCtrl = require("../controllers/drivingDataCtrl");
 
+router.all("*", function(req, res, next){
+	if(req.isAuthenticated()) {
+		next();
+	} else {
+		res.status(statusCodes.UNAUTHORIZED);
+		res.json({error: "Unauthorized"});
+	}
+});
+
 // Get the JSON for the student with the specified _id
 router.get("/students/:userId", function(req, res) {
 	userCtrl.getStudent(req.params.userId, (user) => {
 		res.json(user);
 	}, (err) => {
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
+});
+
+// Get all students
+// TODO change to use driving school id
+router.get("/allStudents", function(req, res) {
+	userCtrl.getAllUsers((users)=>{
+		res.json(users);
+	}, (err)=>{
+		res.status(statusCodes.BAD_REQUEST);
+		res.json(err);
+	});
+});
+
+// Get Instructors by school code
+// TODO change to use drive school id
+router.get("/instructors", function(req, res) {
+	userCtrl.getAllUsers((users)=>{
+		res.json(users);
+	}, (err)=>{
 		res.status(statusCodes.BAD_REQUEST);
 		res.json(err);
 	});
@@ -159,6 +190,31 @@ router.post("/totalDrivingData", function(req, res) {
 		res.status(statusCodes.BAD_REQUEST);
 		res.json(err);
 	});
+});
+
+router.get("/weather/:lat/:long", function(req, res) {
+	request({
+		url: "https://api.darksky.net/forecast/" + config.DarkSykApiKey.Secret + "/" + req.params.lat + "," + req.params.long,
+		json: true
+	},
+	function(error, response, body){
+		if(!error && response.statusCode === 200){ //eslint-disable-line
+			var weather = {
+				summary: body.currently.summary,
+				temperature: body.currently.temperature,
+				icon: body.currently.icon
+			};
+			res.json(weather);
+		} else {
+			res.status(statusCodes.INTERNAL_SERVER_ERROR);
+			res.json(error);
+		}
+	});
+});
+
+router.all("*", function(req, res){
+	res.status(statusCodes.NOT_FOUND);
+	res.json({error: "Not Found"});
 });
 
 module.exports = router;

@@ -12,7 +12,7 @@ describe("User Controller Tests", function() {
 		failure = jasmine.createSpy("failure");
 	});
 
-	describe("createUser", function() {
+	xdescribe("createUser", function() {
 		beforeEach(function(){
 			spyOn(User, "create").andCallFake(function(_, callback){
 				if(shouldErr){
