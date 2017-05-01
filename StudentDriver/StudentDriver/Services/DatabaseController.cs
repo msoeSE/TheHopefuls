@@ -122,12 +122,6 @@ namespace StudentDriver.Services
             return (await _database.AddStateReqs(stateReq) != -1);
         }
 
-		public async Task<bool> StoreStateRequirements(string stateReqJson)
-		{
-			var stateReq = JsonConvert.DeserializeObject<StateReqs>(stateReqJson);
-			return (await _database.AddStateReqs(stateReq) != -1);
-		}
-
 		public async Task<User> GetUser()
 		{
 			var user = await _database.GetUser();

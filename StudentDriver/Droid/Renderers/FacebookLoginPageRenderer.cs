@@ -49,6 +49,7 @@ namespace StudentDriver.Droid
                         UserDialogs.Instance.Alert("Unable to Login, Please Try Again", "Error", "Okay");
                     }
                     UserDialogs.Instance.HideLoading();
+                    await App.SuccessfulLoginAction();
                 }
 			};
 			this.Context.StartActivity (auth.GetUI (this.Context));

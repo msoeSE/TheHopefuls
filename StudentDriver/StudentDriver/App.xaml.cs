@@ -27,13 +27,11 @@ namespace StudentDriver
 
 		protected override async void OnStart()
 		{
-            
+            ServiceController.Logout();
             if (!await _sc.UserLoggedIn())
             {
                 LoginAction();
             }
-            //var userType = User.UserType.Instructor;
-            Current.MainPage = new InstructorPage();
 		    // Handle when your app starts
 		}
 
@@ -49,7 +47,7 @@ namespace StudentDriver
 
 		public static IServiceController ServiceController => _sc;
 
-		public async static Task<Action> SuccessfulLoginAction()
+		public static async Task<Action> SuccessfulLoginAction()
 		{
 			var userType = await ServiceController.GetUser();
 			var page = Current.MainPage;
