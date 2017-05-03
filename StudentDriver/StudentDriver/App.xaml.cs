@@ -27,7 +27,6 @@ namespace StudentDriver
 
 		protected override async void OnStart()
 		{
-            ServiceController.Logout();
             if (!await _sc.UserLoggedIn())
             {
                 LoginAction();

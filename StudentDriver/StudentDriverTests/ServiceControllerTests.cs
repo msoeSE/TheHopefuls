@@ -97,7 +97,7 @@ namespace StudentDriverTests
             var mockDatabaseController = new Mock<IDatabaseController>();
             var mockOAuthController = new Mock<IOAuthController>();
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var userLoggedIn = await serviceController.GetAggregatedDrivingData(string.Empty);
+            var userLoggedIn = await serviceController.GetAggregatedDrivingData(string.Empty, "");
             Assert.IsNull(userLoggedIn);
         }
 
@@ -108,7 +108,7 @@ namespace StudentDriverTests
             var mockOAuthController = new Mock<IOAuthController>();
             mockOAuthController.Setup(x => x.MakeGetRequest(Settings.AggregateDrivingUrl, null)).ReturnsAsync(string.Empty);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var userLoggedIn = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var userLoggedIn = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
             Assert.IsNull(userLoggedIn);
         }
 
@@ -129,7 +129,7 @@ namespace StudentDriverTests
             };
             mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
 
             
             Assert.AreEqual(0.1,drivingDataViewModel.Total.PercentCompletedDouble);
@@ -166,7 +166,7 @@ namespace StudentDriverTests
             };
             mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
 
 
             Assert.AreEqual(0.15, drivingDataViewModel.Total.PercentCompletedDouble);
@@ -204,7 +204,7 @@ namespace StudentDriverTests
             };
             mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
 
 
             Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
@@ -241,7 +241,7 @@ namespace StudentDriverTests
             };
             mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
 
 
             Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
@@ -278,7 +278,7 @@ namespace StudentDriverTests
             };
             mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
 
 
             Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);
@@ -315,7 +315,7 @@ namespace StudentDriverTests
             };
             mockDatabaseController.Setup(x => x.GetStateRequirements(state)).ReturnsAsync(stateReqs);
             var serviceController = new ServiceController(mockOAuthController.Object, mockDatabaseController.Object);
-            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin");
+            var drivingDataViewModel = await serviceController.GetAggregatedDrivingData("Wisconsin", "");
 
 
             Assert.AreEqual(0.55, drivingDataViewModel.Total.PercentCompletedDouble);

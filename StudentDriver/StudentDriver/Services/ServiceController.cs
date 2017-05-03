@@ -125,23 +125,6 @@ namespace StudentDriver.Services
 			return await _databaseController.DeleteAllDriveData() > 0;
 		}
 
-        //public async Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId = null)
-        //{
-        //    if (string.IsNullOrEmpty(state)) return null;
-        //    Dictionary<string, string> parameters = null;
-        //    if (!string.IsNullOrEmpty(userId))
-        //    {
-        //        parameters = new Dictionary<string, string>
-        //        {
-        //            { "userId", userId}
-        //        };
-        //    }
-        //    var responseText = await _oAuthController.MakeGetRequest(Settings.AggregateDrivingUrl, parameters);
-        //    if (string.IsNullOrEmpty(responseText)) return null;
-        //    var aggData = JsonConvert.DeserializeObject<DrivingAggregateData>(responseText);
-        //    var stateReq = await GetStateRequirements(state);
-        //    return new DrivingDataViewModel(stateReq, aggData);
-        //}
 		public async Task<List<DrivePoint>> GetAllDrivePoints()
 		{
 			return await _databaseController.GetDrivePoints();
@@ -150,28 +133,6 @@ namespace StudentDriver.Services
 		{
 			return await _databaseController.GetUnsyncedDrives();
 		}
-
-        //private async Task<string> GetWeather(double latitude, double longitude)
-        //{
-        //    var parameters = new Dictionary<string, string>
-        //                     {
-        //                        {"longitude", longitude.ToString()},
-        //                        {"latitude", latitude.ToString()},
-        //                     };
-        //    var responseText = await _oAuthController.MakeGetRequest(Settings.WeatherUrl, parameters);
-        //    return string.IsNullOrEmpty(responseText) ? null : responseText;
-        //}
-		//public async Task<bool> ConnectSchool(string schoolId)
-		//{
-		//	var parameters = new Dictionary<string, string>
-		//		{
-		//			{"schoolId", schoolId}
-		//		};
-		//	var response = await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, parameters);
-		//	var responseText = response.GetResponseText();
-		//	if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return false;
-		//	return await _databaseController.ConnectStudentToDrivingSchool(responseText);
-		//}
 
 		public async Task<bool> StartUnsyncDrive(double latitude, double longitude)
 		{
@@ -182,24 +143,14 @@ namespace StudentDriver.Services
 
         private async Task<string> GetRequestStateRequirements(string state)
         {
-            var parameters = new Dictionary<string, string>
-            {
-                { "state",state}
-            };
-            var responseText = await _oAuthController.MakeGetRequest(Settings.StateReqUrl, parameters);
+            var urlForRequest = string.Format(Settings.StateReqUrl, state);
+            var responseText = await _oAuthController.MakeGetRequest(urlForRequest);
             return string.IsNullOrEmpty(responseText) ? null : responseText;
         }
-		public async Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId = null)
+		public async Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId)
 		{
-			Dictionary<string, string> parameters = null;
-			if (!string.IsNullOrEmpty(userId))
-			{
-				parameters = new Dictionary<string, string>
-				{
-					{ "userId", userId}
-				};
-			}
-			var responseText = await _oAuthController.MakeGetRequest(Settings.AggregateDrivingUrl, parameters);
+		    var urlForRequest = string.Format(Settings.AggregateDrivingUrl, userId);
+            var responseText = await _oAuthController.MakeGetRequest(urlForRequest);
 			if (string.IsNullOrEmpty(responseText)) return null;
 			var aggData = JsonConvert.DeserializeObject<DrivingAggregateData>(responseText);
 			var stateReq = await GetStateRequirements(state);

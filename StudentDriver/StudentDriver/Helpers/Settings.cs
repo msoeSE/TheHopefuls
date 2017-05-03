@@ -23,8 +23,8 @@ namespace StudentDriver.Helpers
         public const string OAuthUrl = "https://dev.drivinglog.online/auth/facebook/token";
 	    public const string SchoolIdUrl = "https://dev.drivinglog.online/api/linkacctoschool";
 	    public const string WeatherUrl = "https://dev.drivinglog.online/api/weather";
-        public const string AggregateDrivingUrl = "https://dev.drivinglog.online/api/totalDrivingData";
-	    public const string StateReqUrl = "https://dev.drivinglog.online/api/statereq";
+        public const string AggregateDrivingUrl = "https://dev.drivinglog.online/api/totalDrivingData/{0}";
+	    public const string StateReqUrl = "https://dev.drivinglog.online/api/stateregulations/{0}";
 	    public static string InstructorStudentsUrl = "https://dev.drivinglog.online/api/allStudents";
 		public const string FORMATStudentDrivingSessionsUrl = "https://dev.drivinglog.online/api/students/{0}/drivingsessions";
 
