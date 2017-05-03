@@ -176,20 +176,6 @@ namespace StudentDriver.Services
 			return await _databaseController.GetStateRequirements(state);
 		}
 
-		//private async Task<string> GetRequestStateRequirements(string state)
-		//{
-		//	var parameters = new Dictionary<string, string>
-		//	{
-		//		{ "state",state}
-		//	};
-		//	var response = await _oAuthController.MakeGetRequest(Settings.StateReqUrl, parameters);
-		//	var responseText = response.GetResponseText();
-		//	if (response.StatusCode != HttpStatusCode.OK || string.IsNullOrEmpty(responseText)) return null;
-		//	return responseText;
-		//}
-
-
-
 		public async Task<DriveWeatherData> CreateDriveWeatherData(double latitude, double longitude, int unsyncDriveId)
 		{
 			var responseString = await this.GetWeather(latitude, longitude);
