@@ -335,19 +335,6 @@ router.get("/weather/:lat/:long", function(req, res) {
 });
 
 
-// userCtrl.createUser({"firstName": "Hacker", "lastName": "Mcgee", "userId": 15, "service": "hackernet"}, "student", (user)=>{
-// 	drivingSchoolCtrl.addStudentToSchool(0, user, ()=>{
-// 		console.log("user added successfully");
-// 	}, (err2)=>{
-// 		console.log("shit");
-// 		console.log(err2);
-// 	});
-// }, (err1)=>{
-// 	console.log("fuck");
-// 	console.log(err1);
-// });
-
-
 router.all("*", function(req, res){
 	res.status(statusCodes.NOT_FOUND);
 	res.json({error: "Not Found"});
