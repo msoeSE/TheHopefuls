@@ -1,3 +1,5 @@
+/* eslint angular/log: 0 angular/json-functions: 0*/
+
 // Mongo files
 var userCtrl = require("./app/controllers/userCtrl");
 
@@ -25,17 +27,20 @@ var fs = require("fs");
 var config = require("./config.json");
 var port = config.Port;
 
+
 // TODO Replace with config
 mongoose.connect("mongodb://localhost/routerdb");
 
 console.log("Attempting to load state regulations");
 fs.access("./stateregs.json", fs.constants.R_OK, (err) => {
 	console.log(err ? "Cannot load state regulations file" : "State regulations file loaded");
-	var regs = require("./stateregs.json");
+	if(err)
+		return;
+	var regs = require("./stateregs.json"); // eslint-disable-line
 	regs.forEach((reg)=>{
-		stateRegs.findOneAndUpdate({state: reg.state}, reg, {upsert: true}, (err, doc)=>{
-			if(err)
-				console.log(err);
+		stateRegs.findOneAndUpdate({state: reg.state}, reg, {upsert: true}, (err2)=>{
+			if(err2)
+				console.log(err2);
 		});
 	});
 });
@@ -99,9 +104,8 @@ function getOrCreateUser(profile) {
 				$log.log(error);
 			});
 		}
-
 	}, function(error){
-		$log.log(error);
+		console.log(error);
 	});
 }
 
@@ -145,10 +149,11 @@ app.get("/auth/facebook/callback",
 			if(doc){
 				req.user.userType = doc.userType;
 				req.user.mongoID = doc._id;
+				req.user.schoolId = doc.schoolId;
 			}
 			res.redirect("/");
 		}, function (err){
-			$log.log(err);
+			console.log(err);
 			res.redirect("/");
 		});
 	}
@@ -176,10 +181,11 @@ app.post("/auth/facebook/token",
 			if(doc){
 				req.user.userType = doc.userType;
 				req.user.mongoID = doc._id;
+				req.user.schoolId = doc.schoolId;
 			}
 			res.send(req.user);
 		}, function (err){
-			$log.log(err);
+			console.log(err);
 			res.send(req.user);
 		});
 	}
@@ -187,9 +193,22 @@ app.post("/auth/facebook/token",
 
 app.get("/profile",
 	function(req, res){
-		if(req.user)
-			res.write(JSON.stringify(req.user)); // eslint-disable-line
-		res.end();
+		if(req.user){
+			userCtrl.getUser(req.user.id, function(doc){
+				if(doc){
+					req.user.userType = doc.userType;
+					req.user.mongoID = doc._id;
+					console.log(doc.schoolId);
+					req.user.schoolId = doc.schoolId;
+				}
+				res.send(JSON.stringify(req.user));
+			}, function (err){
+				console.log(err);
+				res.end();
+			});
+		} else {
+			res.redirect("/");
+		}
 	}
 );
 app.get("/auth/logout",
@@ -208,5 +227,5 @@ app.use("/", index);
 
 // start app ===============================================
 app.listen(port);
-console.log("Magic happens on port " + port); // eslint-disable-line
+console.log("Magic happens on port " + port);
 exports = module.exports = app;

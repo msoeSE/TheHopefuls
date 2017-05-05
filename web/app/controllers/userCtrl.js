@@ -33,10 +33,21 @@ exports.createUser = function(info, userType, callback, error) {
 	});
 };
 
-exports.getUser = function(id, callback, error){
-	User.findOne({
-		userId: id
-	}, function(err, doc) {
+exports.updateUser = function(id, newInfo, options, callback, error){
+	User.findOneAndUpdate({userId: id}, newInfo, options, (err, doc)=>{
+		if(err){
+			error({
+				"message": "Failed to update user",
+				"error": err
+			});
+			return;
+		}
+		callback(doc);
+	});
+};
+
+exports.getUserByObject= function(obj, callback, error){
+	User.findOne(obj, function(err, doc) {
 		if (err) {
 			error({
 				"message": "Error finding user",
@@ -46,7 +57,10 @@ exports.getUser = function(id, callback, error){
 		}
 		callback(doc);
 	});
-};
+}
+
+exports.getUser = (id, callback, error) => exports.getUserByObject({userId: id}, callback, error);
+exports.getUserByMongoId = (id, callback, error) => exports.getUserByObject({_id: id}, callback, error);
 
 exports.getAllUsers = function(callback, error){// TODO change to users for school
 	User.find(function(err, doc) {
