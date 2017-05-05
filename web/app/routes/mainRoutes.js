@@ -42,7 +42,7 @@ router.all("*", function(req, res, next){
 		next();
 	} else {
 		res.status(statusCodes.UNAUTHORIZED);
-		// res.json({error: "You are not logged in"});
+		res.json({error: "You are not logged in"});
 	}
 });
 
