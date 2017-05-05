@@ -13,11 +13,21 @@ var DrivingSessionSchema = new Schema({
 		type: Date,
 		required: true
 	},
+	dayDriveTimeTot: {
+		type: Number
+	},
+	nightDriveTimeTot: {
+		type: Number
+	},
 	distance: {
 		type: Number,
 		required: true
 	},
 	duration: {
+		type: Number,
+		required: true
+	},
+	nightHours: {
 		type: Number,
 		required: true
 	},
