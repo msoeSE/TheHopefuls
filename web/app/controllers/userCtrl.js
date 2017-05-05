@@ -46,7 +46,7 @@ exports.updateUser = function(id, newInfo, options, callback, error){
 	});
 };
 
-exports.getUserByObject= function(obj, callback, error){
+exports.getUserByObject = function(obj, callback, error){
 	User.findOne(obj, function(err, doc) {
 		if (err) {
 			error({
@@ -57,7 +57,7 @@ exports.getUserByObject= function(obj, callback, error){
 		}
 		callback(doc);
 	});
-}
+};
 
 exports.getUser = (id, callback, error) => exports.getUserByObject({userId: id}, callback, error);
 exports.getUserByMongoId = (id, callback, error) => exports.getUserByObject({_id: id}, callback, error);
