@@ -187,13 +187,10 @@ namespace StudentDriver.Services
 				var weatherTemp = (string)token.SelectToken("temperature");
 				return await _databaseController.AddWeatherData(weatherType, weatherTemp, weatherIcon, unsyncDriveId);
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return null;
 			}
-
-			return null;
-
 		}
 
 		public async Task<bool> DeleteUnsyncDrive(int driveId)

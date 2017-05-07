@@ -46,15 +46,8 @@ namespace StudentDriver
 
 		public async Task<User> AddUser(User user)
 		{
-			try
-			{
-				await _database.InsertAsync(user);
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-			return await GetUser();
+		    await _database.InsertAsync(user);
+		    return await GetUser();
 		}
 
 		public async Task<User> GetUser()
@@ -77,16 +70,9 @@ namespace StudentDriver
 
 		public async Task<int> UpdateUser(User user)
 		{
-			int result = -1;
-			try
-			{
-				result = await _database.UpdateAsync(user).ConfigureAwait(false);
-			}
-			catch (Exception e)
-			{
-				throw;
-			}
-			return result;
+			int result;
+		    result = await _database.UpdateAsync(user).ConfigureAwait(false);
+		    return result;
 		}
 
 		public async Task<int> AddStateReqs(StateReqs stateReqs)
@@ -183,7 +169,7 @@ namespace StudentDriver
 			{
 				return await _database.Table<DriveWeatherData>().Where(x => x.UnsyncDriveId == unsyncDriveId).FirstAsync();
 			}
-			catch (Exception e)
+			catch (Exception)
 			{
 				return null;
 			}

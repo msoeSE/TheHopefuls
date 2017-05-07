@@ -2,10 +2,8 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 using StudentDriver.Models;
-using System;
 
 namespace StudentDriver.Services
 {
@@ -35,7 +33,7 @@ namespace StudentDriver.Services
                 imgUrl = jsonObj["photos"].First["value"].ToString();
                 userTypeStr = jsonObj["userType"].ToString();
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
                 return false;
             }
@@ -96,7 +94,7 @@ namespace StudentDriver.Services
             {
                 schoolId = userObj["schoolId"].ToString();
             }
-            catch (NullReferenceException e)
+            catch (NullReferenceException)
             {
                 return false;
             }

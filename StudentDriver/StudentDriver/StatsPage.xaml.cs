@@ -10,7 +10,6 @@ namespace StudentDriver
 		private string _daytimeHoursText = "";
 		private string _nighttimeHoursText = "";
 		private string _totalHoursText = "";
-		private string _inclementHoursText = "";
 		private readonly string _userId;
 
 		public StatsPage(string userId)
@@ -36,7 +35,6 @@ namespace StudentDriver
 			daytimeHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(daytimeHoursLabelPressed));
 			nighttimeHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(nighttimeHoursLabelPressed));
 			totalHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(totalHoursLabelPressed));
-			inclementHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(inclementHoursPressed));
 			statePicker.SelectedIndexChanged += StatePicker_SelectedIndexChanged;
 			IsBusy = false;
 		}
@@ -65,13 +63,10 @@ namespace StudentDriver
 				totalHoursProgress.ProgressTo(viewModel.Total.PercentCompletedDouble, 1500, Easing.Linear);
 				daytimeHoursProgress.ProgressTo(viewModel.TotalDayTime.PercentCompletedDouble, 1500, Easing.Linear);
 				nighttimeHoursProgress.ProgressTo(viewModel.TotalNightTime.PercentCompletedDouble, 1500, Easing.Linear);
-				inclementHoursProgress.ProgressTo(viewModel.TotalInclement.PercentCompletedDouble, 1500, Easing.Linear);
 			});
 			daytimeHoursLabel.Text = viewModel.TotalDayTime.RatioString;
 			nighttimeHoursLabel.Text = viewModel.TotalNightTime.RatioString;
 			totalHoursLabel.Text = viewModel.Total.RatioString;
-			inclementHoursLabel.Text = viewModel.TotalInclement.RatioString;
-
 		}
 
 		private async void StatePicker_SelectedIndexChanged(object sender, EventArgs e)
@@ -113,17 +108,5 @@ namespace StudentDriver
 				label.Text = _totalHoursText;
 			}
 		}
-
-		void inclementHoursPressed(View pressedLabel, object arg2)
-		{
-			Label label = (Label)pressedLabel;
-			if (label.Text.Equals(_inclementHoursText))
-				label.Text = "60%";
-			else
-			{
-				label.Text = _totalHoursText;
-			}
-		}
-
 	}
 }

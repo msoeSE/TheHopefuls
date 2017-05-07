@@ -33,7 +33,7 @@ namespace StudentDriver
 				locator.DesiredAccuracy = 5;
 				locator.PositionChanged += PositionChangedEventListener;
 			}
-			catch (Exception ex)
+			catch (Exception)
 			{
 				Acr.UserDialogs.UserDialogs.Instance.ShowError("Error: Unable to Start GPS");
 				UpdateDrivingButton().RunSynchronously();
@@ -64,7 +64,7 @@ namespace StudentDriver
 						return;
 					}
 				}
-				catch (Exception exception)
+				catch (Exception)
 				{
 					Acr.UserDialogs.UserDialogs.Instance.ShowError("Unable to check permissions");
 					return;
@@ -176,7 +176,7 @@ namespace StudentDriver
 
 
 				}
-				catch (Exception exception)
+				catch (Exception)
 				{
 					Acr.UserDialogs.UserDialogs.Instance.ShowError("Error: Unable to Start GPS");
 					await UpdateDrivingButton();

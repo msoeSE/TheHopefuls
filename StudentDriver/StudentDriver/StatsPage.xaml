@@ -165,36 +165,6 @@
 						</ProgressBar>
 					</StackLayout>
 				</Frame>
-        <Frame
-					OutlineColor="{x:Static local:AppColors.Second}"
-					Margin="1"
-					HasShadow="false">
-          <StackLayout
-						Orientation="Vertical"
-						Padding="0, 10, 0, 10"
-						HorizontalOptions="FillAndExpand"
-						VerticalOptions="StartAndExpand">
-            <StackLayout
-							Orientation="Horizontal"
-							HorizontalOptions="FillAndExpand"
-							VerticalOptions="CenterAndExpand">
-              <local:TitleLabel
-								Text="Inclement Hours"
-								HorizontalOptions="StartAndExpand">
-              </local:TitleLabel>
-              <Label
-								x:Name= "inclementHoursLabel"
-								VerticalOptions="End"
-								HorizontalOptions="EndAndExpand">
-              </Label>
-            </StackLayout>
-            <ProgressBar
-							x:Name="inclementHoursProgress"
-							HorizontalOptions="FillAndExpand"
-							VerticalOptions="FillAndExpand">
-            </ProgressBar>
-          </StackLayout>
-        </Frame>
 			</StackLayout>
 		</ScrollView>
 	</ContentPage.Content>
