@@ -7,7 +7,13 @@ angular.module("SettingsService", []).factory("SettingsOb", function($http) {
 		.then(function (response){
 			return response.data;
 		});
+	};
 
+	SettingsOb.getStates = function () {
+		return $http.get("/api/states")
+		.then(function (response){
+			return response;
+		});
 	};
 
 	return SettingsOb;
