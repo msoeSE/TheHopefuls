@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Autofac;
 using OAuth.StudentDriver;
 using StudentDriver.Autofac;
@@ -15,12 +16,12 @@ namespace StudentDriver
 {
 	public partial class App : Application
 	{
-	    private static ServiceController _sc;
+		private static ServiceController _sc;
 		public App(AppSetup setup)
 		{
-		    InitializeComponent();
-		    var container = setup.CreateContainer();
-		    _sc = container.Resolve<IServiceController>() as ServiceController;
+			InitializeComponent();
+			var container = setup.CreateContainer();
+			_sc = container.Resolve<IServiceController>() as ServiceController;
 			MainPage = new StudentDriverPage();
 		}
 
@@ -30,9 +31,6 @@ namespace StudentDriver
             {
                 LoginAction();
             }
-            //var userType = User.UserType.Instructor;
-		    var userType = await _sc.GetUser();
-            SuccessfulLoginAction(userType.UType).Invoke();
 		    // Handle when your app starts
 		}
 
@@ -46,30 +44,35 @@ namespace StudentDriver
 			// Handle when your app resumes
 		}
 
-	    public static IServiceController ServiceController => _sc;
+		public static IServiceController ServiceController => _sc;
 
-	    public static Action SuccessfulLoginAction(User.UserType userType)
-	    {
-	        var page = Current.MainPage;
-	        if (userType == User.UserType.Instructor)
-	        {
-	            page = new InstructorPage();
-	        }
+		public static async Task<Action> SuccessfulLoginAction()
+		{
+			var userType = await ServiceController.GetUser();
+			var page = Current.MainPage;
+			if (userType.UType == User.UserType.Instructor)
+			{
+				page = new InstructorPage();
+			}
+			else
+			{
+				page = new StudentDriverPage();
+			}
 
-	        return () =>
-	               {
-	                   Current.MainPage = page;
-	               };
-	    }
+			return () =>
+				   {
+					   Current.MainPage = page;
+				   };
+		}
 
-	    public static Action StatsPageAction(string userid)
-	    {
-            var page = new StatsPage(userid);
-            return () =>
-            {
-                Current.MainPage = page;
-            };
-        }
+		public static Action StatsPageAction(string userid)
+		{
+			var page = new StatsPage(userid);
+			return () =>
+			{
+				Current.MainPage = page;
+			};
+		}
 
 		public static Action LoginAction
 		{

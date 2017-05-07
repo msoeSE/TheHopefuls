@@ -16,8 +16,7 @@ namespace StudentDriver.Helpers
 
         public DrivingDataViewModel(StateReqs stateReqs, DrivingAggregateData aggregateData)
         {
-            var totalRequiredHours = stateReqs.DayHours + stateReqs.NightHours;
-            Total = new DrivingDataItem(totalRequiredHours, aggregateData.TotalHours);
+
             TotalDayTime = new DrivingDataItem(stateReqs.DayHours,aggregateData.TotalDaytimeHours);
             var completedNightHours = aggregateData.TotalNighttimeHours;
             if (stateReqs.NightOrInclement)
@@ -26,7 +25,12 @@ namespace StudentDriver.Helpers
             }
             TotalNightTime = new DrivingDataItem(stateReqs.NightHours, completedNightHours);
 
+            var totalHoursCompleted = TotalDayTime.Hours + TotalNightTime.Hours;
+            var totalRequiredHours = stateReqs.DayHours + stateReqs.NightHours;
+            Total = new DrivingDataItem(totalRequiredHours, totalHoursCompleted);
+
             TotalInclement = new DrivingDataItem(stateReqs.InclementWeatherHours, aggregateData.TotalInclementHours);
+
         }
     }
 }

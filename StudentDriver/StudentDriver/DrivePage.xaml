@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <ContentPage
 	xmlns="http://xamarin.com/schemas/2014/forms"
 	xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
@@ -47,22 +47,6 @@
 						</ColumnDefinition>
 					</Grid.ColumnDefinitions>
 					<Label
-						Grid.Row="0"
-						Grid.Column="0"
-						Text="Distance"
-						FontAttributes="Bold"
-						FontSize="Medium"
-						HorizontalOptions="Start">
-					</Label>
-					<Label
-						x:Name="distanceLabel"
-						Grid.Row="0"
-						Grid.Column="1"
-						Text="0.0 mi"
-						FontSize="Medium"
-						HorizontalOptions="EndAndExpand">
-					</Label>
-					<Label
 						Grid.Row="1"
 						Grid.Column="0"
 						Text="Average Speed"
@@ -75,7 +59,7 @@
 						Grid.Row="1"
 						Grid.Column="1"
 						FontSize="Medium"
-						Text="0.0 MPH"
+						Text="0.00 MPH"
 						HorizontalOptions="EndAndExpand">
 					</Label>
 					<Label
@@ -91,7 +75,7 @@
 						Grid.Row="2"
 						Grid.Column="1"
 						FontSize="Medium"
-						Text="0 min"
+						Text="0:00:00"
 						HorizontalOptions="EndAndExpand">
 					</Label>
 				</Grid>
@@ -118,6 +102,9 @@
 						<RowDefinition
 							Height="Auto">
 						</RowDefinition>
+						<RowDefinition
+							Height="Auto">
+						</RowDefinition>
 					</Grid.RowDefinitions>
 					<Grid.ColumnDefinitions>
 						<ColumnDefinition
@@ -138,12 +125,19 @@
 					<controls:CircleImage
 						x:Name="weatherImage"
 						Aspect="AspectFit"
-						HeightRequest="40"
-						WidthRequest="40"
+						HeightRequest="70"
+						WidthRequest="70"
 						Grid.Row="1"
 						Grid.Column="0"
 						Source="noImage.png">
 					</controls:CircleImage>
+					<Label
+						x:Name="weatherText"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Center"
+						Grid.Row="2"
+						Grid.Column="0">
+					</Label>
 					<Label
 						Text="Time of Day"
 						HorizontalOptions="CenterAndExpand"
@@ -155,12 +149,19 @@
 					<controls:CircleImage
 						x:Name="timeImage"
 						Aspect="AspectFit"
-						HeightRequest="40"
-						WidthRequest="40"
+						HeightRequest="70"
+						WidthRequest="70"
 						Grid.Row="1"
 						Grid.Column="1"
 						Source="noImage.png">
 					</controls:CircleImage>
+					<Label
+						x:Name="timeOfDayText"
+						HorizontalOptions="CenterAndExpand"
+						VerticalOptions="Center"
+						Grid.Row="2"
+						Grid.Column="1">
+					</Label>
 				</Grid>
 			</Frame>
 			<Button

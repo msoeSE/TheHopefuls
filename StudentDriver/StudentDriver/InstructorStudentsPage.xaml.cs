@@ -11,15 +11,11 @@ namespace StudentDriver
 {
     public partial class InstructorStudentsPage : ContentPage
     {
+        private readonly ObservableCollection<User> _students;
         public InstructorStudentsPage()
         {
             InitializeComponent();
-            var students = new ObservableCollection<User>();
-            var users = new List<User> { new User { FirstName = "Fuck", LastName = "Face" }, new User { FirstName = "Ur", LastName = "Mom" } };
-            //var users = App.ServiceController.GetStudents();
-            foreach (var user in users) { students.Add(user); }
-            StudentsListView.ItemsSource = students;
-            StudentsListView.ItemTapped += StudentTapped;
+            _students = new ObservableCollection<User>();
         }
 
         private void StudentTapped(object sender, ItemTappedEventArgs e)
@@ -29,12 +25,16 @@ namespace StudentDriver
             {
                 App.StatsPageAction(user.ServerId).Invoke();
             }
-
         }
 
         protected override async void OnAppearing()
         {
-            
+            //var users = new List<User> { new User { FirstName = "Fuck", LastName = "Face" }, new User { FirstName = "Ur", LastName = "Mom" } };
+            var users = await App.ServiceController.GetStudents();
+            if (users == null) return;
+            foreach (var user in users) { _students.Add(user); }
+            StudentsListView.ItemsSource = _students;
+            StudentsListView.ItemTapped += StudentTapped;
         }
     }
 }

@@ -8,6 +8,7 @@ using Android.Views;
 using Android.Widget;
 using Android.OS;
 using Acr.UserDialogs;
+using Plugin.Permissions;
 using StudentDriver.Autofac;
 
 namespace StudentDriver.Droid
@@ -26,6 +27,10 @@ namespace StudentDriver.Droid
 			UserDialogs.Init(this);
 
 			LoadApplication(new App(new AppSetup()));
+		}
+		public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+		{
+			PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
 		}
 	}
 }
