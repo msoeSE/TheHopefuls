@@ -48,10 +48,60 @@ exports.getSchool = function(schoolId, callback, error) {
 };
 
 // TODO: Add update method to add a student to be added to the school
+// WHAT DOES THIS EVEN MEAN?!? ^^^^^
+// I read this like 5 times and can't figure it out
 exports.addStudentToSchool = function(schoolId, student, callback, error) {
 	DrivingSchool.findOneAndUpdate({
 		schoolId: schoolId
-  }, {$push: {students: student}},
+	}, {$push: {students: student}},
+	function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error adding student to driving school",
+				"error": err
+			});
+			return;
+		}
+		callback(doc);
+	});
+};
+
+exports.addInstructorToSchool = function(schoolId, instructor, callback, error) {
+	DrivingSchool.findOneAndUpdate({
+		schoolId: schoolId
+	}, {$push: {instructors: instructor}},
+	function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error adding instructor to driving school",
+				"error": err
+			});
+			return;
+		}
+		callback(doc);
+	});
+};
+
+exports.removeStudentFromSchool = function(schoolId, student, callback, error) {
+	DrivingSchool.findOneAndUpdate({
+		schoolId: schoolId
+	}, {$pull: {students: student}},
+	function(err, doc) {
+		if (err) {
+			error({
+				"message": "Error removing student from driving school",
+				"error": err
+			});
+			return;
+		}
+		callback(doc);
+	});
+};
+
+exports.removeInstructorFromSchool = function(schoolId, instructor, callback, error) {
+	DrivingSchool.findOneAndUpdate({
+		schoolId: schoolId
+	}, {$pull: {instructors: instructor}},
 	function(err, doc) {
 		if (err) {
 			error({

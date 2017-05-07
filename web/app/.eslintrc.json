@@ -1,0 +1,7 @@
+{
+    "rules": {
+        "angular/log": 0,
+        "angular/json-functions": 0,
+        "angular/typecheck-object": 0
+    }
+}
