@@ -27,12 +27,19 @@
 			</tr>
 		</tfood>
 	</table>
-	<a href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
 
-	<h6>Total Day Hours </h6>
-	<md-progress-linear md-mode="determinate" value="{{ vm.totDayHours }}"></md-progress-linear>
-	<h6>Total Night Hours</h6>
-	<md-progress-linear md-mode="determinate" value="{{ vm.totNightHours }}"></md-progress-linear>
-	<h6>Total Hours</h6>
-	<md-progress-linear md-mode="determinate" value="{{ vm.totDriveHours }}"></md-progress-linear>
+	<h6>Total Day Hours: {{ vm.totDayHours }} / {{ vm.stateRegDay }}</h6>
+	<div class="progress">
+      <div class="determinate" style="width: {{ vm.dayProgress }}%"></div>
+  </div>
+	<h6>Total Night Hours: {{ vm.totNightHours }} / {{ vm.stateRegNight }}</h6>
+	<div class="progress">
+			<div class="determinate" style="width: {{ vm.nightProgress }}%"></div>
+	</div>
+	<h6>Total Hours: {{ vm.totDriveHours }} / {{ vm.stateRegTotal }}</h6>
+	<div class="progress">
+			<div class="determinate" style="width: {{ vm.totalProgress }}%"></div>
+	</div>
+
+	<a href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
 </div>

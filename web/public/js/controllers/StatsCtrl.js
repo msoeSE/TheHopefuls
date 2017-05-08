@@ -1,18 +1,15 @@
-angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", function($log, $location, Stats) {
+angular.module("StatsCtrl", [, "StatsService"]).controller("StatsController", function($log, $location, Stats) {
 	var vm = this;
 	vm.tagline = "User Stats!";
-	vm.totDayHours = 10;
-	vm.totNightHours = 10;
-	vm.totDriveHours = 20;
 
 	var userID = $location.search().id;
 	if(userID != null){
 		renderTable(userID);
-		// getTotalDrivingData(userID);
+		getTotalDrivingData(userID);
 	} else {
 		Stats.getMongoID().then(function(currentUserID){
 			renderTable(currentUserID);
-			// getTotalDrivingData(userID);
+			getTotalDrivingData(userID);
 		});
 	}
 
@@ -53,8 +50,22 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 		});
 	}
 
+
 	function getTotalDrivingData(id) {
 		// "api/totalDrivingData/" + id
+
+		//TODO hide flag for states that have no required driving hours
+		vm.totDayHours = 10;
+		vm.stateRegDay = 30;
+		vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line
+
+		vm.totNightHours = 10;
+		vm.stateRegNight = 10;
+		vm.nightProgress = (vm.totNightHours / vm.stateRegNight) * 100; //eslint-disable-line
+
+		vm.totDriveHours = 20;
+		vm.stateRegTotal = 40;
+		vm.totalProgress = (vm.totDriveHours / vm.stateRegTotal) * 100; //eslint-disable-line
 	}
 
 	vm.mockUserData = [
