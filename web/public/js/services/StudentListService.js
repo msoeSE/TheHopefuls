@@ -8,5 +8,12 @@ angular.module("StudentListService", []).factory("students", function($log, $htt
 		});
 	};
 
+	students.getSchoolId = function () {
+		return $http.get("/profile")
+		.then(function (response){
+			return response.data.schoolId;
+		});
+	};
+
 	return students;
 });
