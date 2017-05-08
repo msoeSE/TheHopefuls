@@ -1,13 +1,18 @@
 angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", function($log, $location, Stats) {
 	var vm = this;
 	vm.tagline = "User Stats!";
+	vm.totDayHours = 10;
+	vm.totNightHours = 10;
+	vm.totDriveHours = 20;
 
 	var userID = $location.search().id;
 	if(userID != null){
 		renderTable(userID);
+		// getTotalDrivingData(userID);
 	} else {
 		Stats.getMongoID().then(function(currentUserID){
 			renderTable(currentUserID);
+			// getTotalDrivingData(userID);
 		});
 	}
 
@@ -46,6 +51,10 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 				{ title: "Weather Summary", data: "weatherData.summary" }
 			]
 		});
+	}
+
+	function getTotalDrivingData(id) {
+		// "api/totalDrivingData/" + id
 	}
 
 	vm.mockUserData = [
