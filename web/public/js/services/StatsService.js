@@ -22,6 +22,19 @@ angular.module("StatsService", []).factory("Stats", function($http) {
 		});
 	};
 
+	Stats.getTotalDriveData = function (userID) {
+		return $http.get("api/totalDrivingData/" + userID)
+		.then(function (response) {
+			return response.data;
+		});
+	};
+
+	Stats.getStateRegs = function (state) {
+		return $http.get("/api/stateregulations/" + state)
+		.then(function (response) {
+			return response.data;
+		});
+	};
 
 	return Stats;
 });
