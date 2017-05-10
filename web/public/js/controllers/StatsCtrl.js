@@ -1,16 +1,16 @@
 angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("StatsController", function($log, $location, Stats, SettingsOb) {  //eslint-disable-line
 	var vm = this;
 	vm.tagline = "User Stats!";
-	vm.state = SettingsOb.state;
+	vm.state = SettingsOb.getState();
 
 	var userID = $location.search().id;
 	if(userID != null){
 		renderTable(userID);
-		getTotalDrivingData(userID, "Wisconsin");
+		getTotalDrivingData(userID, vm.state);
 	} else {
 		Stats.getMongoID().then(function(currentUserID){
 			renderTable(currentUserID);
-			getTotalDrivingData(currentUserID, "Wisconsin");
+			getTotalDrivingData(currentUserID, vm.state);
 		});
 	}
 
@@ -53,39 +53,45 @@ angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("Sta
 
 
 	function getTotalDrivingData(id, state) { //eslint-disable-line
-		// var stateRegs = Stats.getStateRegs(state);
+
 		//TODO hide flag for states that have no required driving hours
 		vm.showHideMessage = false;
 		vm.showDayHours = true;
 		vm.showNightHours = true;
 		vm.showTotalHours = true;
-		/*
-		if (stateRegs.dayHours === 0) {
-			vm.showDayHours = false;
-		}
 
-		if (stateRegs.nightHours === 0) {
-			vm.showNightHours = false;
-		}
+		Stats.getStateRegs(state).then(function(stateRegs) {
+			if (stateRegs.dayHours === 0) { //eslint-disable-line
+				vm.showDayHours = false;
+			}
 
-		if (stateRegs.dayHours === 0 && stateRegs.nightHours === 0) {
-			vm.showHideMessage = true;
-			vm.showTotalHours = false;
-		}
-		*/
+			if (stateRegs.nightHours === 0) { //eslint-disable-line
+				vm.showNightHours = false;
+			}
+
+			if (stateRegs.dayHours === 0 && stateRegs.nightHours === 0) { //eslint-disable-line
+				vm.showHideMessage = true;
+				vm.showTotalHours = false;
+			}
+
+			vm.stateRegDay = stateRegs.dayHours;
+			vm.stateRegNight = stateRegs.nightHours;
+			vm.stateRegTotal = vm.stateRegDay + vm.stateRegNight;
+		});
+
 
 		Stats.getTotalDriveData(id).then(function(aggregatData) { //eslint-disable-line
 
 			vm.totDayHours = aggregatData.dayHours;
-			vm.stateRegDay = 30;
+			// vm.stateRegDay = 30;
 			vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line
 
 			vm.totNightHours = aggregatData.nightHours;
-			vm.stateRegNight = 10;
+			// vm.stateRegNight = 10;
 			vm.nightProgress = (vm.totNightHours / vm.stateRegNight) * 100; //eslint-disable-line
 
 			vm.totDriveHours = aggregatData.totalHours;
-			vm.stateRegTotal = 40;
+			// vm.stateRegTotal = 40;
 			vm.totalProgress = (vm.totDriveHours / vm.stateRegTotal) * 100; //eslint-disable-line
 		});
 	}
