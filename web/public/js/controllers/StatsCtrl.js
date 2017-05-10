@@ -90,13 +90,21 @@ angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("Sta
 
 
 		Stats.getTotalDriveData(id).then(function(aggregatData) { //eslint-disable-line
-			vm.totDayHours = aggregatData.dayHours;
-			vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line
+			vm.totDayHours = 0;
+			vm.totNightHours = 0;
 
-			vm.totNightHours = aggregatData.nightHours;
+			if (vm.showDayHours) { //eslint-disable-line
+				vm.totDayHours = aggregatData.dayHours;
+			}
+
+			if (vm.showNightHours) { //eslint-disable-line
+				vm.totNightHours = aggregatData.nightHours;
+			}
+
+			vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line
 			vm.nightProgress = (vm.totNightHours / vm.stateRegNight) * 100; //eslint-disable-line
 
-			vm.totDriveHours = aggregatData.totalHours;
+			vm.totDriveHours = vm.totDayHours + vm.totNightHours;
 			vm.totalProgress = (vm.totDriveHours / vm.stateRegTotal) * 100; //eslint-disable-line
 		});
 	}
