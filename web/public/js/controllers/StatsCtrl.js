@@ -1,13 +1,20 @@
-angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", function($log, $location, Stats) {
+angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("StatsController", function($log, $location, Stats, SettingsOb) {  //eslint-disable-line
 	var vm = this;
 	vm.tagline = "User Stats!";
+	if (SettingsOb.state === undefined) { //eslint-disable-line
+		vm.state = "Wisconsin";
+	} else {
+		vm.state = SettingsOb.state;
+	}
 
 	var userID = $location.search().id;
 	if(userID != null){
 		renderTable(userID);
+		getTotalDrivingData(userID, vm.state);
 	} else {
 		Stats.getMongoID().then(function(currentUserID){
 			renderTable(currentUserID);
+			getTotalDrivingData(currentUserID, vm.state);
 		});
 	}
 
@@ -48,6 +55,60 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 		});
 	}
 
+
+	function getTotalDrivingData(id, state) { //eslint-disable-line
+
+		//TODO hide flag for states that have no required driving hours
+		vm.showHideMessage = false;
+		vm.showDayHours = true;
+		vm.showNightHours = true;
+		vm.showTotalHours = true;
+
+		Stats.getStateRegs(state).then(function(stateRegs) { //eslint-disable-line
+			if (stateRegs.dayHours === 0) { //eslint-disable-line
+				vm.showDayHours = false;
+			} else {
+				vm.stateRegTotal = vm.stateRegDay;
+			}
+
+			if (stateRegs.nightHours === 0) { //eslint-disable-line
+				vm.showNightHours = false;
+			} else {
+				vm.stateRegTotal = vm.stateRegNight;
+			}
+
+			if (stateRegs.dayHours === 0 && stateRegs.nightHours === 0) { //eslint-disable-line
+				vm.showHideMessage = true;
+				vm.showTotalHours = false;
+			}
+
+			vm.stateRegDay = stateRegs.dayHours;
+			vm.stateRegNight = stateRegs.nightHours;
+			vm.stateRegTotal = vm.stateRegDay + vm.stateRegNight;
+
+		});
+
+
+		Stats.getTotalDriveData(id).then(function(aggregatData) { //eslint-disable-line
+			vm.totDayHours = 0;
+			vm.totNightHours = 0;
+
+			if (vm.showDayHours) { //eslint-disable-line
+				vm.totDayHours = aggregatData.dayHours;
+			}
+
+			if (vm.showNightHours) { //eslint-disable-line
+				vm.totNightHours = aggregatData.nightHours;
+			}
+
+			vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line
+			vm.nightProgress = (vm.totNightHours / vm.stateRegNight) * 100; //eslint-disable-line
+
+			vm.totDriveHours = vm.totDayHours + vm.totNightHours;
+			vm.totalProgress = (vm.totDriveHours / vm.stateRegTotal) * 100; //eslint-disable-line
+		});
+	}
+
 	vm.mockUserData = [
 		["10/10/2016", "1:00pm", "2:00pm", "1 Hr", "23 Miles", "Rainy"],
 		["10/10/2016", "4:00pm", "5:00pm", "1 Hr", "45 Miles", "Rainy"],
@@ -67,7 +128,6 @@ angular.module("StatsCtrl", ["StatsService"]).controller("StatsController", func
 		["06/30/2016", "5:00am", "6:00am", "1 Hr", "88 Miles", "Sunny"],
 		["07/04/2016", "6:00am", "7:00am", "1 Hr", "11 Miles", "Hurricane"]
 	];
-
 
 	$(".mock-table").DataTable({
 		data: vm.mockUserData,

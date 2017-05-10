@@ -1,7 +1,7 @@
 <div class="container viewContainer">
   <h1>User Statistics</h1>
 
-  <p>{{ vm.tagline }}</p>
+	<p>{{ vm.tagline }}</p>
   <div class="row">
     <div class="col s12">
       <table class="student-stats-table">
@@ -28,7 +28,28 @@
           </tr>
           </tfood>
       </table>
-      <a href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
     </div>
   </div>
+
+	<p>Current State: {{ vm.state }}</p>
+	<p ng-show="vm.showHideMessage"><i>Current state has no requirements, Progress will not be displayed</i></p>
+	<div ng-show="vm.showDayHours" id="dayHours">
+		<h6>Total Day Hours: {{ vm.totDayHours | number: 2 }} / {{ vm.stateRegDay }}</h6>
+		<div class="progress">
+				<div class="determinate" style="width: {{ vm.dayProgress }}%"></div>
+		</div>
+	</div>
+	<div ng-show="vm.showNightHours" id="nightHours">
+		<h6>Total Night Hours: {{ vm.totNightHours | number: 2 }} / {{ vm.stateRegNight }}</h6>
+		<div class="progress">
+				<div class="determinate" style="width: {{ vm.nightProgress }}%"></div>
+		</div>
+	</div>
+	<div ng-show="vm.showTotalHours" id="totalHours">
+		<h6>Total Hours: {{ vm.totDriveHours | number: 2 }} / {{ vm.stateRegTotal }}</h6>
+		<div class="progress">
+				<div class="determinate" style="width: {{ vm.totalProgress }}%"></div>
+		</div>
+	</div>
+	<a href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
 </div>
