@@ -26,7 +26,7 @@ angular.module("StudentListCtrl", ["StudentListService"])
 	}
 
 	$(".btn").on("click", function (){
-		// table.row($(this).parents("tr")).remove().draw();
+		table.row($(this).parents("tr")).remove().draw();//eslint-disable-line
 		// TODO Remove from DB
 	});
 

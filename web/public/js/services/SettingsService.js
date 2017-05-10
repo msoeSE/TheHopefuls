@@ -16,5 +16,12 @@ angular.module("SettingsService", []).factory("SettingsOb", function($http) {
 		});
 	};
 
+	SettingsOb.updateSchoolCode = function (schoolId, userId) {
+		return $http.post("/api/linkacctoschool", {schoolId: schoolId, userId: userId})
+		.then(function (response){
+			return response;
+		});
+	};
+
 	return SettingsOb;
 });
