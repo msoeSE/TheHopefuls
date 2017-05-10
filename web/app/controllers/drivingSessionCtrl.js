@@ -11,7 +11,7 @@ function calculateDistance(drivePoints) {
 		return {latitude: point.lat, longitude: point.lon};
 	});
 	return geolibPoints.reduce((data, point) => {
-		data.distance += geolib.getDistance(data.point, point);
+		data.distance += geolib.getDistance(data.location, point);
 		data.point = point;
 		return data;
 	}, {distance: 0, location: geolibPoints.shift()}).distance;
@@ -50,8 +50,8 @@ exports.createDrivingSession = function(userId, driveSession, callback, error) {
 	var startTime = new Date(driveSession.UnsyncDrive.startTime);
 	var endTime = new Date(driveSession.UnsyncDrive.endTime);
 	var distance = calculateDistance(driveSession.DrivePoints);
-	var duration = calculateDuration(new Date(driveSession.UnsyncDrive.startTime),
-		new Date(driveSession.UnsyncDrive.endTime));
+	var duration = calculateDuration(driveSession.UnsyncDrive.startTime,
+		driveSession.UnsyncDrive.endTime);
 	DrivingSession.create({
 		startTime: startTime,
 		endTime: endTime,
@@ -90,7 +90,7 @@ function calcDayDriveTimeTot(startTime, endTime) {
 	// Day Hours: 9am (9:00)-5pm (17:00)
 	var dayTot = 0;
 	setHourBoundaries(startTime, endTime);
-	if (moment.utc(startTime).isAfter(nineAM) && moment.utc(endTime).isBefore(fivePM)) {
+	if (moment.utc(startTime).isAfter(moment(nineAM.valueOf()-1)) && moment.utc(endTime).isBefore(moment(fivePM.valueOf()+1))) {
 		dayTot = moment(endTime).diff(startTime, "minutes") / minPerHour;
 	} else if (moment.utc(startTime).isBefore(fivePM) && moment.utc(endTime).isAfter(fivePM)) {
 		dayTot = fivePM.diff(moment.utc(startTime), "minutes") / minPerHour;

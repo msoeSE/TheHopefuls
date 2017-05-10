@@ -71,7 +71,7 @@ exports.getAllUsers = function(callback, error){// TODO change to users for scho
 			});
 			return;
 		}
-		callback({data: doc}); // This is weird. Datatables wouldnt load without the added data: tag
+		callback(doc);
 	});
 };
 

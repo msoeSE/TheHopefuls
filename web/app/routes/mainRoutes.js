@@ -62,6 +62,20 @@ router.all("*", function(req, res, next){
 	});
 });
 
+/*	You can use this middleware to add a wrapper for json responses
+	This was mainly needed for DataTables, but can be used for other uses
+	Use like /api/endpointThatReturnsJSON?jsonwrapper=keyForObject
+	and this would return {"keyForObject": originalObject}
+*/
+router.all("*", function(req, res, next){
+	var wrapper = req.query.jsonwrapper;
+	if(wrapper){
+		res.jsonOriginal = res.json;
+		res.json = obj => res.jsonOriginal({[wrapper]: obj});
+	}
+	next();
+});
+
 function isInstructorOf(instructor, student){
 	if(instructor.userType === "student" || student.userType !== "student")
 		return false;
