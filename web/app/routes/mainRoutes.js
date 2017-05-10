@@ -219,8 +219,8 @@ router.get("/drivingschools/:schoolId/students", function(req, res) {
 			res.json({message: "You cannot see this school's information"});
 			return;
 		}
-		drivingSchoolCtrl.getSchool(req.params.schoolId, (school) => {
-			res.json(school.students);
+		userCtrl.getAllStudentsForSchool(req.params.schoolId, students => {
+			res.json(students);
 		}, standardErrorHandler(res));
 	});
 });
@@ -280,8 +280,8 @@ router.delete("/drivingschools/:schoolId/students/:userId", function(req, res) {
 // TODO: add later
 router.get("/drivingschools/:schoolId/instructors", function(req, res) {
 	if((req.user.userType === "owner" && req.user.schoolId === req.params.schoolId) || req.user.userType === "admin"){
-		drivingSchoolCtrl.getSchool(req.params.schoolId, (school)=>{
-			res.json(school.instructors);
+		userCtrl.getAllInstructorsForSchool(req.params.schoolId, instructors => {
+			res.json(instructors);
 		}, standardErrorHandler);
 	} else {
 		res.status(statusCodes.UNAUTHORIZED);
