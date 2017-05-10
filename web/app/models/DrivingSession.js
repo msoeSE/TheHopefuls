@@ -27,10 +27,6 @@ var DrivingSessionSchema = new Schema({
 		type: Number,
 		required: true
 	},
-	nightHours: {
-		type: Number,
-		required: true
-	},
 	weatherData: {
 		temperature: Number,
 		summary: String
