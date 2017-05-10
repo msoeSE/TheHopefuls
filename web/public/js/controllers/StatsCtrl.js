@@ -81,9 +81,6 @@ angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("Sta
 				vm.showHideMessage = true;
 				vm.showTotalHours = false;
 			}
-			// else if(stateRegs.dayHours > 0 && stateRegs.nightHours > 0) { //eslint-disable-line
-			// 	vm.stateRegTotal = vm.stateRegDay + vm.stateRegNight;
-			// }
 
 			vm.stateRegDay = stateRegs.dayHours;
 			vm.stateRegNight = stateRegs.nightHours;
@@ -93,17 +90,13 @@ angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("Sta
 
 
 		Stats.getTotalDriveData(id).then(function(aggregatData) { //eslint-disable-line
-
 			vm.totDayHours = aggregatData.dayHours;
-			// vm.stateRegDay = 30;
 			vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line
 
 			vm.totNightHours = aggregatData.nightHours;
-			// vm.stateRegNight = 10;
 			vm.nightProgress = (vm.totNightHours / vm.stateRegNight) * 100; //eslint-disable-line
 
 			vm.totDriveHours = aggregatData.totalHours;
-			// vm.stateRegTotal = 40;
 			vm.totalProgress = (vm.totDriveHours / vm.stateRegTotal) * 100; //eslint-disable-line
 		});
 	}
