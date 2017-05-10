@@ -5,3 +5,8 @@ body {
 #mainDiv {
 	background-color: white;
 }
+
+.viewContainer {
+	width: 95%;
+	height: 98%;
+}
