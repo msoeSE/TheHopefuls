@@ -252,7 +252,26 @@ namespace StudentDriver
 
 		private void UpdateWeatherIcons(DriveWeatherData driveWeather)
 		{
-			var image = ImageSource.FromFile(string.Format("{0}.png", driveWeather.WeatherIcon));
+			var imageName = string.Empty;
+			switch (driveWeather.WeatherIcon)
+			{
+				case "clear-day"
+					imageName = "clearDay";
+					break;
+				case "clear-night":
+					imageName = "clearNight";
+					break;
+				case "partly-cloudy-night":
+					imageName = "partlyCloudyNight";
+					break;
+				case "partly-cloudy-day":
+					imageName = "partlyCloudyDay";
+					break;
+				default:
+					imageName = driveWeather.WeatherIcon;
+					break;
+			}
+			var image = ImageSource.FromFile(string.Format("{0}.png", imageName));
 			//Going to use 6pm as the hour, should be "night time"
 			var currentHour = DateTime.Now.ToLocalTime().Hour;
 			var timeOfDayImage = currentHour > 17 && currentHour <= 6 ? ImageSource.FromFile("night.png") : ImageSource.FromFile("day.png");
