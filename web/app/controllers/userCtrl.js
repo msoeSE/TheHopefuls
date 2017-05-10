@@ -62,8 +62,8 @@ exports.getUserByObject = function(obj, callback, error){
 exports.getUser = (id, callback, error) => exports.getUserByObject({userId: id}, callback, error);
 exports.getUserByMongoId = (id, callback, error) => exports.getUserByObject({_id: id}, callback, error);
 
-exports.getAllUsers = function(callback, error){// TODO change to users for school
-	User.find(function(err, doc) {
+exports.getUsersOfTypeAtSchool = function(userType, schoolId, callback, error){
+	User.find({"schoolId": schoolId, "userType": userType}, {"firstName": 1, "lastName": 1}, function(err, doc) {
 		if (err) {
 			error({
 				"message": "Error returning users for school",
@@ -75,6 +75,10 @@ exports.getAllUsers = function(callback, error){// TODO change to users for scho
 	});
 };
 
+/* eslint-disable */
+exports.getAllStudentsForSchool = (schoolId, callback, error) => exports.getUsersOfTypeAtSchool("student", schoolId, callback, error);
+exports.getAllInstructorsForSchool = (schoolId, callback, error) => exports.getUsersOfTypeAtSchool("instructor", schoolId, callback, error);
+exports.getAllOwnersForSchool = (schoolId, callback, error) => exports.getUsersOfTypeAtSchool("owner", schoolId, callback, error);
 exports.createStudent = (info, callback, error) => exports.createUser(info, "student", callback, error);
 exports.createInstructor = (info, callback, error) => exports.createUser(info, "instructor", callback, error);
 exports.getStudent = exports.getUser;

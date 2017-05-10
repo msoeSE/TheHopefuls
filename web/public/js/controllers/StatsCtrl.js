@@ -121,7 +121,6 @@ angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("Sta
 		["07/04/2016", "6:00am", "7:00am", "1 Hr", "11 Miles", "Hurricane"]
 	];
 
-
 	$(".mock-table").DataTable({
 		data: vm.mockUserData,
 		columns: [
