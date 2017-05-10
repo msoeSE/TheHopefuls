@@ -29,6 +29,7 @@
 	</table>
 
 	<p ng-show="vm.showHideMessage"><i>Current state has no requirements, Progress will not be tracked</i></p>
+	<p>Current State: {{ vm.state }}</p>
 	<div ng-show="vm.showDayHours" id="dayHours">
 		<h6>Total Day Hours: {{ vm.totDayHours | number: 2 }} / {{ vm.stateRegDay }}</h6>
 		<div class="progress">

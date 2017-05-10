@@ -1,6 +1,7 @@
-angular.module("StatsCtrl", [, "StatsService"]).controller("StatsController", function($log, $location, Stats) {  //eslint-disable-line
+angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("StatsController", function($log, $location, Stats, SettingsOb) {  //eslint-disable-line
 	var vm = this;
 	vm.tagline = "User Stats!";
+	vm.state = SettingsOb.state;
 
 	var userID = $location.search().id;
 	if(userID != null){

@@ -22,12 +22,13 @@
 
 		<div class="row">
 			<div class="input-field col s3">
-				<select class="browser-default">
+				<select class="browser-default" ng-model="state.selected">
 					<option value="" disabled>Choose one</option>
-					<option value="AL">Alabama</option>
-					<option value="WI">Wisconsin</option>
+					<option value="Alabama">Alabama</option>
+					<option value="Wisconsin">Wisconsin</option>
 				</select>
 			</div>
+			<p>Selected State: {{ vm.state }}</p>
 		</div>
 
 		<div class="row">
