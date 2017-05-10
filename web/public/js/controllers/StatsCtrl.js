@@ -58,7 +58,6 @@ angular.module("StatsCtrl", [, "StatsService"]).controller("StatsController", fu
 		vm.showDayHours = true;
 		vm.showNightHours = true;
 		vm.showTotalHours = true;
-
 		/*
 		if (stateRegs.dayHours === 0) {
 			vm.showDayHours = false;
@@ -74,7 +73,8 @@ angular.module("StatsCtrl", [, "StatsService"]).controller("StatsController", fu
 		}
 		*/
 
-		Stats.getTotalDriveData(id).then(function(aggregatData) {
+		Stats.getTotalDriveData(id).then(function(aggregatData) { //eslint-disable-line
+
 			vm.totDayHours = aggregatData.dayHours;
 			vm.stateRegDay = 30;
 			vm.dayProgress = (vm.totDayHours / vm.stateRegDay) * 100; //eslint-disable-line

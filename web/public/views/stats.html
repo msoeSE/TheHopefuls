@@ -28,21 +28,21 @@
 		</tfood>
 	</table>
 
-	<p ng-show="{{ vm.showHideMessage }}"><i>Current state has no requirements, Progress will not be tracked</i></p>
-	<div ng-show="{{ true }}" id="dayHours">
-		<h6>Total Day Hours: {{ parseFloat(vm.totDayHours).toFixed(2) }} / {{ vm.stateRegDay }}</h6>
+	<p ng-show="vm.showHideMessage"><i>Current state has no requirements, Progress will not be tracked</i></p>
+	<div ng-show="vm.showDayHours" id="dayHours">
+		<h6>Total Day Hours: {{ vm.totDayHours | number: 2 }} / {{ vm.stateRegDay }}</h6>
 		<div class="progress">
 				<div class="determinate" style="width: {{ vm.dayProgress }}%"></div>
 		</div>
 	</div>
-	<div ng-show="{{ vm.showNightHours }}" id="nightHours">
-		<h6>Total Night Hours: {{ parseFloat(vm.totNightHours).toFixed(2) }} / {{ vm.stateRegNight }}</h6>
+	<div ng-show="vm.showNightHours" id="nightHours">
+		<h6>Total Night Hours: {{ vm.totNightHours | number: 2 }} / {{ vm.stateRegNight }}</h6>
 		<div class="progress">
 				<div class="determinate" style="width: {{ vm.nightProgress }}%"></div>
 		</div>
 	</div>
-	<div ng-show="{{ vm.showTotalHours }}" id="totalHours">
-		<h6>Total Hours: {{ parseFloat(vm.totDriveHours).toFixed(2) }} / {{ vm.stateRegTotal }}</h6>
+	<div ng-show="vm.showTotalHours" id="totalHours">
+		<h6>Total Hours: {{ vm.totDriveHours | number: 2 }} / {{ vm.stateRegTotal }}</h6>
 		<div class="progress">
 				<div class="determinate" style="width: {{ vm.totalProgress }}%"></div>
 		</div>
