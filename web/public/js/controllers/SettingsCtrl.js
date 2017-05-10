@@ -1,9 +1,7 @@
 angular.module("SettingsCtrl", ["SettingsService"]).controller("SettingsController", function($log, SettingsOb) {
 	var vm = this;
 
-	vm.onStateSelected = function(state) {
-		SettingsOb.setState(state);
-	};
+	SettingsOb.state = "Wisconsin";
 
 	SettingsOb.getProfile().then(function(settings){
 		vm.username = settings._json.first_name + " " + settings._json.last_name;
@@ -11,5 +9,8 @@ angular.module("SettingsCtrl", ["SettingsService"]).controller("SettingsControll
 		vm.instructorID = settings.mongoID;
 	});
 
+	$("#stateSelect").on("change", function(event){ //eslint-disable-line
+    SettingsOb.state = $("#stateSelect :selected").text();
+  });
 
 });

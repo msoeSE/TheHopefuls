@@ -1,7 +1,11 @@
 angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("StatsController", function($log, $location, Stats, SettingsOb) {  //eslint-disable-line
 	var vm = this;
 	vm.tagline = "User Stats!";
-	vm.state = SettingsOb.getState();
+	if (SettingsOb.state === undefined) { //eslint-disable-line
+		vm.state = "Wisconsin";
+	} else {
+		vm.state = SettingsOb.state;
+	}
 
 	var userID = $location.search().id;
 	if(userID != null){
@@ -60,23 +64,31 @@ angular.module("StatsCtrl", ["StatsService", "SettingsService"]).controller("Sta
 		vm.showNightHours = true;
 		vm.showTotalHours = true;
 
-		Stats.getStateRegs(state).then(function(stateRegs) {
+		Stats.getStateRegs(state).then(function(stateRegs) { //eslint-disable-line
 			if (stateRegs.dayHours === 0) { //eslint-disable-line
 				vm.showDayHours = false;
+			} else {
+				vm.stateRegTotal = vm.stateRegDay;
 			}
 
 			if (stateRegs.nightHours === 0) { //eslint-disable-line
 				vm.showNightHours = false;
+			} else {
+				vm.stateRegTotal = vm.stateRegNight;
 			}
 
 			if (stateRegs.dayHours === 0 && stateRegs.nightHours === 0) { //eslint-disable-line
 				vm.showHideMessage = true;
 				vm.showTotalHours = false;
 			}
+			// else if(stateRegs.dayHours > 0 && stateRegs.nightHours > 0) { //eslint-disable-line
+			// 	vm.stateRegTotal = vm.stateRegDay + vm.stateRegNight;
+			// }
 
 			vm.stateRegDay = stateRegs.dayHours;
 			vm.stateRegNight = stateRegs.nightHours;
 			vm.stateRegTotal = vm.stateRegDay + vm.stateRegNight;
+
 		});
 
 
