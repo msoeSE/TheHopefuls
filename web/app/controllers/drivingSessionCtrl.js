@@ -90,7 +90,7 @@ function calcDayDriveTimeTot(startTime, endTime) {
 	// Day Hours: 9am (9:00)-5pm (17:00)
 	var dayTot = 0;
 	setHourBoundaries(startTime, endTime);
-	if (moment.utc(startTime).isAfter(moment(nineAM.valueOf()-1)) && moment.utc(endTime).isBefore(moment(fivePM.valueOf()+1))) {
+	if (moment.utc(startTime).isAfter(moment(nineAM.valueOf() - 1)) && moment.utc(endTime).isBefore(moment(fivePM.valueOf() + 1))) { // eslint-disable-line
 		dayTot = moment(endTime).diff(startTime, "minutes") / minPerHour;
 	} else if (moment.utc(startTime).isBefore(fivePM) && moment.utc(endTime).isAfter(fivePM)) {
 		dayTot = fivePM.diff(moment.utc(startTime), "minutes") / minPerHour;
