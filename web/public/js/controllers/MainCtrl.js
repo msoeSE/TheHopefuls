@@ -1,7 +1,7 @@
 angular.module("MainCtrl", ["SettingsService"]).controller("MainController", function($location, $window, SettingsOb) {
 	var vm = this;
 
-	if($location.url() === "/" || $location.url() === "#_=_"){
+	if($location.url() === "/" || $location.url() === "/#_=_"){
 		SettingsOb.getProfile().then(function (response){
 			if(response.userType === "student"){
 				$window.location.href = "/stats";
