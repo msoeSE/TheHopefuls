@@ -9,7 +9,7 @@ angular.module("StudentListCtrl", ["StudentListService"])
 
 	function createTable(schoolId) {
 		$(".student-list-table").DataTable({
-			ajax: "/api/drivingschools/" + schoolId + "/students",
+			ajax: "/api/drivingschools/" + schoolId + "/students?jsonwrapper=data",
 			columns: [
 				{ title: "studentID", data: "_id", visible: false },
 				{ title: "Student Name", data: "firstName",

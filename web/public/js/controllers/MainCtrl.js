@@ -10,4 +10,17 @@ angular.module("MainCtrl", ["SettingsService"]).controller("MainController", fun
 			}
 		});
 	}
+
+	SettingsOb.getProfile().then(function (response){
+		if(response.userType === "student"){
+			$("#students").hide();
+			$("#instructors").hide();
+		} else if (response.userType === "instructor"){
+			$("#stats").hide();
+			$("#instructors").hide();
+		} else {
+			$("#stats").hide();
+		}
+	});
+
 });
