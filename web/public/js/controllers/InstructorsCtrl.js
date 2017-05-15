@@ -9,7 +9,7 @@ angular.module("InstructorsCtrl", ["InstructorsService"])
 
 	function createTable(schoolId) {
 		var table = $(".instructor-list-table").DataTable({
-			ajax: "/api/drivingschools/" + schoolId + "/instructors",
+			ajax: "/api/drivingschools/" + schoolId + "/instructors?jsonwrapper=data",
 			initComplete: function () {
 				$(".removeBtn").on("click", function (){
 					var userId = table.row($(this).parents("tr")).data().userId; // eslint-disable-line

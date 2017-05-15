@@ -279,7 +279,7 @@ router.delete("/drivingschools/:schoolId/students/:userId", function(req, res) {
 
 // TODO: add later
 router.get("/drivingschools/:schoolId/instructors", function(req, res) {
-	if((req.user.userType === "owner" && req.user.schoolId === req.params.schoolId) || req.user.userType === "admin"){
+	if((req.user.userType === "owner" && req.user.schoolId == req.params.schoolId) || req.user.userType === "admin"){ //eslint-disable-line
 		userCtrl.getAllInstructorsForSchool(req.params.schoolId, instructors => {
 			res.json(instructors);
 		}, standardErrorHandler);
