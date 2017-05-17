@@ -31,6 +31,7 @@ namespace StudentDriver
 			IsBusy = true;
 			int defaultIndex = 48;
 			var stateSelected = statePicker.Items[defaultIndex];
+			statePicker.SelectedIndex = defaultIndex;
 			await UpdateDrivingData(stateSelected);
 			daytimeHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(daytimeHoursLabelPressed));
 			nighttimeHoursLabel.GestureRecognizers.Add(new TapGestureRecognizer(nighttimeHoursLabelPressed));
