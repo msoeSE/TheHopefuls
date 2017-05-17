@@ -84,12 +84,12 @@ passport.use(
 		callbackURL: `${config.Auth.CallbackURLBase}/auth/facebook/callback`,
 		profileFields: ["id", "email", "gender", "name", "picture.type(large)"]
 	}, function(accessToken, refreshToken, profile, done) {
-		getOrCreateUser(profile);
-		return done(null, profile);
+		getOrCreateUser(profile, done);
+		// return done(null, profile);
 	}
 ));
 
-function getOrCreateUser(profile) {
+function getOrCreateUser(profile, done) {
 	userCtrl.getUser(profile.id, function(doc){
 		if(!doc){
 			var json = {
@@ -100,11 +100,16 @@ function getOrCreateUser(profile) {
 			};
 
 			userCtrl.createUser(json, "student", function(user) {
+				return done(null, profile);
 			}, function(error) {
+				return done(error);
 				$log.log(error);
 			});
+		} else {
+			return done(null, profile);
 		}
 	}, function(error){
+		return done(error);
 		console.log(error);
 	});
 }
@@ -126,8 +131,8 @@ passport.use(
 		clientID: config.Auth.FacebookAuth.ID,
 		clientSecret: config.Auth.FacebookAuth.Secret
 	}, function(accessToken, refreshToken, profile, done) {
-		getOrCreateUser(profile);
-		return done(null, profile);
+		getOrCreateUser(profile, done);
+		// return done(null, profile);
 	}
 ));
 
