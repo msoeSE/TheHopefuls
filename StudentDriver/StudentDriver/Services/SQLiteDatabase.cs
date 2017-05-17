@@ -197,7 +197,7 @@ namespace StudentDriver
 			var unsyncDrive = await _database.Table<UnsyncDrive>().Where(x => x.Id == unsyncDriveId).FirstOrDefaultAsync();
 			if (unsyncDrive != null)
 			{
-				unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
+				unsyncDrive.EndDateTime = DateTime.UtcNow;
 				return await _database.UpdateAsync(unsyncDrive);
 			}
 			return -1;
