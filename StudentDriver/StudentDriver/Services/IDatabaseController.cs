@@ -11,7 +11,6 @@ namespace StudentDriver.Services
 		Task<User> GetUser();
 		Task<bool> SaveUser(string profileJson);
 		Task<bool> StartNewUnsyncDrive(string weatherJson);
-		Task<bool> StopCurrentUnsyncDrive();
 		Task<bool> StoreStateRequirements(string stateReqJson);
 		Task<List<DrivePoint>> GetDrivePoints();
 		Task<List<UnsyncDrive>> GetUnsyncedDrives();

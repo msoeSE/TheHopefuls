@@ -35,8 +35,8 @@ namespace StudentDriver
 			}
 			catch (Exception)
 			{
-				Acr.UserDialogs.UserDialogs.Instance.ShowError("Error: Unable to Start GPS");
-				UpdateDrivingButton().RunSynchronously();
+				Acr.UserDialogs.UserDialogs.Instance.ShowError("Error: Unable to enable GPS");
+				//UpdateDrivingButton().RunSynchronously();
 			}
 
 		}
@@ -105,7 +105,7 @@ namespace StudentDriver
 							Acr.UserDialogs.UserDialogs.Instance.HideLoading();
 							return;
 						}
-						Acr.UserDialogs.UserDialogs.Instance.ShowSuccess("Successfully uploading drive data");
+						Acr.UserDialogs.UserDialogs.Instance.ShowSuccess("Successfully uploaded drive data");
 						Acr.UserDialogs.UserDialogs.Instance.HideLoading();
 					}
 					else
@@ -231,7 +231,6 @@ namespace StudentDriver
 				timeLabel.Text = "0:00:00";
 				avgSpeedLabel.Text = "0.0 MPH";
 				averageSpeed = 0.0;
-
 				unsyncDriveId = await App.ServiceController.CreateUnsyncDrive();
 
 			}
@@ -255,7 +254,7 @@ namespace StudentDriver
 			var imageName = string.Empty;
 			switch (driveWeather.WeatherIcon)
 			{
-				case "clear-day"
+				case "clear-day":
 					imageName = "clearDay";
 					break;
 				case "clear-night":

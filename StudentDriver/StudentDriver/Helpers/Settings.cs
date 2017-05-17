@@ -15,18 +15,18 @@ namespace StudentDriver.Helpers
 	public static class Settings
 	{
 
-        private const string apiDevBaseUrl = "dev.drivinglog.online/";
-        private const string apiProdBaseUrl = "drivinglog.online/";
-        private const string apiDevBasePort = "3000";
-        private const string apiProdBasePort = "3000";
+		private const string apiDevBaseUrl = "dev.drivinglog.online/";
+		private const string apiProdBaseUrl = "drivinglog.online/";
+		private const string apiDevBasePort = "3000";
+		private const string apiProdBasePort = "3000";
 
-        public const string OAuthUrl = "https://dev.drivinglog.online/auth/facebook/token";
-	    public const string SchoolIdUrl = "https://dev.drivinglog.online/api/linkacctoschool";
-	    public const string WeatherUrl = "https://dev.drivinglog.online/api/weather";
-        public const string AggregateDrivingUrl = "https://dev.drivinglog.online/api/totalDrivingData/{0}";
-	    public const string StateReqUrl = "https://dev.drivinglog.online/api/stateregulations/{0}";
-	    public static string InstructorStudentsUrl = "https://dev.drivinglog.online/api/allStudents";
-		public const string FORMATStudentDrivingSessionsUrl = "https://dev.drivinglog.online/api/students/{0}/drivingsessions";
+		public const string OAuthUrl = "https://dev.drivinglog.online/auth/facebook/token";
+		public const string SchoolIdUrl = "https://dev.drivinglog.online/api/linkacctoschool";
+		public const string WeatherUrl = "https://dev.drivinglog.online/api/weather";
+		public const string AggregateDrivingUrl = "https://dev.drivinglog.online/api/totalDrivingData/{0}";
+		public const string StateReqUrl = "https://dev.drivinglog.online/api/stateregulations/{0}";
+		public static string InstructorStudentsUrl = "https://dev.drivinglog.online/api/allStudents";
+		public const string StudentDrivingSessionsUrl = "https://dev.drivinglog.online/api/students/{0}/drivingsessions";
 
 	}
 }

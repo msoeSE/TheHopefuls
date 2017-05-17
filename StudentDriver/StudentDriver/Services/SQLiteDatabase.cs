@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Threading;
 using System.Threading.Tasks;
 using SQLite.Net.Async;
@@ -10,7 +11,7 @@ using Xamarin.Forms;
 namespace StudentDriver
 {
 	public class SQLiteDatabase : ISQLiteDatabase
-    {
+	{
 		private static SQLiteAsyncConnection _database;
 
 		public SQLiteDatabase()
@@ -46,8 +47,8 @@ namespace StudentDriver
 
 		public async Task<User> AddUser(User user)
 		{
-		    await _database.InsertAsync(user);
-		    return await GetUser();
+			await _database.InsertAsync(user);
+			return await GetUser();
 		}
 
 		public async Task<User> GetUser()
@@ -71,8 +72,8 @@ namespace StudentDriver
 		public async Task<int> UpdateUser(User user)
 		{
 			int result;
-		    result = await _database.UpdateAsync(user).ConfigureAwait(false);
-		    return result;
+			result = await _database.UpdateAsync(user).ConfigureAwait(false);
+			return result;
 		}
 
 		public async Task<int> AddStateReqs(StateReqs stateReqs)
@@ -97,21 +98,35 @@ namespace StudentDriver
 
 		public async Task<int> StartUnsyncDrive()
 		{
+			var startTime = DateTime.Now;
+			var userId = GetUser().Id;
 			var unsyncDrive = new UnsyncDrive
 			{
-				UserId = GetUser().Id,
-				StartDateTime = DateTime.Now,
+				UserId = userId,
+				StartDateTime = startTime,
 			};
-			return await _database.InsertAsync(unsyncDrive);
+
+			//TODO This returns amount of fields inserted, not the ID.
+			var inserted = await _database.InsertAsync(unsyncDrive);
+			if (inserted > 0)
+			{
+				var drive = await _database.Table<UnsyncDrive>().Where(x => x.UserId == userId && x.EndDateTime == null)
+										   .OrderByDescending(x => x.Id).FirstOrDefaultAsync();
+				if (drive != null)
+				{
+					return drive.Id;
+				}
+			}
+			return -1;
 		}
 
-		public async Task<int> StopCurrentAsyncDrive()
-		{
+		//public async Task<int> StopCurrentAsyncDrive()
+		//{
 
-			var unsyncDrive = await _database.Table<UnsyncDrive>().OrderByDescending(u => u.Id).FirstOrDefaultAsync();
-			unsyncDrive.EndDateTime = DateTime.Now;
-			return await _database.UpdateAsync(unsyncDrive);
-		}
+		//	var unsyncDrive = await _database.Table<UnsyncDrive>().OrderByDescending(u => u.Id).FirstOrDefaultAsync();
+		//	unsyncDrive.EndDateTime = DateTime.Now;
+		//	return await _database.UpdateAsync(unsyncDrive);
+		//}
 
 
 		public async Task<int> AddDrivePoint(DrivePoint drivePoint)
@@ -131,7 +146,7 @@ namespace StudentDriver
 
 		public async Task<List<UnsyncDrive>> GetAllUnsyncedDrives()
 		{
-			return await _database.Table<UnsyncDrive>().ToListAsync();
+			return await _database.Table<UnsyncDrive>().Where(x => x.EndDateTime != null).ToListAsync();
 		}
 
 		public async Task<UnsyncDrive> GetUnsyncDriveById(int id)
@@ -178,9 +193,15 @@ namespace StudentDriver
 
 		public async Task<int> StopUnsyncDrive(int unsyncDriveId)
 		{
-			var unsyncDrive = _database.Table<UnsyncDrive>().Where(x => x.Id == unsyncDriveId).FirstAsync().Result;
-			unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
-			return await _database.UpdateAsync(unsyncDrive);
+			Debug.WriteLine(await _database.Table<UnsyncDrive>().CountAsync());
+			var unsyncDrive = await _database.Table<UnsyncDrive>().Where(x => x.Id == unsyncDriveId).FirstOrDefaultAsync();
+			if (unsyncDrive != null)
+			{
+				unsyncDrive.EndDateTime = new DateTime().ToUniversalTime();
+				return await _database.UpdateAsync(unsyncDrive);
+			}
+			return -1;
+
 		}
 
 

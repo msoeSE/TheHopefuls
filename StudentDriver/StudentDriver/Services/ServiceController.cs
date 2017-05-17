@@ -40,85 +40,85 @@ namespace StudentDriver.Services
 			return await _databaseController.SaveUser(responseText);
 		}
 
-	    public async Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives)
-	    {
-	        var user = await App.ServiceController.GetUser();
-	        var endpoint = string.Format(Settings.FORMATStudentDrivingSessionsUrl, user.ServerId);
-	        var sb = new StringBuilder();
-	        var sw = new StringWriter(sb);
-	        try
-	        {
-	            using (JsonWriter writer = new JsonTextWriter(sw))
-	            {
-	                writer.Formatting = Formatting.Indented;
-	                writer.WritePropertyName("data");
-	                writer.WriteStartArray();
-	                foreach (var drive in unsyncDrives)
-	                {
-	                    var driveWeather = await _databaseController.GetWeatherFromDrive(drive.Id);
-	                    if (driveWeather == null)
-	                    {
-	                        continue;
-	                    }
-	                    writer.WriteStartObject();
-	                    writer.WritePropertyName("UnsyncDrive");
-	                    writer.WriteStartObject();
-	                    writer.WritePropertyName("startTime");
-	                    writer.WriteValue(drive.StartDateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm+ss:FFZ"));
-	                    writer.WritePropertyName("endTime");
-	                    writer.WriteValue(drive.EndDateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm+ss:FFZ"));
-	                    writer.WriteEndObject();
-	                    writer.WritePropertyName("DrivePoints");
-	                    writer.WriteStartArray();
-	                    var validDrivePoints = drivePoints.FindAll(x => x.UnsyncDriveId == drive.Id);
-	                    foreach (var drivePoint in validDrivePoints)
-	                    {
-	                        writer.WriteStartObject();
-	                        writer.WritePropertyName("time");
-	                        writer.WriteValue(drivePoint.PointDateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm+ss:FFZ"));
-	                        writer.WritePropertyName("lat");
-	                        writer.WriteValue(drivePoint.Latitude);
-	                        writer.WritePropertyName("lon");
-	                        writer.WriteValue(drivePoint.Longitude);
-	                        writer.WritePropertyName("speed");
-	                        writer.WriteValue(drivePoint.Speed);
-	                        writer.WriteEndObject();
-	                    }
-	                    writer.WriteEndArray();
-	                    writer.WritePropertyName("DriveWeatherData");
-	                    writer.WriteStartObject();
-	                    writer.WritePropertyName("temperature");
-	                    writer.WriteValue(driveWeather.WeatherTemp);
-	                    writer.WritePropertyName("summary");
-	                    writer.WriteValue(driveWeather.WeatherType);
-	                    writer.WriteEndObject();
-	                    //End the drivepoint object
-	                    writer.WriteEndObject();
-	                }
-	                writer.WriteEndArray();
-	            }
-	            var jsonString = sb.ToString();
-	            Debug.WriteLine(jsonString);
-	            var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
-	            return await _oAuthController.MakePostRequest(endpoint, values) != null;
-	        }
-	        catch (Exception e)
-	        {
-	            Debug.WriteLine(e.Message);
-	            return false;
-	        }
-	    }
+		public async Task<bool> PostDrivePoints(List<DrivePoint> drivePoints, List<UnsyncDrive> unsyncDrives)
+		{
+			var user = await App.ServiceController.GetUser();
+			var endpoint = string.Format(Settings.StudentDrivingSessionsUrl, user.ServerId);
+			var sb = new StringBuilder();
+			var sw = new StringWriter(sb);
+			try
+			{
+				using (JsonWriter writer = new JsonTextWriter(sw))
+				{
+					writer.Formatting = Formatting.Indented;
+					writer.WriteStartArray();
+					foreach (var drive in unsyncDrives)
+					{
+						var driveWeather = await _databaseController.GetWeatherFromDrive(drive.Id);
+						if (driveWeather == null && drive.EndDateTime != null)
+						{
+							continue;
+						}
+						writer.WriteStartObject();
+						writer.WritePropertyName("UnsyncDrive");
+						writer.WriteStartObject();
+						writer.WritePropertyName("startTime");
+						writer.WriteValue(drive.StartDateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss+00:00"));
+						writer.WritePropertyName("endTime");
+						writer.WriteValue(drive.EndDateTime.Value.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss+00:00"));
+						writer.WriteEndObject();
+						writer.WritePropertyName("DrivePoints");
+						writer.WriteStartArray();
+						var validDrivePoints = drivePoints.FindAll(x => x.UnsyncDriveId == drive.Id);
+						foreach (var drivePoint in validDrivePoints)
+						{
+							writer.WriteStartObject();
+							writer.WritePropertyName("time");
+							writer.WriteValue(drivePoint.PointDateTime.ToUniversalTime().ToString("yyyy-MM-ddTHH:mm:ss+00:00"));
+							writer.WritePropertyName("lat");
+							writer.WriteValue(drivePoint.Latitude);
+							writer.WritePropertyName("lon");
+							writer.WriteValue(drivePoint.Longitude);
+							writer.WritePropertyName("speed");
+							writer.WriteValue(drivePoint.Speed);
+							writer.WriteEndObject();
+						}
+						writer.WriteEndArray();
+						writer.WritePropertyName("DriveWeatherData");
+						writer.WriteStartObject();
+						writer.WritePropertyName("temperature");
+						writer.WriteValue(driveWeather.WeatherTemp);
+						writer.WritePropertyName("summary");
+						writer.WriteValue(driveWeather.WeatherType);
+						writer.WriteEndObject();
+						//End the drivepoint object
+						writer.WriteEndObject();
+					}
+					writer.WriteEndArray();
+				}
+				var jsonString = sb.ToString();
+				//Debug.WriteLine(jsonString);
+				//var values = JsonConvert.DeserializeObject<Dictionary<string, string>>(jsonString);
+				return await _oAuthController.MakePostJSON(endpoint, jsonString) != null;
+			}
+			catch (Exception e)
+			{
+				Debug.WriteLine(e.Message);
+				Debug.WriteLine(e.StackTrace);
+				return false;
+			}
+		}
 
-	    public async Task<bool> ConnectSchool(string schoolId)
-        {
-            var parameters = new Dictionary<string,string>
-                {
-                    {"schoolId", schoolId}
-                };
-            var responseText =  await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, parameters);
-            if (string.IsNullOrEmpty(responseText)) return false;
-            return await _databaseController.ConnectStudentToDrivingSchool(responseText);
-        }
+		public async Task<bool> ConnectSchool(string schoolId)
+		{
+			var parameters = new Dictionary<string, string>
+				{
+					{"schoolId", schoolId}
+				};
+			var responseText = await _oAuthController.MakePostRequest(Settings.SchoolIdUrl, parameters);
+			if (string.IsNullOrEmpty(responseText)) return false;
+			return await _databaseController.ConnectStudentToDrivingSchool(responseText);
+		}
 
 		public async Task<bool> DeleteAllDriveData()
 		{
@@ -141,16 +141,16 @@ namespace StudentDriver.Services
 			return await _databaseController.StartNewUnsyncDrive(weather);
 		}
 
-        private async Task<string> GetRequestStateRequirements(string state)
-        {
-            var urlForRequest = string.Format(Settings.StateReqUrl, state);
-            var responseText = await _oAuthController.MakeGetRequest(urlForRequest);
-            return string.IsNullOrEmpty(responseText) ? null : responseText;
-        }
+		private async Task<string> GetRequestStateRequirements(string state)
+		{
+			var urlForRequest = string.Format(Settings.StateReqUrl, state);
+			var responseText = await _oAuthController.MakeGetRequest(urlForRequest);
+			return string.IsNullOrEmpty(responseText) ? null : responseText;
+		}
 		public async Task<DrivingDataViewModel> GetAggregatedDrivingData(string state, string userId)
 		{
-		    var urlForRequest = string.Format(Settings.AggregateDrivingUrl, userId);
-            var responseText = await _oAuthController.MakeGetRequest(urlForRequest);
+			var urlForRequest = string.Format(Settings.AggregateDrivingUrl, userId);
+			var responseText = await _oAuthController.MakeGetRequest(urlForRequest);
 			if (string.IsNullOrEmpty(responseText)) return null;
 			var aggData = JsonConvert.DeserializeObject<DrivingAggregateData>(responseText);
 			var stateReq = await GetStateRequirements(state);

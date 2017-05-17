@@ -277,12 +277,12 @@
     <BundleResource Include="Resources\DLO.png" />
     <BundleResource Include="Resources\DLO512.png" />
     <BundleResource Include="Resources\DLO1024.png" />
-    <BundleResource Include="Resources\clear-day.png" />
-    <BundleResource Include="Resources\clear-night.png" />
+    <BundleResource Include="Resources\clearDay.png" />
+    <BundleResource Include="Resources\clearNight.png" />
     <BundleResource Include="Resources\cloudy.png" />
     <BundleResource Include="Resources\fog.png" />
-    <BundleResource Include="Resources\partly-cloudy-night.png" />
-    <BundleResource Include="Resources\partly-cloudy-day.png" />
+    <BundleResource Include="Resources\partlyCloudyNight.png" />
+    <BundleResource Include="Resources\partlyCloudyDay.png" />
     <BundleResource Include="Resources\rain.png" />
     <BundleResource Include="Resources\sleet.png" />
     <BundleResource Include="Resources\snow.png" />
