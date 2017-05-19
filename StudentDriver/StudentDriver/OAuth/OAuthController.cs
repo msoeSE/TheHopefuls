@@ -56,7 +56,8 @@ namespace OAuth
 		{
 			if (account == null) return null;
 			var request = new DummyRequest(method, new Uri(url), account, parameters);
-			return await request.GetResponseAsync(CancellationToken.None);
+			var response = await request.GetResponseAsync(CancellationToken.None);
+			return response;
 		}
 
 		private static async Task<DummyResponse> MakeOAuthRequest(string method, string url, Account account, string jsonString)

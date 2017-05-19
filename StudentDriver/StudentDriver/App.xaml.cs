@@ -22,16 +22,25 @@ namespace StudentDriver
 			InitializeComponent();
 			var container = setup.CreateContainer();
 			_sc = container.Resolve<IServiceController>() as ServiceController;
-			MainPage = new StudentDriverPage();
+			var user = ServiceController.GetUser().Result;
+			if (user.UType == User.UserType.Instructor)
+			{
+				MainPage = new InstructorPage();
+			}
+			else
+			{
+				MainPage = new StudentDriverPage();
+			}
+			//MainPage = new StudentDriverPage();
 		}
 
 		protected override async void OnStart()
 		{
-            if (!await _sc.UserLoggedIn())
-            {
-                LoginAction();
-            }
-		    // Handle when your app starts
+			if (!await _sc.UserLoggedIn())
+			{
+				LoginAction();
+			}
+			// Handle when your app starts
 		}
 
 		protected override void OnSleep()
