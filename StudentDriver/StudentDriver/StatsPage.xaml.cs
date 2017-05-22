@@ -16,6 +16,14 @@ namespace StudentDriver
 		{
 			InitializeComponent();
 			_userId = userId;
+			Device.BeginInvokeOnMainThread(() =>
+			{
+				DismissButton.IsVisible = true;
+			});
+			DismissButton.Clicked += async (object sender, EventArgs e) =>
+			{
+				await Navigation.PopModalAsync(true);
+			};
 		}
 
 		public StatsPage()

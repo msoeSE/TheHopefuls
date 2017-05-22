@@ -163,8 +163,11 @@
 							HorizontalOptions="FillAndExpand"
 							VerticalOptions="FillAndExpand">
 						</ProgressBar>
+
 					</StackLayout>
 				</Frame>
+				<Button x:Name="DismissButton" Text="Dismiss" BackgroundColor="{x:Static local:AppColors.Third}" TextColor="White"
+				HorizontalOptions="FillAndExpand" VerticalOptions="Center" IsVisible="false"></Button>
 			</StackLayout>
 		</ScrollView>
 	</ContentPage.Content>

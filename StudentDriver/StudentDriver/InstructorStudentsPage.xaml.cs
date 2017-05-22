@@ -23,7 +23,7 @@ namespace StudentDriver
 			var user = e.Item as User;
 			if (user != null)
 			{
-				await Navigation.PushAsync(new StatsPage(user.ServerId));
+				await Navigation.PushModalAsync(new StatsPage(user.ServerId));
 			}
 		}
 
