@@ -224,7 +224,8 @@ namespace StudentDriver.Services
 
 		public async Task<IEnumerable<User>> GetStudents()
 		{
-			var responseText = await _oAuthController.MakeGetRequest(Settings.InstructorStudentsUrl);
+			var user = await App.ServiceController.GetUser();
+			var responseText = await _oAuthController.MakeGetRequest(string.Format(Settings.InstructorStudentsUrl, user.DrivingSchoolId));
 			if (string.IsNullOrEmpty(responseText)) return null;
 			var students = JsonConvert.DeserializeObject<IEnumerable<User>>(responseText);
 			return students;

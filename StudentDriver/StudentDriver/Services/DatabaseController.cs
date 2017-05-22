@@ -25,12 +25,14 @@ namespace StudentDriver.Services
 			string lastName;
 			string imgUrl;
 			string userTypeStr;
+			string schoolId;
 			try
 			{
 				mongoId = jsonObj["mongoID"].ToString();
 				firstName = jsonObj["_json"]["first_name"].ToString();
 				lastName = jsonObj["_json"]["last_name"].ToString();
 				imgUrl = jsonObj["photos"].First["value"].ToString();
+				schoolId = jsonObj["schoolId"].ToString();
 				userTypeStr = jsonObj["userType"].ToString();
 			}
 			catch (NullReferenceException)
@@ -48,6 +50,7 @@ namespace StudentDriver.Services
 			user.ImageUrl = imgUrl;
 			user.UType = userType;
 			user.ServerId = mongoId;
+			user.DrivingSchoolId = schoolId;
 			return await _database.UpdateUser(user) != -1;
 		}
 

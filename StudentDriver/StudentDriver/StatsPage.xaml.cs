@@ -15,7 +15,6 @@ namespace StudentDriver
 		public StatsPage(string userId)
 		{
 			InitializeComponent();
-			NavigationPage.SetHasNavigationBar(this, false);
 			_userId = userId;
 		}
 
