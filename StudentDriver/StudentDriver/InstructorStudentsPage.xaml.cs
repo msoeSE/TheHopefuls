@@ -16,6 +16,10 @@ namespace StudentDriver
 		{
 			InitializeComponent();
 			_students = new ObservableCollection<User>();
+			StudentsListView.ItemTapped += async (object sender, ItemTappedEventArgs e) =>
+			{
+				await StudentTapped(sender, e);
+			};
 		}
 
 		private async Task StudentTapped(object sender, ItemTappedEventArgs e)
@@ -34,10 +38,6 @@ namespace StudentDriver
 			_students.Clear();
 			foreach (var user in users) { _students.Add(user); }
 			StudentsListView.ItemsSource = _students;
-			StudentsListView.ItemTapped += async (object sender, ItemTappedEventArgs e) =>
-			{
-				await StudentTapped(sender, e);
-			};
 		}
 	}
 }
